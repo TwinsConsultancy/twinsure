@@ -1,6 +1,5 @@
-// frontend/js/api.js
 // API_BASE_URL should be loaded before this from config.js
-const BASE_URL = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://127.0.0.1:8000';
+const BASE_URL = typeof API_BASE_URL !== 'undefined' && API_BASE_URL.includes('127.0.0.1') ? API_BASE_URL : '/backend/api';
 
 const api = {
     async login(email, password) {
