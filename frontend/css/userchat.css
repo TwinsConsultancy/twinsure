@@ -1,0 +1,88 @@
+/* userchat.css — Page layout + Lead Modal styles */
+
+/* ─── Page layout ─── */
+body, html { margin:0; padding:0; height:100vh; background:linear-gradient(135deg,#f0edff 0%,#f8f9fb 60%); font-family:'Inter','Segoe UI',sans-serif; }
+
+.branding-header { position:fixed; top:1.2rem; left:1.5rem; display:flex; align-items:center; gap:0.6rem; text-decoration:none; z-index:50; }
+.branding-header i { color:#5136a8; font-size:1.4rem; }
+.branding-header span { font-size:1.3rem; font-weight:800; color:#5136a8; letter-spacing:-0.5px; }
+
+.userchat-container { display:flex; justify-content:center; align-items:center; height:100vh; padding:5rem 1rem 1rem; box-sizing:border-box; }
+.userchat-container .preview-chat-card { width:100%; max-width:680px; height:88vh; }
+
+/* ─── Lead Modal Overlay ─── */
+.lead-modal-overlay {
+    position:fixed; inset:0; background:rgba(15,10,40,0.6);
+    backdrop-filter:blur(4px); z-index:999;
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; pointer-events:none; transition:opacity 0.25s;
+    padding:1rem;
+}
+.lead-modal-overlay.active { opacity:1; pointer-events:all; }
+
+.lead-modal {
+    background:white; border-radius:24px; width:100%; max-width:600px;
+    max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px rgba(81,54,168,0.2);
+    animation:modalIn 0.3s ease-out;
+}
+@keyframes modalIn { from{transform:translateY(30px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+/* ─── Modal Header ─── */
+.lead-modal-header { text-align:center; padding:2rem 2rem 1rem; background:linear-gradient(135deg,#7b5eea,#5136a8); border-radius:24px 24px 0 0; color:white; }
+.lead-modal-icon { width:60px; height:60px; background:rgba(255,255,255,0.2); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 1rem; font-size:1.6rem; }
+.lead-modal-header h2 { margin:0 0 0.5rem; font-size:1.5rem; }
+.lead-modal-header p { margin:0; font-size:0.9rem; opacity:0.88; line-height:1.5; }
+
+/* ─── Q&A Summary ─── */
+.lead-summary-section { padding:1.2rem 1.5rem; border-bottom:1px solid #f0f0f0; }
+.lead-summary-title { font-size:0.85rem; font-weight:700; color:#5136a8; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:0.8rem; display:flex; align-items:center; gap:0.4rem; }
+.lead-summary-scroll { display:flex; flex-direction:column; gap:0.5rem; max-height:180px; overflow-y:auto; }
+.lead-summary-row { background:#f8f7ff; border-radius:10px; padding:0.6rem 0.9rem; border-left:3px solid #7b5eea; }
+.lead-summary-q { font-size:0.78rem; color:#888; margin-bottom:0.2rem; display:flex; align-items:center; gap:0.3rem; }
+.lead-summary-a { font-size:0.88rem; font-weight:600; color:#333; display:flex; align-items:center; gap:0.3rem; }
+.lead-summary-a i { color:#38a169; font-size:0.75rem; }
+
+/* ─── Form Sections ─── */
+.lead-form-section { padding:1.2rem 1.5rem; border-bottom:1px solid #f0f0f0; }
+.lead-form-title { font-size:0.85rem; font-weight:700; color:#5136a8; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:0.9rem; display:flex; align-items:center; gap:0.4rem; }
+.lead-form-hint { font-size:0.78rem; color:#888; margin:-0.3rem 0 0.8rem; line-height:1.4; }
+
+.lead-field { margin-bottom:1rem; }
+.lead-field label { display:block; font-size:0.82rem; font-weight:600; color:#444; margin-bottom:0.35rem; }
+.lead-err { display:block; font-size:0.75rem; color:#e53e3e; margin-top:0.25rem; min-height:1rem; }
+
+/* ─── Callback Slots ─── */
+.callback-slots-grid { display:flex; align-items:flex-start; gap:1rem; }
+.callback-slot { flex:1; display:flex; flex-direction:column; gap:0.5rem; }
+.slot-label { font-size:0.78rem; font-weight:700; color:#5136a8; }
+.callback-slot-sep { color:#ccc; padding-top:2rem; font-size:0.8rem; }
+.callback-slot input[type="date"],
+.callback-slot input[type="time"] { width:100%; box-sizing:border-box; }
+
+/* ─── Agree + Submit ─── */
+.lead-agree-section { padding:1.2rem 1.5rem 1.5rem; }
+.lead-agree-label { display:flex; gap:0.7rem; align-items:flex-start; font-size:0.82rem; color:#555; line-height:1.5; cursor:pointer; }
+.lead-agree-label input[type="checkbox"] { margin-top:0.2rem; flex-shrink:0; accent-color:#7b5eea; width:16px; height:16px; cursor:pointer; }
+.lead-agree-label a { color:#5136a8; text-decoration:underline; }
+
+.lead-submit-btn {
+    display:flex; align-items:center; justify-content:center; gap:0.5rem;
+    width:100%; padding:0.85rem; margin-top:1rem;
+    background:linear-gradient(135deg,#7b5eea,#5136a8);
+    color:white; border:none; border-radius:12px;
+    font-size:1rem; font-weight:700; cursor:pointer; font-family:inherit;
+    transition:opacity 0.2s, transform 0.1s;
+}
+.lead-submit-btn:hover:not(:disabled) { opacity:0.9; transform:translateY(-1px); }
+.lead-submit-btn:disabled { opacity:0.6; cursor:not-allowed; }
+
+.lead-cancel-btn { display:block; width:100%; padding:0.6rem; margin-top:0.6rem; background:none; border:none; color:#888; font-size:0.85rem; cursor:pointer; font-family:inherit; text-decoration:underline; }
+.lead-cancel-btn:hover { color:#555; }
+
+/* ─── Success Screen ─── */
+.lead-success-screen { display:flex; flex-direction:column; align-items:center; text-align:center; padding:3rem 2rem; }
+.success-icon { font-size:4rem; color:#38a169; margin-bottom:1.2rem; animation:popIn 0.4s ease-out; }
+@keyframes popIn { 0%{transform:scale(0)} 80%{transform:scale(1.1)} 100%{transform:scale(1)} }
+.lead-success-screen h2 { font-size:1.8rem; color:#222; margin:0 0 0.8rem; }
+.lead-success-screen p { color:#555; line-height:1.6; margin:0 0 0.5rem; }
+.success-sub { font-size:0.88rem; color:#888; }

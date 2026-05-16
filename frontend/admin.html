@@ -5,25 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Twinsure</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin-leads-premium.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <a href="#" class="logo">Twinsure Admin</a>
-        <nav>
-            <ul>
-                <li><span id="adminName" style="color:var(--text-light); margin-right: 1rem;"></span></li>
-                <li><a href="#" id="logoutBtn" class="btn btn-primary" style="padding:0.4rem 1rem;">Logout</a></li>
-            </ul>
-        </nav>
-    </header>
+    <nav class="top-nav">
+        <div class="nav-left">
+            <a href="#" class="logo" style="margin-right: 2rem; color: #fecb00; font-size: 1.8rem;">Twinsure</a>
+            <div class="global-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Global search..." id="globalSearchInput" oninput="handleGlobalSearch(this.value)">
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="nav-icon"><i class="fas fa-bell"></i><div class="indicator"></div></div>
+            <button class="btn" onclick="exportLeads()" style="background: #fecb00; color: #111; font-weight: 700; padding: 0.5rem 1.2rem; border-radius: 8px; border: none; display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fas fa-file-export"></i> Export
+            </button>
+            <div class="admin-profile">
+                <img src="https://ui-avatars.com/api/?name=Admin&background=5136a8&color=fff" alt="Admin">
+                <div class="info">
+                    <span class="name" id="adminNameDisplay">Admin User</span>
+                    <span class="role">System Administrator</span>
+                </div>
+                <i class="fas fa-chevron-down" style="font-size: 0.7rem; color: #888; margin-left: 0.5rem;"></i>
+            </div>
+            <a href="#" id="logoutBtn" style="color: var(--danger); margin-left: 1.5rem; font-size: 0.9rem; font-weight: 600; text-decoration: none;">Logout</a>
+        </div>
+    </nav>
 
     <div class="admin-layout">
         <aside class="sidebar">
             <ul>
-                <li><a href="#" class="active" onclick="showSection('dashboard')">Dashboard Overview</a></li>
-                <li><a href="#" onclick="showSection('users')">User Management</a></li>
+                <li><a href="#" class="active" onclick="showSection('dashboard', this)">Dashboard Overview</a></li>
+                <li><a href="#" onclick="showSection('users', this)">User Management</a></li>
+                <li><a href="#" onclick="showSection('leads', this)" style="display:flex; align-items:center; justify-content:space-between;">Leads <span class="nav-dot"></span></a></li>
+                <li><a href="#" onclick="showSection('contacts', this)" style="display:flex; align-items:center; justify-content:space-between;">Contacts <span class="nav-dot"></span></a></li>
                 <li><a href="recommendation.html">Recommendation Builder</a> <i class="fas fa-external-link-alt" style="font-size:0.7rem; margin-left:5px;"></i></li>
-                <li><a href="#" onclick="showSection('settings')">Settings</a></li>
+                <li><a href="#" onclick="showSection('settings', this)">Settings</a></li>
             </ul>
         </aside>
 
@@ -42,21 +61,98 @@
                 </div>
             </section>
 
-            <section id="users" class="content-section" style="display:none;">
-                <h2>User Management</h2>
-                <div class="card" style="margin-top: 1rem;">
-                    <table style="width: 100%; text-align: left; border-collapse: collapse;">
-                        <thead>
-                            <tr style="border-bottom: 2px solid var(--primary);">
-                                <th style="padding: 1rem;">Name</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                            </tr>
-                        </thead>
-                        <tbody id="userTableBody">
-                            <tr><td colspan="3">Loading users...</td></tr>
-                        </tbody>
-                    </table>
+            <!-- PREMIUM USER MANAGEMENT SECTION -->
+            <section id="users" class="content-section" style="display:none; padding-top: 0;">
+                <div style="margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div>
+                            <h1 style="font-size: 1.8rem; margin: 0; color: #111;">User Management</h1>
+                            <p style="color: var(--text-muted); margin-top: 0.3rem;">Manage system administrators, staff members, and platform access roles.</p>
+                        </div>
+                        <button class="btn btn-primary" style="background: var(--primary-purple); display: flex; align-items: center; gap: 0.6rem;" onclick="alert('Open Create User Modal')">
+                            <i class="fas fa-user-plus"></i> Add New User
+                        </button>
+                    </div>
+                </div>
+
+                <!-- KPI Metrics -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-header"><i class="fas fa-users" style="background: #f0edff; color: var(--primary-purple);"></i> Total Users</div>
+                        <div class="metric-value-row">
+                            <span class="metric-value" id="valTotalUsers">0</span>
+                            <span class="metric-change positive">+1.2%</span>
+                        </div>
+                        <div class="sparkline-container" id="sparkTotalUsers"></div>
+                        <div class="mini-analytics-label">Active Accounts</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-header"><i class="fas fa-user-shield" style="background: #eef4ff; color: #003f88;"></i> Administrators</div>
+                        <div class="metric-value-row">
+                            <span class="metric-value" id="valAdminCount">0</span>
+                            <span class="metric-change">Stable</span>
+                        </div>
+                        <div class="sparkline-container" id="sparkAdmins"></div>
+                        <div class="mini-analytics-label">System Security</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-header"><i class="fas fa-user-clock" style="background: #fff8e6; color: var(--warning);"></i> Recent Signups</div>
+                        <div class="metric-value-row">
+                            <span class="metric-value">12</span>
+                            <span class="metric-change positive">+5%</span>
+                        </div>
+                        <div class="sparkline-container" id="sparkSignups"></div>
+                        <div class="mini-analytics-label">Last 7 Days</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-header"><i class="fas fa-id-card" style="background: #e6f6ee; color: var(--success);"></i> Active Sessions</div>
+                        <div class="metric-value-row">
+                            <span class="metric-value">8</span>
+                            <span class="metric-change positive">+100%</span>
+                        </div>
+                        <div class="sparkline-container" id="sparkSessions"></div>
+                        <div class="mini-analytics-label">Live Users</div>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="advanced-filter-bar">
+                    <div class="filter-group">
+                        <select class="filter-select" id="userRoleFilter" onchange="filterUsersByRole(this.value)">
+                            <option value="all">All Roles</option>
+                            <option value="admin">Administrator</option>
+                            <option value="staff">Staff Member</option>
+                            <option value="agent">Insurance Agent</option>
+                        </select>
+                        <select class="filter-select"><option>Account Status</option></select>
+                        <select class="filter-select"><option>Last Login</option></select>
+                    </div>
+                    <div class="global-search" style="max-width: 300px;">
+                        <i class="fas fa-search" style="font-size: 0.8rem;"></i>
+                        <input type="text" id="userTableSearch" placeholder="Search by name or email..." oninput="filterUsersBySearch(this.value)" style="padding: 0.5rem 0.8rem 0.5rem 2.2rem; font-size: 0.85rem;">
+                    </div>
+                </div>
+
+                <!-- Premium Table -->
+                <div class="premium-table-card">
+                    <div style="overflow-x: auto;">
+                        <table class="premium-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>User</th>
+                                    <th>Email Address</th>
+                                    <th>Role</th>
+                                    <th>Joined Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="premiumUserTableBody">
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </section>
 
@@ -82,6 +178,389 @@
                 <h2>System Settings</h2>
                 <p>Manage insurance providers, commission rates, and maintenance mode here.</p>
             </section>
+
+            <!-- PREMIUM CONTACTS SECTION -->
+            <section id="contacts" class="content-section" style="display:none; padding-top: 0;">
+                <div style="margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div>
+                            <h1 style="font-size: 1.8rem; margin: 0; color: #111;">Contact Enquiries</h1>
+                            <p style="color: var(--text-muted); margin-top: 0.3rem;">Manage public enquiries, claim requests, and general customer support tickets.</p>
+                        </div>
+                        <button class="btn btn-primary" style="background: var(--primary-purple); display: flex; align-items: center; gap: 0.6rem;" onclick="loadContacts()">
+                            <i class="fas fa-sync-alt"></i> Refresh Data
+                        </button>
+                    </div>
+                </div>
+
+                <!-- KPI Metrics -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-header"><i class="fas fa-envelope-open-text" style="background: #f0edff; color: var(--primary-purple);"></i> Total Enquiries</div>
+                        <div class="metric-value-row">
+                            <span class="metric-value" id="valTotalContacts">0</span>
+                            <span class="metric-change positive">+4.2%</span>
+                        </div>
+                        <div class="sparkline-container" id="sparkTotalContacts"></div>
+                        <div class="mini-analytics-label">Weekly Trend</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-header"><i class="fas fa-star" style="background: #fff8e6; color: var(--warning);"></i> New Enquiries</div>
+                        <div class="metric-value-row">
+                            <span class="metric-value" id="valNewEnq">0</span>
+                            <span class="metric-change positive">+2.1%</span>
+                        </div>
+                        <div class="sparkline-container" id="sparkNewEnq"></div>
+                        <div class="mini-analytics-label">Daily Average</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-header"><i class="fas fa-spinner" style="background: #eef4ff; color: #003f88;"></i> In Progress</div>
+                        <div class="metric-value-row">
+                            <span class="metric-value" id="valInProgEnq">0</span>
+                            <span class="metric-change negative">-5%</span>
+                        </div>
+                        <div class="sparkline-container" id="sparkInProgEnq"></div>
+                        <div class="mini-analytics-label">Active Tickets</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-header"><i class="fas fa-check-circle" style="background: #e6f6ee; color: var(--success);"></i> Resolved</div>
+                        <div class="metric-value-row">
+                            <span class="metric-value" id="valResolvedEnq">0</span>
+                            <span class="metric-change positive">+12%</span>
+                        </div>
+                        <div class="sparkline-container" id="sparkResolvedEnq"></div>
+                        <div class="mini-analytics-label">Resolution Rate</div>
+                    </div>
+                </div>
+
+                <!-- Advanced Filters -->
+                <div class="advanced-filter-bar">
+                    <div class="filter-group">
+                        <select class="filter-select"><option>Enquiry Type</option></select>
+                        <select class="filter-select"><option>City Location</option></select>
+                        <select class="filter-select"><option>Response Status</option></select>
+                        <select class="filter-select"><option>Date Submitted</option></select>
+                    </div>
+                    <button class="advanced-search-btn">Advanced Filter</button>
+                </div>
+
+                <!-- Quick Filter Pills -->
+                <div class="quick-pills">
+                    <button class="pill active" onclick="filterContactsByStatus('all', this)">All Enquiries</button>
+                    <button class="pill" style="background: #fff8e6; color: var(--warning);" onclick="filterContactsByStatus('new', this)">New Enquiries</button>
+                    <button class="pill" style="background: #eef4ff; color: #003f88;" onclick="filterContactsByStatus('in-progress', this)">In Progress</button>
+                    <button class="pill" style="background: #e6f6ee; color: var(--success);" onclick="filterContactsByStatus('resolved', this)">Resolved</button>
+                </div>
+
+                <!-- Premium Table -->
+                <div class="premium-table-card">
+                    <div style="padding: 1rem; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <input type="checkbox">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: #666;">Selection Actions <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i></span>
+                        </div>
+                        <div style="display: flex; gap: 1rem;">
+                            <div class="global-search" style="max-width: 250px;">
+                                <i class="fas fa-search" style="font-size: 0.8rem;"></i>
+                                <input type="text" id="contactsTableSearch" placeholder="Search name, city, phone..." oninput="filterContactsBySearch(this.value)" style="padding: 0.5rem 0.8rem 0.5rem 2.2rem; font-size: 0.85rem;">
+                            </div>
+                        </div>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="premium-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Customer Name</th>
+                                    <th>Contact Info</th>
+                                    <th>City</th>
+                                    <th>Enquiry Type</th>
+                                    <th>Specification</th>
+                                    <th>Submitted Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="premiumContactsTableBody">
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            <!-- REVAMPED LEADS SECTION -->
+            <section id="leads" class="content-section" style="display:none; padding-top: 0;">
+                <div style="margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div>
+                            <h1 style="font-size: 1.8rem; margin: 0; color: #111;">Leads Management</h1>
+                            <p style="color: var(--text-muted); margin-top: 0.3rem;">Monitor, analyze, and manage all recommendation conversations and customer journeys.</p>
+                        </div>
+                        <button class="btn btn-primary" style="background: var(--primary-purple); display: flex; align-items: center; gap: 0.6rem;">
+                            <i class="fas fa-chart-pie"></i> Management Dashboard
+                        </button>
+                    </div>
+                </div>
+
+                <!-- KPI Metrics -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-header"><i class="fas fa-users" style="background: #f0edff; color: var(--primary-purple);"></i> Total Leads</div>
+                        <div class="metric-value-row">
+                            <span class="metric-value" id="valTotalLeads">0</span>
+                            <span class="metric-change positive">+1.83%</span>
+                        </div>
+                        <div class="sparkline-container" id="sparkTotalLeads"></div>
+                        <div class="mini-analytics-label">Mini Analytics</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-header"><i class="fas fa-comments" style="background: #eef4ff; color: #003f88;"></i> Active Conversations</div>
+                        <div class="metric-value-row">
+                            <span class="metric-value" id="valActiveConv">0</span>
+                            <span class="metric-change positive">+2.16%</span>
+                        </div>
+                        <div class="sparkline-container" id="sparkActiveConv"></div>
+                        <div class="mini-analytics-label">Mini Analytics</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-header"><i class="fas fa-check-double" style="background: #e6f6ee; color: var(--success);"></i> Completed</div>
+                        <div class="metric-value-row">
+                            <span class="metric-value" id="valCompleted">0</span>
+                            <span class="metric-change positive">+88%</span>
+                        </div>
+                        <div class="sparkline-container" id="sparkCompleted"></div>
+                        <div class="mini-analytics-label">Mini Analytics</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-header"><i class="fas fa-handshake" style="background: #f0fdf4; color: #1b8a4f;"></i> Converted</div>
+                        <div class="metric-value-row">
+                            <span class="metric-value" id="valConverted">0</span>
+                            <span class="metric-change positive">+1.38%</span>
+                        </div>
+                        <div class="sparkline-container" id="sparkConverted"></div>
+                        <div class="mini-analytics-label">Mini Analytics</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-header"><i class="fas fa-clock" style="background: #fff8e6; color: var(--warning);"></i> Pending</div>
+                        <div class="metric-value-row">
+                            <span class="metric-value" id="valPending">0</span>
+                            <span class="metric-change negative">-28%</span>
+                        </div>
+                        <div class="sparkline-container" id="sparkPending"></div>
+                        <div class="mini-analytics-label">Mini Analytics</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-header"><i class="fas fa-bolt" style="background: #fbe9e9; color: var(--danger);"></i> High Priority</div>
+                        <div class="metric-value-row">
+                            <span class="metric-value" id="valHighPriority">0</span>
+                            <span class="metric-change positive">+1.38%</span>
+                        </div>
+                        <div class="sparkline-container" id="sparkHighPriority"></div>
+                        <div class="mini-analytics-label">Mini Analytics</div>
+                    </div>
+                </div>
+
+                <!-- Advanced Filters -->
+                <div class="advanced-filter-bar">
+                    <div class="filter-group">
+                        <select class="filter-select"><option>Date range</option></select>
+                        <select class="filter-select"><option>Recommendation category</option></select>
+                        <select class="filter-select"><option>Lead status</option></select>
+                        <select class="filter-select"><option>Lead score</option></select>
+                        <select class="filter-select"><option>Completion percentage</option></select>
+                    </div>
+                    <button class="advanced-search-btn">Advanced</button>
+                </div>
+
+                <!-- Quick Filter Pills -->
+                <div class="quick-pills">
+                    <button class="pill active" data-filter="all" onclick="filterLeadsByStatus('all', this)">All Leads</button>
+                    <button class="pill" data-filter="new" style="background: #fff8e6; color: var(--warning);" onclick="filterLeadsByStatus('new', this)">New Leads</button>
+                    <button class="pill" data-filter="contacted" style="background: #eef4ff; color: #003f88;" onclick="filterLeadsByStatus('contacted', this)">Contacted</button>
+                    <button class="pill" data-filter="closed" style="background: #e6f6ee; color: var(--success);" onclick="filterLeadsByStatus('closed', this)">Closed</button>
+                </div>
+
+                <!-- Premium Table -->
+                <div class="premium-table-card">
+                    <div style="padding: 1rem; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <input type="checkbox" id="bulkSelectLeads">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: #666;">Bulk actions <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i></span>
+                        </div>
+                        <div style="display: flex; gap: 1rem;">
+                            <div class="global-search" style="max-width: 250px;">
+                                <i class="fas fa-search" style="font-size: 0.8rem;"></i>
+                                <input type="text" id="leadsTableSearch" placeholder="Search name, phone, email..." oninput="filterLeadsBySearch(this.value)" style="padding: 0.5rem 0.8rem 0.5rem 2.2rem; font-size: 0.85rem;">
+                            </div>
+                        </div>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="premium-table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Lead ID <i class="fas fa-sort"></i></th>
+                                    <th>Customer Name</th>
+                                    <th>Phone Number</th>
+                                    <th>Email</th>
+                                    <th>Recommendation Type</th>
+                                    <th>Current Status</th>
+                                    <th>Progress</th>
+                                    <th>Last Question</th>
+                                    <th>Plan</th>
+                                    <th>Score</th>
+                                    <th>Priority</th>
+                                    <th>Date & Time</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="premiumLeadsTableBody">
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LEAD DETAILS MODAL -->
+            <div class="lead-modal-overlay" id="leadDetailModal">
+                <div class="lead-detail-window">
+                    <button class="modal-close-global" onclick="closeLeadDetail()"><i class="fas fa-times"></i></button>
+
+                    <!-- Panel 1: User Info -->
+                    <div class="detail-panel panel-user">
+                        <h3 style="margin: 0 0 1.5rem 0; font-size: 0.95rem; font-weight: 800; color: #333;">User Information</h3>
+                        <div style="background: white; border-radius: 16px; padding: 1.2rem; border: 1px solid #eee; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+                            <div style="text-align: center; margin-bottom: 1.5rem;">
+                                <img id="detAvatar" src="https://ui-avatars.com/api/?name=User&background=f0edff&color=5136a8" style="width: 70px; height: 70px; border-radius: 50%; margin-bottom: 0.8rem; border: 3px solid #f8f7ff;">
+                                <h4 id="detName" style="margin: 0; font-size: 1.1rem; color: #111;">—</h4>
+                                <span style="font-size: 0.8rem; color: var(--text-muted);">ID: #<span id="detId">—</span></span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 1.2rem;">
+                                <div class="analytics-item">
+                                    <label style="font-size: 0.75rem; color: #999; display: block; margin-bottom: 2px;"><i class="fas fa-phone-alt" style="width: 15px;"></i> Phone</label>
+                                    <div class="val" id="detPhone" style="font-weight: 700; color: #444;">—</div>
+                                </div>
+                                <div class="analytics-item">
+                                    <label style="font-size: 0.75rem; color: #999; display: block; margin-bottom: 2px;"><i class="fas fa-envelope" style="width: 15px;"></i> Email</label>
+                                    <div class="val" id="detEmail" style="font-weight: 700; color: #444; word-break: break-all; font-size: 0.85rem;">—</div>
+                                </div>
+                                <div class="analytics-item">
+                                    <label style="font-size: 0.75rem; color: #999; display: block; margin-bottom: 2px;"><i class="fas fa-map-marker-alt" style="width: 15px;"></i> Location</label>
+                                    <div class="val" id="detLocation" style="font-weight: 700; color: #444;">India</div>
+                                </div>
+                                <div class="analytics-item">
+                                    <label style="font-size: 0.75rem; color: #999; display: block; margin-bottom: 2px;"><i class="fas fa-fingerprint" style="width: 15px;"></i> IP Address</label>
+                                    <div class="val" id="detIp" style="font-weight: 700; color: #444; font-size: 0.8rem;">192.168.1.1</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel 2: Conversation Replay -->
+                    <div class="detail-panel panel-chat">
+                        <div style="padding: 1.2rem 2rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background: white;">
+                            <h3 style="margin: 0; font-size: 0.95rem; font-weight: 800; color: #333;">Conversation Replay</h3>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <div style="display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: #888;">
+                                    <span style="width: 8px; height: 8px; border-radius: 50%; background: #eee; border: 1px solid #ddd;"></span> System
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: #888;">
+                                    <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--primary-purple);"></span> User
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-history-area" id="detChatHistory">
+                            <!-- Dynamic History -->
+                        </div>
+                    </div>
+
+                    <!-- Panel 3: Lead Management & AI -->
+                    <div class="detail-panel panel-mgmt">
+                        <h3 style="margin: 0 0 1rem 0; font-size: 0.9rem; font-weight: 700;">Recommendation Summary</h3>
+                        <div class="summary-card" id="detSummaryCard">
+                            <h4 id="detPlan">—</h4>
+                            <p id="detPlanMeta">Based on customer's stated insurance requirements.</p>
+                        </div>
+
+                        <h3 style="margin: 0 0 1rem 0; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); font-weight: 700;">CRM Actions</h3>
+                        <button class="crm-action-btn"><i class="fas fa-sticky-note"></i> Add notes</button>
+                        <button class="crm-action-btn"><i class="fas fa-tags"></i> Tag Leads</button>
+                        <button class="crm-action-btn" onclick="openStatusChange()"><i class="fas fa-sync"></i> Change status</button>
+                        <button class="crm-action-btn"><i class="fas fa-calendar-alt"></i> Schedule follow-up</button>
+                        <button class="crm-action-btn"><i class="fas fa-paper-plane"></i> Send WhatsApp</button>
+                        
+                        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #eee;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; color: #888; font-size: 0.8rem; cursor: pointer;">
+                                <span>View Activity Log</span>
+                                <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTACT DETAILS MODAL -->
+            <div class="lead-modal-overlay" id="contactDetailModal">
+                <div class="lead-detail-window" style="max-width: 800px; height: 60vh;">
+                    <button class="modal-close-global" onclick="closeContactDetail()"><i class="fas fa-times"></i></button>
+                    
+                    <!-- Panel 1: Contact Info -->
+                    <div class="detail-panel panel-user" style="width: 300px;">
+                        <h3 style="margin: 0 0 1.5rem 0; font-size: 0.95rem; font-weight: 800; color: #333;">Contact Info</h3>
+                        <div style="background: white; border-radius: 16px; padding: 1.2rem; border: 1px solid #eee;">
+                            <div style="text-align: center; margin-bottom: 1.5rem;">
+                                <img id="ctcDetAvatar" src="" style="width: 70px; height: 70px; border-radius: 50%; margin-bottom: 0.8rem; border: 3px solid #f8f7ff;">
+                                <h4 id="ctcDetName" style="margin: 0; font-size: 1.1rem; color: #111;">—</h4>
+                                <span style="font-size: 0.8rem; color: var(--text-muted);">Enquiry #<span id="ctcDetId">—</span></span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 1.2rem;">
+                                <div class="analytics-item">
+                                    <label style="font-size: 0.75rem; color: #999;"><i class="fas fa-phone-alt"></i> Phone</label>
+                                    <div class="val" id="ctcDetPhone" style="font-weight: 700;">—</div>
+                                </div>
+                                <div class="analytics-item">
+                                    <label style="font-size: 0.75rem; color: #999;"><i class="fas fa-envelope"></i> Email</label>
+                                    <div class="val" id="ctcDetEmail" style="font-weight: 700; font-size: 0.8rem;">—</div>
+                                </div>
+                                <div class="analytics-item">
+                                    <label style="font-size: 0.75rem; color: #999;"><i class="fas fa-map-marker-alt"></i> City</label>
+                                    <div class="val" id="ctcDetCity" style="font-weight: 700;">—</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel 2: Enquiry Message -->
+                    <div class="detail-panel panel-chat">
+                        <div style="padding: 1.2rem 2rem; border-bottom: 1px solid #eee;">
+                            <h3 style="margin: 0; font-size: 0.95rem; font-weight: 800; color: #333;">Enquiry Specification</h3>
+                        </div>
+                        <div style="padding: 2rem; background: #fcfcfd; flex: 1;">
+                            <div style="background: white; padding: 1.5rem; border-radius: 12px; border: 1px solid #eee; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+                                <div style="display: inline-block; background: #f0edff; color: var(--primary-purple); padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; margin-bottom: 1rem;" id="ctcDetType">General Enquiry</div>
+                                <div id="ctcDetMessage" style="font-size: 0.95rem; color: #444; line-height: 1.6;">—</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel 3: Status Management -->
+                    <div class="detail-panel panel-mgmt" style="width: 250px;">
+                        <h3 style="margin: 0 0 1.5rem 0; font-size: 0.9rem; font-weight: 700;">Manage Ticket</h3>
+                        <div class="summary-card" style="background: #fff; border: 1px solid #eee;">
+                            <label style="font-size: 0.7rem; color: #999; text-transform: uppercase;">Current Status</label>
+                            <div id="ctcDetStatus" style="margin-top: 5px;">—</div>
+                        </div>
+                        
+                        <select id="ctcStatusSelect" class="filter-select" style="width: 100%; margin-bottom: 1rem;">
+                            <option value="new">Mark as New</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="resolved">Resolved</option>
+                        </select>
+                        <button class="btn btn-primary" style="width: 100%; background: var(--primary-purple);" onclick="saveContactStatusUpdate()">Update Status</button>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -93,46 +572,508 @@
         if(localStorage.getItem('role') !== 'admin') {
             window.location.href = 'login.html';
         }
-        document.getElementById('adminName').textContent = "Welcome, " + localStorage.getItem('name');
+        document.getElementById('adminNameDisplay').textContent = localStorage.getItem('name');
+        
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            // Basic toggle - would need more CSS for a full dark mode
+        }
+
+        function exportLeads() {
+            alert('Exporting leads as CSV...');
+        }
 
         document.getElementById('logoutBtn').addEventListener('click', () => {
             api.logout();
         });
 
-        function showSection(id) {
+        function showSection(id, element) {
             document.querySelectorAll('.content-section').forEach(sec => sec.style.display = 'none');
             document.getElementById(id).style.display = 'block';
             
             document.querySelectorAll('.sidebar ul li a').forEach(a => a.classList.remove('active'));
-            event.target.classList.add('active');
+            if (element) element.classList.add('active');
 
             if(id === 'users') {
                 loadUsers();
             }
+            if(id === 'leads') {
+                loadLeads();
+            }
+            if(id === 'contacts') {
+                loadContacts();
+            }
+        }
+
+        let allContacts = [];
+        let currentContactFilter = 'all';
+        let currentContactSearch = '';
+
+        function filterContactsByStatus(status, btn) {
+            currentContactFilter = status;
+            document.querySelectorAll('#contacts .quick-pills .pill').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            renderContacts();
+        }
+
+        function filterContactsBySearch(query) {
+            currentContactSearch = query.toLowerCase();
+            renderContacts();
+        }
+
+        async function loadContacts() {
+            try {
+                const contacts = await api.get('/admin/contacts.php');
+                allContacts = contacts;
+                
+                const newC  = contacts.filter(c => c.status === 'new').length;
+                const inPrC = contacts.filter(c => c.status === 'in-progress').length;
+                const resC  = contacts.filter(c => c.status === 'resolved').length;
+
+                document.getElementById('valTotalContacts').textContent = contacts.length;
+                document.getElementById('valNewEnq').textContent = newC;
+                document.getElementById('valInProgEnq').textContent = inPrC;
+                document.getElementById('valResolvedEnq').textContent = resC;
+
+                // Real Trend Calculation
+                const getTrend = (filtered) => {
+                    const days = {};
+                    const now = new Date();
+                    for(let i=6; i>=0; i--) {
+                        const d = new Date(now); d.setDate(d.getDate() - i);
+                        days[d.toISOString().split('T')[0]] = 0;
+                    }
+                    filtered.forEach(c => {
+                        if(!c.submittedAt) return;
+                        const date = c.submittedAt.split(' ')[0];
+                        if(days[date] !== undefined) days[date]++;
+                    });
+                    return Object.values(days);
+                };
+
+                drawSparkline('sparkTotalContacts', getTrend(contacts), '#5136a8');
+                drawSparkline('sparkNewEnq', getTrend(contacts.filter(c => c.status === 'new')), '#d97706');
+                drawSparkline('sparkInProgEnq', getTrend(contacts.filter(c => c.status === 'in-progress')), '#003f88');
+                drawSparkline('sparkResolvedEnq', getTrend(contacts.filter(c => c.status === 'resolved')), '#38a169');
+
+                renderContacts();
+            } catch(e) { console.error('Error loading contacts', e); }
+        }
+
+        function renderContacts() {
+            const tbody = document.getElementById('premiumContactsTableBody');
+            if (!tbody) return;
+
+            let filtered = allContacts;
+            if (currentContactFilter !== 'all') {
+                filtered = filtered.filter(c => c.status === currentContactFilter);
+            }
+            if (currentContactSearch) {
+                filtered = filtered.filter(c => 
+                    (c.name || '').toLowerCase().includes(currentContactSearch) ||
+                    (c.phone || '').includes(currentContactSearch) ||
+                    (c.city || '').toLowerCase().includes(currentContactSearch) ||
+                    (c.enquiryType || '').toLowerCase().includes(currentContactSearch)
+                );
+            }
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="10" style="padding:3rem;text-align:center;color:#aaa;">No contacts found matching criteria.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map((contact, i) => {
+                return `
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td style="font-weight:700; color:var(--primary-purple);">#C${String(i+1).padStart(3,'0')}</td>
+                    <td style="font-weight:600;">${contact.name || 'Anonymous'}</td>
+                    <td>
+                        <div style="font-weight:600;">${contact.phone || '—'}</div>
+                        <div style="font-size:0.75rem; color:#888;">${contact.email || ''}</div>
+                    </td>
+                    <td>${contact.city || '—'}</td>
+                    <td><span style="background:#f0edff; color:var(--primary-purple); padding:4px 8px; border-radius:6px; font-size:0.75rem; font-weight:700;">${contact.enquiryType || 'General'}</span></td>
+                    <td style="max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#666;">${contact.enquiryDetails || '—'}</td>
+                    <td style="font-size:0.8rem; color:#888;">${contact.submittedAt ? contact.submittedAt.split(' ')[0] : '—'}</td>
+                    <td>${getStatusBadge(contact.status)}</td>
+                    <td>
+                        <div class="action-btns">
+                            <div class="action-icon" title="Quick Reply"><i class="fas fa-reply"></i></div>
+                            <div class="action-icon" title="View Details" onclick="openContactDetail('${contact._id}')"><i class="fas fa-eye"></i></div>
+                            <div class="action-icon" title="More Options" onclick="toggleContactOptions('${contact._id}', event)"><i class="fas fa-ellipsis-h"></i></div>
+                        </div>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        async function updateContactStatus(id, status) {
+            try { await api.post('/admin/contacts.php', { id, status }); loadContacts(); }
+            catch(e) { console.error(e); }
+        }
+
+        // ── Premium Dashboard Helpers ──
+
+        function drawSparkline(containerId, data, color = '#5136a8') {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            const width = container.offsetWidth || 120;
+            const height = 35;
+            const max = Math.max(...data, 1);
+            const min = Math.min(...data);
+            const range = max - min || 1;
+            
+            const points = data.map((v, i) => {
+                const x = (i / (data.length - 1)) * width;
+                const y = height - ((v - min) / range) * height;
+                return `${x},${y}`;
+            }).join(' ');
+
+            container.innerHTML = `
+                <svg width="100%" height="${height}" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none">
+                    <polyline fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="${points}" />
+                </svg>
+            `;
+        }
+
+        function getStatusBadge(status) {
+            let color = '#aaa';
+            let bg = '#f5f5f5';
+            if (status === 'new' || status === 'contacted') { color = '#5136a8'; bg = '#f0edff'; }
+            if (status === 'closed' || status === 'resolved') { color = '#38a169'; bg = '#e6f6ee'; }
+            if (status === 'in-progress' || status === 'pending') { color = '#d97706'; bg = '#fff8e6'; }
+            
+            const label = status ? (status.charAt(0).toUpperCase() + status.slice(1)) : 'Unknown';
+            return `<span style="background:${bg}; color:${color}; padding:4px 12px; border-radius:20px; font-size:0.75rem; font-weight:700; white-space:nowrap;">${label}</span>`;
+        }
+
+        function getPriorityBadge(score) {
+            if (score > 90) return `<div class="priority-badge priority-high"><i class="fas fa-bolt"></i> High</div>`;
+            if (score > 70) return `<div class="priority-badge priority-medium"><i class="fas fa-fire"></i> Hot</div>`;
+            return `<div class="priority-badge" style="color:#888;">Normal</div>`;
+        }
+
+        let allLeads = [];
+        let currentLeadFilter = 'all';
+        let currentLeadSearch = '';
+
+        function filterLeadsByStatus(status, btn) {
+            currentLeadFilter = status;
+            document.querySelectorAll('.quick-pills .pill').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            renderLeads();
+        }
+
+        function filterLeadsBySearch(query) {
+            currentLeadSearch = query.toLowerCase();
+            renderLeads();
+        }
+
+        async function loadLeads() {
+            try {
+                const leads = await api.get('/admin/leads.php');
+                allLeads = leads;
+                
+                // Real Stats
+                const newCount = leads.filter(l => l.status === 'new').length;
+                const contactedCount = leads.filter(l => l.status === 'contacted').length;
+                const closedCount = leads.filter(l => l.status === 'closed').length;
+                
+                document.getElementById('valTotalLeads').textContent = leads.length;
+                document.getElementById('valActiveConv').textContent = leads.length - closedCount;
+                document.getElementById('valCompleted').textContent = leads.filter(l => (l.answers || []).length > 0).length;
+                document.getElementById('valConverted').textContent = closedCount;
+                document.getElementById('valPending').textContent = newCount;
+                document.getElementById('valHighPriority').textContent = leads.filter(l => (l.score || 0) > 80).length;
+
+                // Real Trend Calculation for Sparklines
+                // We'll calculate a 7-day trend based on submittedAt
+                const getTrend = (filteredLeads) => {
+                    const days = {};
+                    const now = new Date();
+                    for(let i=6; i>=0; i--) {
+                        const d = new Date(now); d.setDate(d.getDate() - i);
+                        days[d.toISOString().split('T')[0]] = 0;
+                    }
+                    filteredLeads.forEach(l => {
+                        if(!l.submittedAt) return;
+                        const date = l.submittedAt.split(' ')[0];
+                        if(days[date] !== undefined) days[date]++;
+                    });
+                    return Object.values(days);
+                };
+
+                drawSparkline('sparkTotalLeads', getTrend(leads), '#5136a8');
+                drawSparkline('sparkActiveConv', getTrend(leads.filter(l => l.status !== 'closed')), '#003f88');
+                drawSparkline('sparkCompleted', getTrend(leads.filter(l => (l.answers || []).length > 0)), '#38a169');
+                drawSparkline('sparkConverted', getTrend(leads.filter(l => l.status === 'closed')), '#1b8a4f');
+                drawSparkline('sparkPending', getTrend(leads.filter(l => l.status === 'new')), '#d97706');
+                drawSparkline('sparkHighPriority', getTrend(leads.filter(l => (l.score || 0) > 80)), '#e53e3e');
+
+                renderLeads();
+            } catch(e) { console.error('Error loading leads', e); }
+        }
+
+        function renderLeads() {
+            const tbody = document.getElementById('premiumLeadsTableBody');
+            if (!tbody) return;
+
+            let filtered = allLeads;
+            if (currentLeadFilter !== 'all') {
+                filtered = filtered.filter(l => l.status === currentLeadFilter);
+            }
+            if (currentLeadSearch) {
+                filtered = filtered.filter(l => 
+                    (l.name || '').toLowerCase().includes(currentLeadSearch) ||
+                    (l.phone || '').includes(currentLeadSearch) ||
+                    (l.email || '').toLowerCase().includes(currentLeadSearch)
+                );
+            }
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="14" style="padding:3rem;text-align:center;color:#aaa;">No leads found ${currentLeadSearch ? 'matching your search' : ''}.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map((lead, i) => {
+                const score = lead.score || 75; 
+                const progress = (lead.answers || []).length > 0 ? 100 : 0;
+                const lastQuestion = (lead.answers || []).slice(-1)[0]?.question || 'Not started';
+                const recPlan = lead.recommendedPlan || 'General Inquiry';
+
+                return `
+                <tr onclick="openLeadDetail('${lead._id}')" style="cursor:pointer;">
+                    <td><input type="checkbox" onclick="event.stopPropagation()"></td>
+                    <td style="font-weight:700; color:var(--primary-purple);">#L${String(i+1).padStart(3,'0')}</td>
+                    <td style="font-weight:600;">${lead.name || 'Anonymous'}</td>
+                    <td>${lead.phone || '—'}</td>
+                    <td style="font-size:0.8rem; color:#666;">${lead.email || '—'}</td>
+                    <td><span style="background:#f0edff; color:var(--primary-purple); padding:4px 8px; border-radius:6px; font-size:0.75rem; font-weight:700;">Rec Engine</span></td>
+                    <td>${getStatusBadge(lead.status)}</td>
+                    <td>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <div class="progress-track"><div class="progress-fill" style="width:${progress}%"></div></div>
+                            <span style="font-size:0.7rem; font-weight:700;">${progress}%</span>
+                        </div>
+                    </td>
+                    <td style="max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#666;">${lastQuestion}</td>
+                    <td style="font-weight:600;">${recPlan}</td>
+                    <td style="font-weight:800;">${score}</td>
+                    <td>${getPriorityBadge(score)}</td>
+                    <td style="font-size:0.8rem; color:#888;">${lead.submittedAt ? lead.submittedAt.split(' ')[0] : '—'}</td>
+                    <td>
+                        <div class="action-btns">
+                            <div class="action-icon"><i class="fas fa-edit"></i></div>
+                            <div class="action-icon"><i class="fas fa-ellipsis-h"></i></div>
+                        </div>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        function openLeadDetail(id) {
+            const lead = allLeads.find(l => l._id === id);
+            if (!lead) return;
+
+            const fallback = '<span style="color:#bbb; font-style:italic;">Not Available</span>';
+
+            document.getElementById('detId').textContent = id.slice(-5).toUpperCase();
+            document.getElementById('detName').innerHTML = lead.name || 'Anonymous User';
+            document.getElementById('detPhone').innerHTML = lead.phone || fallback;
+            document.getElementById('detEmail').innerHTML = lead.email || fallback;
+            
+            // Plan summary
+            const detPlan = document.getElementById('detPlan');
+            const detSummaryCard = document.getElementById('detSummaryCard');
+            if (lead.recommendedPlan) {
+                detPlan.textContent = lead.recommendedPlan;
+                detSummaryCard.style.background = '#f0fdf4';
+                detSummaryCard.style.borderColor = '#dcfce7';
+            } else {
+                detPlan.innerHTML = '<span style="color:#888;">No Plan Recommended</span>';
+                detSummaryCard.style.background = '#f9f9f9';
+                detSummaryCard.style.borderColor = '#eee';
+            }
+
+            document.getElementById('detAvatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(lead.name || 'U')}&background=f0edff&color=5136a8`;
+
+            const chatHistory = document.getElementById('detChatHistory');
+            chatHistory.innerHTML = '';
+
+            // System Greeting
+            chatHistory.innerHTML += `
+                <div class="chat-bubble bubble-system">
+                    Hello! How can I help you today?
+                </div>
+            `;
+
+            // User Answers Replay
+            (lead.answers || []).forEach(a => {
+                chatHistory.innerHTML += `
+                    <div class="chat-bubble bubble-system">
+                        ${a.question}
+                    </div>
+                    <div class="chat-bubble bubble-user">
+                        ${a.answer}
+                    </div>
+                `;
+            });
+
+            document.getElementById('leadDetailModal').classList.add('active');
+        }
+
+        function closeLeadDetail() {
+            document.getElementById('leadDetailModal').classList.remove('active');
+        }
+
+        // ── Contact Detail Functions ──
+        let activeContactId = null;
+
+        function openContactDetail(id) {
+            const contact = allContacts.find(c => c._id === id);
+            if (!contact) return;
+            activeContactId = id;
+
+            document.getElementById('ctcDetId').textContent = id.slice(-5).toUpperCase();
+            document.getElementById('ctcDetName').textContent = contact.name || 'Anonymous';
+            document.getElementById('ctcDetPhone').textContent = contact.phone || '—';
+            document.getElementById('ctcDetEmail').textContent = contact.email || '—';
+            document.getElementById('ctcDetCity').textContent = contact.city || '—';
+            document.getElementById('ctcDetType').textContent = contact.enquiryType || 'General';
+            document.getElementById('ctcDetMessage').textContent = contact.enquiryDetails || 'No details provided.';
+            document.getElementById('ctcDetStatus').innerHTML = getStatusBadge(contact.status);
+            document.getElementById('ctcStatusSelect').value = contact.status || 'new';
+            document.getElementById('ctcDetAvatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(contact.name || 'U')}&background=f0edff&color=5136a8`;
+
+            document.getElementById('contactDetailModal').classList.add('active');
+        }
+
+        function closeContactDetail() {
+            document.getElementById('contactDetailModal').classList.remove('active');
+            activeContactId = null;
+        }
+
+        async function saveContactStatusUpdate() {
+            if (!activeContactId) return;
+            const newStatus = document.getElementById('ctcStatusSelect').value;
+            try {
+                await api.post('/admin/contacts.php', { id: activeContactId, status: newStatus });
+                closeContactDetail();
+                loadContacts();
+            } catch(e) { alert('Failed to update status'); }
+        }
+
+        function toggleContactOptions(id, event) {
+            event.stopPropagation();
+            alert('Selection Actions for #C' + id.slice(-5).toUpperCase() + '\n- Delete\n- Mark as Spam\n- Forward to Agent');
+        }
+
+        async function updateLeadStatus(id, status) {
+            try {
+                await api.post('/admin/leads.php', { id, status });
+            } catch(e) { console.error('Failed to update status', e); }
+        }
+
+        let allUsers = [];
+        let currentUserRole = 'all';
+        let currentUserSearch = '';
+
+        function filterUsersByRole(role) {
+            currentUserRole = role;
+            renderUsers();
+        }
+
+        function filterUsersBySearch(query) {
+            currentUserSearch = query.toLowerCase();
+            renderUsers();
         }
 
         async function loadUsers() {
             try {
                 const users = await api.get('/admin/users.php');
-                const tbody = document.getElementById('userTableBody');
-                tbody.innerHTML = '';
-                users.forEach(user => {
-                    tbody.innerHTML += `
-                        <tr style="border-bottom: 1px solid #eee;">
-                            <td style="padding: 1rem;">${user.name}</td>
-                            <td>${user.email}</td>
-                            <td>${user.role}</td>
-                        </tr>
-                    `;
-                });
-                document.getElementById('userCount').textContent = users.length;
-            } catch (error) {
-                console.error("Error loading users", error);
+                allUsers = users;
+                
+                const admins = users.filter(u => u.role === 'admin').length;
+                document.getElementById('valTotalUsers').textContent = users.length;
+                document.getElementById('valAdminCount').textContent = admins;
+
+                // User trends (visual representation)
+                drawSparkline('sparkTotalUsers', [5, 8, 7, 10, 12, 11, 15], '#5136a8');
+                drawSparkline('sparkAdmins', [2, 2, 2, 2, 2, 2, 2], '#003f88');
+                drawSparkline('sparkSignups', [1, 2, 0, 3, 1, 4, 2], '#d97706');
+                drawSparkline('sparkSessions', [4, 6, 8, 5, 7, 9, 8], '#38a169');
+
+                renderUsers();
+            } catch (error) { console.error("Error loading users", error); }
+        }
+
+        function renderUsers() {
+            const tbody = document.getElementById('premiumUserTableBody');
+            if (!tbody) return;
+
+            let filtered = allUsers;
+            if (currentUserRole !== 'all') {
+                filtered = filtered.filter(u => u.role === currentUserRole);
+            }
+            if (currentUserSearch) {
+                filtered = filtered.filter(u => 
+                    (u.name || '').toLowerCase().includes(currentUserSearch) ||
+                    (u.email || '').toLowerCase().includes(currentUserSearch)
+                );
+            }
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" style="padding:3rem;text-align:center;color:#aaa;">No users found matching criteria.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map((user, i) => {
+                const roleColor = user.role === 'admin' ? '#5136a8' : '#666';
+                const roleBg = user.role === 'admin' ? '#f0edff' : '#f5f5f5';
+
+                return `
+                <tr>
+                    <td style="color:#aaa;">${i+1}</td>
+                    <td>
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=random" style="width:32px; height:32px; border-radius:50%;">
+                            <div style="font-weight:600;">${user.name}</div>
+                        </div>
+                    </td>
+                    <td>${user.email}</td>
+                    <td><span style="background:${roleBg}; color:${roleColor}; padding:4px 10px; border-radius:6px; font-size:0.75rem; font-weight:700;">${user.role.toUpperCase()}</span></td>
+                    <td style="color:#888; font-size:0.85rem;">—</td>
+                    <td><span style="background:#e6f6ee; color:var(--success); padding:4px 10px; border-radius:20px; font-size:0.75rem; font-weight:700;">Active</span></td>
+                    <td>
+                        <div class="action-btns">
+                            <div class="action-icon" title="Edit User"><i class="fas fa-user-edit"></i></div>
+                            <div class="action-icon" title="Delete" style="color:#e53e3e;"><i class="fas fa-trash-alt"></i></div>
+                        </div>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        function handleGlobalSearch(query) {
+            const activeSection = Array.from(document.querySelectorAll('.content-section')).find(s => s.style.display !== 'none');
+            if (activeSection) {
+                if (activeSection.id === 'leads') {
+                    document.getElementById('leadsTableSearch').value = query;
+                    filterLeadsBySearch(query);
+                } else if (activeSection.id === 'contacts') {
+                    document.getElementById('contactsTableSearch').value = query;
+                    filterContactsBySearch(query);
+                } else if (activeSection.id === 'users') {
+                    document.getElementById('userTableSearch').value = query;
+                    filterUsersBySearch(query);
+                }
             }
         }
 
         // Initial load
         loadUsers();
+        loadLeads(); // Load leads early for dashboard stats
 
         // Initialize Builder
         const builder = new VisualBuilder('builderContainer');

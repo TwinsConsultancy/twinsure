@@ -5,21 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Twinsure Smart Recommendation</title>
     <link rel="stylesheet" href="css/preview-ui.css">
+    <link rel="stylesheet" href="css/userchat.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body, html { margin: 0; padding: 0; height: 100vh; background: #f8f9fb; }
-        .userchat-container { display: flex; justify-content: center; align-items: center; height: 100vh; padding: 1rem; }
-        .preview-chat-card { width: 100%; max-width: 700px; height: 90vh; }
-        .ph-left h2 { font-size: 1.5rem; font-weight: 800; color: #5136a8; }
-        .branding-header { position: absolute; top: 1.5rem; left: 2rem; display: flex; align-items: center; gap: 0.8rem; text-decoration: none; }
-        .branding-header:hover { opacity: 0.8; }
-        .branding-header h2 { margin: 0; font-size: 1.5rem; font-weight: 800; color: #5136a8; }
-    </style>
 </head>
 <body>
     <a href="services.html" class="branding-header">
-        <i class="fas fa-shield-alt" style="color: #5136a8; font-size: 1.5rem;"></i>
-        <h2>Twinsure</h2>
+        <i class="fas fa-shield-alt"></i>
+        <span>Twinsure</span>
     </a>
 
     <div class="userchat-container">
@@ -28,11 +20,118 @@
             <div class="chat-messages-area" id="chatMessagesArea"></div>
             <div class="chat-bottom-actions">
                 <div class="chat-action-buttons">
-                    <button class="btn btn-white-small" id="prevQuestionBtn" disabled>Go Back</button>
-                    <button class="btn btn-white-small" id="restartFlowBtn">Restart Flow</button>
+                    <button class="btn btn-white-small" id="prevQuestionBtn" disabled>
+                        <i class="fas fa-arrow-left"></i> Go Back
+                    </button>
+                    <button class="btn btn-white-small" id="restartFlowBtn">
+                        <i class="fas fa-redo"></i> Restart
+                    </button>
                 </div>
                 <div class="chat-progress">
                     <div class="progress-bar-track"><div class="progress-bar-fill" id="flowProgressFill"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ LEAD CAPTURE MODAL ═══════════════ -->
+    <div class="lead-modal-overlay" id="leadModal">
+        <div class="lead-modal">
+            <!-- MAIN BODY -->
+            <div id="leadModalBody">
+                <div class="lead-modal-header">
+                    <div class="lead-modal-icon"><i class="fas fa-clipboard-check"></i></div>
+                    <h2>You've reached the end!</h2>
+                    <p>Almost there — please fill in a few details so our agent can contact you with a personalised recommendation.</p>
+                </div>
+
+                <!-- Q&A Summary -->
+                <div class="lead-summary-section">
+                    <div class="lead-summary-title"><i class="fas fa-list-alt"></i> Your Responses Summary</div>
+                    <div class="lead-summary-scroll" id="leadSummaryBody"></div>
+                </div>
+
+                <!-- Contact Details -->
+                <div class="lead-form-section">
+                    <div class="lead-form-title"><i class="fas fa-user-circle"></i> Your Contact Details</div>
+
+                    <div class="lead-field">
+                        <label>Full Name <span class="required-star">*</span></label>
+                        <div class="input-icon-wrap">
+                            <i class="fas fa-user"></i>
+                            <input type="text" class="chat-text-input" id="leadName" placeholder="Enter your full name">
+                        </div>
+                        <span class="lead-err" id="errName"></span>
+                    </div>
+
+                    <div class="lead-field">
+                        <label>Phone Number <span class="required-star">*</span></label>
+                        <div class="input-icon-wrap">
+                            <i class="fas fa-phone"></i>
+                            <input type="tel" class="chat-text-input" id="leadPhone" maxlength="10" inputmode="numeric"
+                                placeholder="10-digit mobile number"
+                                oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                        </div>
+                        <span class="lead-err" id="errPhone"></span>
+                    </div>
+
+                    <div class="lead-field">
+                        <label>Email Address <span class="optional-tag">optional</span></label>
+                        <div class="input-icon-wrap">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" class="chat-text-input" id="leadEmail" placeholder="your@email.com">
+                        </div>
+                        <span class="lead-err" id="errEmail"></span>
+                    </div>
+                </div>
+
+                <!-- Callback Slots -->
+                <div class="lead-form-section">
+                    <div class="lead-form-title"><i class="fas fa-calendar-alt"></i> Preferred Callback Slots <span class="optional-tag">optional</span></div>
+                    <p class="lead-form-hint">Choose up to 2 preferred time slots. Slot 2 must be at least 30 minutes after Slot 1 on the same day.</p>
+
+                    <div class="callback-slots-grid">
+                        <div class="callback-slot">
+                            <div class="slot-label">Slot 1</div>
+                            <input type="date" class="ymd-select" id="slot1Date" min="">
+                            <input type="time" class="ymd-select" id="slot1Time">
+                        </div>
+                        <div class="callback-slot-sep"><i class="fas fa-ellipsis-v"></i></div>
+                        <div class="callback-slot">
+                            <div class="slot-label">Slot 2 <span class="optional-tag">optional</span></div>
+                            <input type="date" class="ymd-select" id="slot2Date" min="">
+                            <input type="time" class="ymd-select" id="slot2Time">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agree + Submit -->
+                <div class="lead-agree-section">
+                    <label class="lead-agree-label">
+                        <input type="checkbox" id="leadAgree">
+                        <span>By clicking Confirm, I agree to the <a href="terms.html" target="_blank">Terms & Conditions</a> and <a href="privacy.html" target="_blank">Privacy Policy</a>. I consent to being contacted by a Twinsure agent.</span>
+                    </label>
+                    <span class="lead-err" id="errAgree"></span>
+
+                    <button class="lead-submit-btn" id="leadSubmitBtn" onclick="window.userChat.submitLead()">
+                        <i class="fas fa-check"></i> Confirm & Submit
+                    </button>
+                    <button class="lead-cancel-btn" onclick="window.userChat.closeModal()">
+                        Cancel, go back
+                    </button>
+                </div>
+            </div>
+
+            <!-- SUCCESS SCREEN -->
+            <div id="leadSuccessBody" style="display:none;">
+                <div class="lead-success-screen">
+                    <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+                    <h2>Thank You!</h2>
+                    <p>Your details have been received. A Twinsure agent will contact you shortly with a recommendation tailored just for you.</p>
+                    <p class="success-sub">Our team typically responds within <strong>24 hours</strong> on business days.</p>
+                    <a href="services.html" class="lead-submit-btn" style="text-decoration:none; margin-top:1.5rem;">
+                        <i class="fas fa-home"></i> Back to Services
+                    </a>
                 </div>
             </div>
         </div>
@@ -42,5 +141,11 @@
     <script src="js/api.js"></script>
     <script src="js/chat-inputs.js"></script>
     <script src="js/userchat.js"></script>
+    <script>
+        // Set min date for callback slots to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('slot1Date').min = today;
+        document.getElementById('slot2Date').min = today;
+    </script>
 </body>
 </html>
