@@ -1,0 +1,29 @@
+# Environment
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# Dependencies and build outputs
+node_modules/
+vendor/
+public/build/
+dist/
+build/
+coverage/
+
+# Local caches and logs
+*.log
+*.tmp
+*.cache
+.DS_Store
+Thumbs.db
+
+# IDE settings
+.vscode/
+.idea/

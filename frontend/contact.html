@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Twinsure</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">Twinsure</a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="partner.html">Partner Program</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+                <li><a href="login.html" class="btn btn-primary" style="padding:0.4rem 1rem;">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" style="padding: 3rem 1rem;">
+            <h1>Contact Us</h1>
+            <p>We're here to help. Reach out to us for any queries or support.</p>
+        </section>
+
+        <section>
+            <div class="grid">
+                <div class="card">
+                    <h3>Get in Touch</h3>
+                    <p style="margin-top: 1rem;"><strong>Office Location:</strong> Karur, Tamil Nadu</p>
+                    <p style="margin-top: 0.5rem;"><strong>Email:</strong> support@twinsure.com</p>
+                    <p style="margin-top: 0.5rem;"><strong>Phone:</strong> +91 98765 43210</p>
+                </div>
+                
+                <div class="card">
+                    <h3>Send an Inquiry</h3>
+                    <form onsubmit="event.preventDefault(); alert('Form submitted!');">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email / Phone</label>
+                            <input type="text" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Message</label>
+                            <textarea rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Twins Consultancy. All rights reserved.</p>
+    </footer>
+</body>
+</html>

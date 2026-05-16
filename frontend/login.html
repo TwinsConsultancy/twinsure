@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Twinsure</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">Twinsure</a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="login.html" class="active btn btn-primary" style="padding:0.4rem 1rem;">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main style="display:flex; justify-content:center; align-items:center; min-height:70vh;">
+        <div class="card" style="width: 100%; max-width: 400px;">
+            <h2 class="section-title" style="margin-bottom: 1rem; font-size:1.8rem;">Welcome Back</h2>
+            <div id="loginAlert" class="alert"></div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Login</button>
+            </form>
+        </div>
+    </main>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const alertBox = document.getElementById('loginAlert');
+            
+            const result = await api.login(email, password);
+            if (result.success) {
+                alertBox.className = 'alert success';
+                alertBox.textContent = 'Login successful! Redirecting...';
+                
+                setTimeout(() => {
+                    if(result.data.role === 'admin') {
+                        window.location.href = 'admin.html';
+                    } else {
+                        // User/Partner dashboard not needed now, just alert
+                        alert('Dashboard not available for this role yet.');
+                        api.logout();
+                    }
+                }, 1000);
+            } else {
+                alertBox.className = 'alert error';
+                alertBox.textContent = result.message || 'Login failed.';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Twinsure</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <a href="#" class="logo">Twinsure Admin</a>
+        <nav>
+            <ul>
+                <li><span id="adminName" style="color:var(--text-light); margin-right: 1rem;"></span></li>
+                <li><a href="#" id="logoutBtn" class="btn btn-primary" style="padding:0.4rem 1rem;">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <ul>
+                <li><a href="#" class="active" onclick="showSection('dashboard')">Dashboard Overview</a></li>
+                <li><a href="#" onclick="showSection('users')">User Management</a></li>
+                <li><a href="#" onclick="showSection('recommendations')">Recommendation Builder</a></li>
+                <li><a href="#" onclick="showSection('settings')">Settings</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <section id="dashboard" class="content-section">
+                <h2>Control Tower Overview</h2>
+                <div class="grid" style="margin-top: 2rem;">
+                    <div class="card">
+                        <h3>Total Users</h3>
+                        <p id="userCount" style="font-size: 2rem; font-weight: bold;">Loading...</p>
+                    </div>
+                    <div class="card">
+                        <h3>Pending Claims</h3>
+                        <p style="font-size: 2rem; font-weight: bold;">0</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="users" class="content-section" style="display:none;">
+                <h2>User Management</h2>
+                <div class="card" style="margin-top: 1rem;">
+                    <table style="width: 100%; text-align: left; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--primary);">
+                                <th style="padding: 1rem;">Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userTableBody">
+                            <tr><td colspan="3">Loading users...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="recommendations" class="content-section" style="display:none;">
+                <h2>Recommendation Question Builder</h2>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:1rem;">
+                    <div style="flex:1;">
+                        <label><strong>System Greeting:</strong></label>
+                        <input type="text" id="greetingText" placeholder="Welcome message..." style="width:100%; padding:0.5rem; margin-top:0.5rem;">
+                    </div>
+                    <div style="margin-left: 1rem; margin-top:1.5rem;">
+                        <button class="btn" onclick="builder.addNode()">+ Add Question</button>
+                        <button class="btn btn-primary" onclick="builder.saveFlow()">Save Flow</button>
+                    </div>
+                </div>
+                
+                <div id="builderContainer" class="builder-container">
+                    <svg id="builderSvg" class="builder-svg"></svg>
+                </div>
+            </section>
+            
+            <section id="settings" class="content-section" style="display:none;">
+                <h2>System Settings</h2>
+                <p>Manage insurance providers, commission rates, and maintenance mode here.</p>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/builder.js"></script>
+    <script>
+        // Check Auth
+        if(localStorage.getItem('role') !== 'admin') {
+            window.location.href = 'login.html';
+        }
+        document.getElementById('adminName').textContent = "Welcome, " + localStorage.getItem('name');
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            api.logout();
+        });
+
+        function showSection(id) {
+            document.querySelectorAll('.content-section').forEach(sec => sec.style.display = 'none');
+            document.getElementById(id).style.display = 'block';
+            
+            document.querySelectorAll('.sidebar ul li a').forEach(a => a.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if(id === 'users') {
+                loadUsers();
+            }
+        }
+
+        async function loadUsers() {
+            try {
+                const users = await api.get('/admin/users.php');
+                const tbody = document.getElementById('userTableBody');
+                tbody.innerHTML = '';
+                users.forEach(user => {
+                    tbody.innerHTML += `
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 1rem;">${user.name}</td>
+                            <td>${user.email}</td>
+                            <td>${user.role}</td>
+                        </tr>
+                    `;
+                });
+                document.getElementById('userCount').textContent = users.length;
+            } catch (error) {
+                console.error("Error loading users", error);
+            }
+        }
+
+        // Initial load
+        loadUsers();
+
+        // Initialize Builder
+        const builder = new VisualBuilder('builderContainer');
+        
+        // Load the flow when the recommendations tab is opened
+        const originalShowSection = showSection;
+        showSection = function(id) {
+            originalShowSection(id);
+            if(id === 'recommendations') {
+                builder.loadFlow();
+            }
+        }
+    </script>
+</body>
+</html>
