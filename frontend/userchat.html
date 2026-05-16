@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twinsure Smart Recommendation</title>
+    <link rel="stylesheet" href="css/preview-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body, html { margin: 0; padding: 0; height: 100vh; background: #f8f9fb; }
+        .userchat-container { display: flex; justify-content: center; align-items: center; height: 100vh; padding: 1rem; }
+        .preview-chat-card { width: 100%; max-width: 700px; height: 90vh; }
+        .ph-left h2 { font-size: 1.5rem; font-weight: 800; color: #5136a8; }
+        .branding-header { position: absolute; top: 1.5rem; left: 2rem; display: flex; align-items: center; gap: 0.8rem; text-decoration: none; }
+        .branding-header:hover { opacity: 0.8; }
+        .branding-header h2 { margin: 0; font-size: 1.5rem; font-weight: 800; color: #5136a8; }
+    </style>
+</head>
+<body>
+    <a href="services.html" class="branding-header">
+        <i class="fas fa-shield-alt" style="color: #5136a8; font-size: 1.5rem;"></i>
+        <h2>Twinsure</h2>
+    </a>
+
+    <div class="userchat-container">
+        <div class="preview-chat-card">
+            <div class="chat-bot-avatar-top"><i class="fas fa-robot"></i></div>
+            <div class="chat-messages-area" id="chatMessagesArea"></div>
+            <div class="chat-bottom-actions">
+                <div class="chat-action-buttons">
+                    <button class="btn btn-white-small" id="prevQuestionBtn" disabled>Go Back</button>
+                    <button class="btn btn-white-small" id="restartFlowBtn">Restart Flow</button>
+                </div>
+                <div class="chat-progress">
+                    <div class="progress-bar-track"><div class="progress-bar-fill" id="flowProgressFill"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/userchat.js"></script>
+</body>
+</html>

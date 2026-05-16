@@ -1,0 +1,71 @@
+/* Preview Mode Wrapping */
+.preview-mode-wrapper { background-color: #f8f9fb; width: 100%; height: 100vh; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; overflow: hidden; }
+.preview-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: white; border-bottom: 1px solid #eee; }
+.ph-left { display: flex; align-items: center; gap: 1rem; }
+.ph-left h2 { margin: 0; font-size: 1.2rem; color: #111; }
+.preview-badge { background: #e6f6ee; color: #1b8a4f; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 0.4rem; }
+.preview-badge i { font-size: 0.5rem; }
+.ph-right { display: flex; align-items: center; gap: 1rem; }
+.ph-profile { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; color: #444; }
+.ph-profile img { width: 32px; height: 32px; border-radius: 50%; background:#eaeaea; }
+
+.preview-layout { display: flex; flex: 1; overflow: hidden; padding: 2rem; gap: 2rem; justify-content: center; }
+
+/* Center Chat */
+.preview-chat-container { flex: 1; display: flex; justify-content: center; position: relative; max-width: 800px; }
+.preview-chat-card { width: 100%; background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); display: flex; flex-direction: column; position: relative; overflow: visible; height: 100%; max-height: calc(100vh - 120px); }
+.chat-bot-avatar-top { position: absolute; top: -25px; left: 50%; transform: translateX(-50%); width: 50px; height: 50px; background: #eef0fc; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; color: #5136a8; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 3px solid white; z-index: 10; }
+
+.chat-messages-area { flex: 1; padding: 3rem 2rem 2rem 2rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1rem; scroll-behavior: smooth; }
+.chat-row { display: flex; gap: 0.8rem; align-items: flex-end; margin-bottom: 0.5rem; animation: slideUp 0.3s ease-out; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.bot-row { justify-content: flex-start; }
+.user-row { justify-content: flex-end; }
+.chat-bot-icon { width: 28px; height: 28px; background: #eef0fc; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #5136a8; font-size: 0.8rem; flex-shrink: 0; }
+.chat-bubble { padding: 0.8rem 1.2rem; border-radius: 18px; font-size: 0.95rem; line-height: 1.4; max-width: 80%; }
+.bot-bubble { background: white; border: 1px solid #eaeaea; color: #333; border-bottom-left-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+.user-bubble { background: linear-gradient(135deg, #7b5eea, #5136a8); color: white; border-bottom-right-radius: 4px; box-shadow: 0 4px 15px rgba(107, 76, 230, 0.3); }
+
+.chat-options-container { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-left: 40px; margin-bottom: 1rem; }
+.chat-option-pill { background: white; border: 1px solid #eaeaea; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.9rem; color: #444; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+.chat-option-pill:hover { background: #f8f9fc; border-color: #cbd5f5; color: #5136a8; transform: translateY(-1px); }
+.chat-option-pill.selected { background: linear-gradient(135deg, #7b5eea, #5136a8); color: white; border-color: transparent; }
+
+/* Dynamic Pill Colors */
+.chat-option-pill.color-purple { border-color: #d1c4f2; }
+.chat-option-pill.color-blue { border-color: #c4def6; }
+.chat-option-pill.color-orange { border-color: #f6dec4; }
+.chat-option-pill.color-red { border-color: #f6c4c4; }
+.chat-option-pill.color-teal { border-color: #c4f6df; }
+.chat-option-pill.color-green { border-color: #c4f6c4; }
+
+.chat-dropdown { width: 100%; max-width: 250px; padding: 0.8rem 1.2rem; border-radius: 12px; border: 1px solid #cbd5f5; background: #f8f9fc; font-family: inherit; font-size: 0.95rem; color: #333; outline: none; cursor: pointer; }
+.chat-text-input { width: 100%; padding: 0.8rem 1.2rem; border-radius: 12px; border: 1px solid #eaeaea; background: white; font-family: inherit; font-size: 0.95rem; outline: none; }
+
+/* Bottom Actions */
+.chat-bottom-actions { padding: 1.5rem; background: white; border-top: 1px solid #f0f0f0; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; }
+.chat-action-buttons { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+.chat-action-buttons .btn { flex: 1; padding: 0.6rem; font-size: 0.85rem; }
+.btn-white-small { background: white; border: 1px solid #eaeaea; border-radius: 8px; color: #555; cursor: pointer; transition: 0.2s; }
+.btn-white-small:hover:not(:disabled) { background: #f5f5f5; }
+.btn-white-small:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-dark-small { background: #1a1e23; border: 1px solid #1a1e23; border-radius: 8px; color: white; cursor: pointer; font-weight: 600;}
+
+.chat-progress { display: flex; align-items: center; gap: 1rem; font-size: 0.8rem; color: #777; }
+.progress-bar-track { flex: 1; height: 6px; background: #eaeaea; border-radius: 3px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: linear-gradient(90deg, #7b5eea, #5136a8); width: 0%; transition: width 0.3s; }
+
+/* Right Sidebar Analytics */
+.preview-right-analytics { width: 320px; display: flex; flex-direction: column; gap: 1.5rem; overflow-y: auto;}
+.analytics-card { background: white; border-radius: 16px; border: 1px solid #eaeaea; padding: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+.analytics-card h3 { font-size: 1rem; margin: 0 0 1rem 0; color: #111; }
+.analytics-section h4 { font-size: 0.85rem; color: #666; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 1rem 0; border-bottom: 1px solid #eee; padding-bottom: 0.5rem;}
+.analytics-item { margin-bottom: 1rem; }
+.analytics-item label { display: block; font-size: 0.75rem; color: #888; margin-bottom: 0.3rem; }
+.analytics-item .val { font-size: 0.9rem; color: #222; font-weight: 500; word-break: break-word; line-height: 1.4; }
+
+.typing-indicator { display: flex; gap: 0.3rem; padding: 1rem 1.2rem; align-items: center; }
+.typing-dot { width: 6px; height: 6px; background: #999; border-radius: 50%; animation: blink 1.4s infinite both; }
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes blink { 0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); } 40% { opacity: 1; transform: scale(1.2); } }
