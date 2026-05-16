@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Partner With Us | TWINSURE – Insurance Services Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green-deep:   #0D3B2E;
+  --green-mid:    #155C46;
+  --green-bright: #1E8A63;
+  --green-light:  #2EBD87;
+  --green-pale:   #E8F5F0;
+  --amber:        #C8831A;
+  --amber-light:  #E8A030;
+  --amber-pale:   #FDF4E7;
+  --cream:        #F9F8F4;
+  --white:        #FFFFFF;
+  --ink:          #0D1C14;
+  --ink-mid:      #2E4A3A;
+  --ink-soft:     #5A7A6A;
+  --border:       rgba(13,59,46,0.12);
+  --ff-head:  'Cormorant Garamond', Georgia, serif;
+  --ff-body:  'Outfit', sans-serif;
+  --shadow-sm: 0 2px 12px rgba(13,59,46,0.08);
+  --shadow-md: 0 8px 32px rgba(13,59,46,0.12);
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: var(--ff-body); background: var(--cream); color: var(--ink); line-height: 1.65; }
+a { text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+/* ── NAV ── */
+.nav {
+  background: var(--green-deep);
+  padding: 0 3rem;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 68px;
+  position: sticky; top: 0; z-index: 200;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.nav-logo-mark {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: var(--amber); display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-head); font-size: 1.1rem; font-weight: 700; color: var(--green-deep);
+}
+.nav-logo-text {
+  font-family: var(--ff-head); font-size: 1.5rem; font-weight: 700;
+  color: var(--white); letter-spacing: 0.03em;
+}
+.nav-logo-text span { color: var(--amber-light); }
+.nav-tagline { font-size: 0.68rem; color: rgba(255,255,255,0.4); letter-spacing: 0.06em; text-transform: uppercase; display: block; margin-top: -2px; }
+.nav-links { display: flex; align-items: center; gap: 2rem; }
+.nav-links a { color: rgba(255,255,255,0.65); font-size: 0.875rem; font-weight: 400; transition: color 0.2s; }
+.nav-links a:hover { color: var(--white); }
+.nav-cta {
+  background: var(--amber); color: var(--green-deep) !important;
+  font-weight: 600 !important; font-size: 0.875rem !important;
+  padding: 0.5rem 1.25rem; border-radius: 6px;
+  transition: background 0.2s !important;
+}
+.nav-cta:hover { background: var(--amber-light) !important; }
+@media (max-width: 768px) { .nav { padding: 0 1.25rem; } .nav-links { display: none; } }
+
+/* ── HERO ── */
+.hero {
+  background: var(--green-deep);
+  padding: 5rem 3rem 0;
+  overflow: hidden;
+  position: relative;
+}
+.hero::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 120px;
+  background: var(--cream);
+  clip-path: ellipse(60% 100% at 50% 100%);
+}
+.hero-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 420px; gap: 4rem; align-items: end; }
+@media (max-width: 960px) { .hero-inner { grid-template-columns: 1fr; } }
+
+.hero-left { padding-bottom: 5rem; position: relative; z-index: 1; }
+.hero-pill {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(200,131,26,0.18); border: 1px solid rgba(200,131,26,0.4);
+  color: var(--amber-light); font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0.3rem 0.9rem; border-radius: 50px; margin-bottom: 1.5rem;
+}
+.hero-pill::before { content: '●'; font-size: 0.5rem; color: var(--amber-light); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.hero h1 {
+  font-family: var(--ff-head); font-size: clamp(2.8rem, 5.5vw, 4.5rem);
+  font-weight: 700; color: var(--white); line-height: 1.1;
+  letter-spacing: -0.01em; margin-bottom: 1.5rem;
+}
+.hero h1 em { color: var(--amber-light); font-style: italic; }
+.hero p {
+  color: rgba(255,255,255,0.6); font-size: 1.1rem; font-weight: 300;
+  max-width: 520px; margin-bottom: 2.5rem; line-height: 1.7;
+}
+.hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+.btn-amber {
+  background: var(--amber); color: var(--green-deep); font-weight: 700;
+  font-size: 0.95rem; padding: 0.85rem 2rem; border-radius: 8px;
+  transition: background 0.2s, transform 0.15s; display: inline-block;
+}
+.btn-amber:hover { background: var(--amber-light); transform: translateY(-2px); }
+.btn-ghost {
+  background: rgba(255,255,255,0.07); color: var(--white); font-weight: 500;
+  font-size: 0.95rem; padding: 0.85rem 2rem; border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: background 0.2s; display: inline-block;
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.12); }
+
+/* Hero Right Card */
+.hero-right { position: relative; z-index: 1; padding-bottom: 4rem; }
+@media (max-width: 960px) { .hero-right { display: none; } }
+.hero-card {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 20px; padding: 2rem; backdrop-filter: blur(10px);
+}
+.hero-card-title { color: rgba(255,255,255,0.5); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.5rem; }
+.earn-preview { display: flex; flex-direction: column; gap: 1rem; }
+.ep-row {
+  background: rgba(255,255,255,0.05); border-radius: 12px; padding: 1rem 1.25rem;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.ep-label { font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+.ep-val { font-family: var(--ff-head); font-size: 1.4rem; font-weight: 700; color: var(--amber-light); }
+.ep-sub { font-size: 0.72rem; color: rgba(255,255,255,0.35); }
+.hero-card-divider { height: 1px; background: rgba(255,255,255,0.08); margin: 1.25rem 0; }
+.hero-badges { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.hbadge {
+  background: rgba(46,189,135,0.15); border: 1px solid rgba(46,189,135,0.3);
+  color: var(--green-light); font-size: 0.72rem; font-weight: 600;
+  padding: 0.25rem 0.65rem; border-radius: 4px;
+}
+
+/* ── STATS BAR ── */
+.statsbar {
+  background: var(--white); border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.statsbar-inner {
+  max-width: 1100px; margin: 0 auto; padding: 0 3rem;
+  display: flex; flex-wrap: wrap;
+}
+.sbar-item { flex: 1; min-width: 160px; padding: 1.75rem 2rem; border-right: 1px solid var(--border); text-align: center; }
+.sbar-item:last-child { border-right: none; }
+.sbar-num { font-family: var(--ff-head); font-size: 2.25rem; font-weight: 700; color: var(--green-mid); line-height: 1; }
+.sbar-lbl { font-size: 0.75rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.3rem; }
+
+/* ── SECTION COMMON ── */
+section.pad { padding: 5rem 3rem; }
+.ctr { text-align: center; }
+.container { max-width: 1100px; margin: 0 auto; }
+.sec-tag { display: inline-block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green-bright); margin-bottom: 0.75rem; }
+.sec-head {
+  font-family: var(--ff-head); font-size: clamp(1.9rem, 3.5vw, 3rem);
+  font-weight: 700; color: var(--ink); line-height: 1.2; letter-spacing: -0.01em;
+  margin-bottom: 1rem;
+}
+.sec-sub { color: var(--ink-soft); font-size: 1.05rem; font-weight: 300; max-width: 560px; }
+.ctr .sec-sub { margin: 0 auto; }
+
+/* ── WHO CAN JOIN ── */
+.who-section { background: var(--white); }
+.who-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem; margin-top: 3rem;
+}
+.who-card {
+  border-radius: 16px; padding: 2rem; position: relative; overflow: hidden;
+  border: 1.5px solid transparent; transition: transform 0.22s, box-shadow 0.22s;
+  background: var(--cream);
+}
+.who-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+.who-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 16px 16px 0 0; }
+.wc1::before { background: var(--amber); }
+.wc2::before { background: var(--green-light); }
+.wc3::before { background: #5E6ECC; }
+.wc4::before { background: #D4536A; }
+.wc1 { border-color: rgba(200,131,26,0.2); }
+.wc2 { border-color: rgba(46,189,135,0.2); }
+.wc3 { border-color: rgba(94,110,204,0.2); }
+.wc4 { border-color: rgba(212,83,106,0.2); }
+
+.who-num {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-head); font-size: 1.5rem; font-weight: 700;
+  margin-bottom: 1.25rem;
+}
+.wn1 { background: var(--amber-pale); color: var(--amber); }
+.wn2 { background: var(--green-pale); color: var(--green-bright); }
+.wn3 { background: #ECEFFE; color: #5E6ECC; }
+.wn4 { background: #FDEDF0; color: #D4536A; }
+
+.who-card h3 { font-family: var(--ff-head); font-size: 1.25rem; font-weight: 700; margin-bottom: 0.6rem; }
+.who-card p { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.7; }
+.who-tag {
+  display: inline-block; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.07em;
+  text-transform: uppercase; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.75rem;
+}
+.wt1 { background: var(--amber-pale); color: var(--amber); }
+.wt2 { background: var(--green-pale); color: var(--green-bright); }
+.wt3 { background: #ECEFFE; color: #5E6ECC; }
+.wt4 { background: #FDEDF0; color: #D4536A; }
+
+/* ── PLATFORMS CALLOUT ── */
+.platforms { background: var(--green-deep); padding: 4rem 3rem; }
+.plat-inner { max-width: 1100px; margin: 0 auto; }
+.plat-inner .sec-tag { color: var(--amber-light); }
+.plat-inner .sec-head { color: var(--white); margin-bottom: 0.5rem; }
+.plat-intro { color: rgba(255,255,255,0.5); font-size: 0.95rem; font-weight: 300; max-width: 580px; margin-bottom: 2.5rem; }
+.plat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+@media (max-width: 768px) { .plat-grid { grid-template-columns: 1fr; } }
+.plat-card {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px; padding: 1.75rem;
+  transition: background 0.2s;
+}
+.plat-card:hover { background: rgba(255,255,255,0.09); }
+.plat-name {
+  font-family: var(--ff-head); font-size: 1.4rem; font-weight: 700;
+  color: var(--amber-light); letter-spacing: 0.05em; margin-bottom: 0.35rem;
+}
+.plat-full { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.4); margin-bottom: 1rem; }
+.plat-card p { font-size: 0.875rem; color: rgba(255,255,255,0.6); line-height: 1.7; }
+.plat-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
+.ptag {
+  background: rgba(46,189,135,0.12); border: 1px solid rgba(46,189,135,0.2);
+  color: var(--green-light); font-size: 0.7rem; font-weight: 500;
+  padding: 0.2rem 0.55rem; border-radius: 4px;
+}
+
+/* ── EARNINGS ── */
+.earnings-section { background: var(--cream); }
+.earn-layout { display: grid; grid-template-columns: 1fr 400px; gap: 5rem; align-items: start; }
+@media (max-width: 900px) { .earn-layout { grid-template-columns: 1fr; gap: 3rem; } }
+
+.earn-streams { display: flex; flex-direction: column; gap: 1.25rem; margin-top: 2rem; }
+.estream {
+  background: var(--white); border: 1px solid var(--border); border-radius: 14px;
+  padding: 1.5rem; display: flex; gap: 1.25rem; align-items: flex-start;
+  box-shadow: var(--shadow-sm); transition: box-shadow 0.2s;
+}
+.estream:hover { box-shadow: var(--shadow-md); }
+.estream-icon {
+  width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+}
+.ei-amber { background: var(--amber-pale); }
+.ei-green { background: var(--green-pale); }
+.estream-icon svg { width: 22px; height: 22px; }
+.estream h4 { font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; color: var(--ink); }
+.estream p { font-size: 0.875rem; color: var(--ink-soft); line-height: 1.65; }
+
+.earn-calculator {
+  background: var(--green-deep); border-radius: 20px; padding: 2rem;
+  color: var(--white); position: sticky; top: 80px;
+}
+.calc-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.45); margin-bottom: 1.5rem; }
+.calc-total { font-family: var(--ff-head); font-size: 3rem; font-weight: 700; color: var(--amber-light); line-height: 1; }
+.calc-sublabel { font-size: 0.75rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2rem; }
+.calc-rows { display: flex; flex-direction: column; gap: 0; }
+.calc-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.85rem 0; border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.calc-row:last-child { border-bottom: none; }
+.calc-row span:first-child { font-size: 0.85rem; color: rgba(255,255,255,0.55); }
+.calc-row span:last-child { font-size: 0.95rem; font-weight: 600; color: var(--amber-light); }
+.calc-note { font-size: 0.75rem; color: rgba(255,255,255,0.3); margin-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.07); padding-top: 1rem; line-height: 1.6; }
+
+/* ── HOW IT WORKS ── */
+.how-section { background: var(--white); }
+.steps { display: grid; grid-template-columns: repeat(5,1fr); gap: 0; margin-top: 3.5rem; position: relative; }
+@media (max-width: 768px) { .steps { grid-template-columns: 1fr 1fr; gap: 2rem; } }
+.steps::before {
+  content: '';
+  position: absolute; top: 26px; left: 8%; right: 8%; height: 1.5px;
+  background: linear-gradient(90deg, var(--amber) 0%, var(--green-light) 100%);
+}
+@media (max-width: 768px) { .steps::before { display: none; } }
+.step { text-align: center; padding: 0 1rem; position: relative; z-index: 1; }
+.step-circle {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--white); border: 2px solid var(--amber);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-head); font-size: 1.2rem; font-weight: 700; color: var(--amber);
+  margin: 0 auto 1.25rem;
+}
+.step h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; color: var(--ink); }
+.step p { font-size: 0.82rem; color: var(--ink-soft); line-height: 1.6; }
+
+/* ── BENEFITS ── */
+.benefits-band {
+  background: var(--green-pale); border-top: 1px solid rgba(30,138,99,0.15); border-bottom: 1px solid rgba(30,138,99,0.15);
+  padding: 4rem 3rem;
+}
+.benefits-grid {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+.ben-item { text-align: center; }
+.ben-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  background: var(--white); border: 1px solid rgba(30,138,99,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; margin: 0 auto 0.85rem;
+}
+.ben-item h5 { font-size: 0.92rem; font-weight: 600; margin-bottom: 0.3rem; color: var(--ink); }
+.ben-item p { font-size: 0.8rem; color: var(--ink-soft); }
+
+/* ── WHY TWINSURE ── */
+.why-section { background: var(--cream); }
+.why-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+@media (max-width: 768px) { .why-layout { grid-template-columns: 1fr; gap: 3rem; } }
+.why-visual {
+  background: var(--green-deep); border-radius: 24px;
+  padding: 2.5rem; min-height: 400px;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.why-visual-top {}
+.why-visual-brand { font-family: var(--ff-head); font-size: 2rem; font-weight: 700; color: var(--white); letter-spacing: 0.04em; }
+.why-visual-brand span { color: var(--amber-light); }
+.why-visual-sub { font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-top: 0.25rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.why-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+.wm-box { background: rgba(255,255,255,0.07); border-radius: 12px; padding: 1.25rem; }
+.wm-num { font-family: var(--ff-head); font-size: 2rem; font-weight: 700; color: var(--amber-light); line-height: 1; }
+.wm-lbl { font-size: 0.72rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.3rem; }
+.why-quote {
+  background: rgba(46,189,135,0.12); border-left: 2px solid var(--green-light);
+  border-radius: 8px; padding: 1rem 1.25rem; margin-top: 2rem;
+  font-size: 0.85rem; color: rgba(255,255,255,0.6); font-style: italic; line-height: 1.6;
+}
+.checklist { list-style: none; display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
+.checklist li { display: flex; gap: 0.85rem; font-size: 0.95rem; color: var(--ink-mid); align-items: flex-start; }
+.chk {
+  flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+  background: var(--green-bright); color: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 700; margin-top: 2px;
+}
+
+/* ── TESTIMONIALS ── */
+.testi-section { background: var(--amber-pale); padding: 5rem 3rem; }
+.t-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+.t-card {
+  background: var(--white); border-radius: 18px; padding: 2rem;
+  border: 1px solid rgba(200,131,26,0.15); box-shadow: var(--shadow-sm);
+  display: flex; flex-direction: column; gap: 1.25rem;
+}
+.t-stars { color: var(--amber); font-size: 0.85rem; letter-spacing: 0.1em; }
+.t-text { font-size: 0.9rem; color: var(--ink-mid); line-height: 1.75; font-style: italic; }
+.t-author { display: flex; gap: 0.85rem; align-items: center; }
+.t-av {
+  width: 42px; height: 42px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-head); font-size: 1rem; font-weight: 700; color: var(--white);
+  flex-shrink: 0;
+}
+.ta1 { background: var(--green-bright); }
+.ta2 { background: #5E6ECC; }
+.ta3 { background: var(--amber); }
+.t-name { font-size: 0.9rem; font-weight: 600; color: var(--ink); }
+.t-role { font-size: 0.78rem; color: var(--ink-soft); }
+
+/* ── REGISTER FORM ── */
+.register-section {
+  background: var(--green-deep);
+  padding: 6rem 3rem; text-align: center;
+  position: relative; overflow: hidden;
+}
+.register-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(46,189,135,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.register-section .sec-head { color: var(--white); }
+.register-section .sec-tag { color: var(--amber-light); }
+.reg-sub { color: rgba(255,255,255,0.5); font-size: 1rem; font-weight: 300; max-width: 500px; margin: 0 auto 3rem; }
+
+.reg-form {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px; padding: 2.5rem; max-width: 640px; margin: 0 auto;
+  position: relative; z-index: 1;
+}
+.reg-form-title { font-family: var(--ff-head); font-size: 1.5rem; font-weight: 700; color: var(--white); margin-bottom: 0.35rem; }
+.reg-form-sub { font-size: 0.85rem; color: rgba(255,255,255,0.4); margin-bottom: 2rem; }
+.reg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+@media (max-width: 560px) { .reg-grid { grid-template-columns: 1fr; } }
+.reg-field {
+  display: flex; flex-direction: column; gap: 0.35rem;
+}
+.reg-field label { font-size: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.07em; }
+.reg-field input,
+.reg-field select {
+  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px; padding: 0.8rem 1rem;
+  color: var(--white); font-size: 0.9rem; font-family: var(--ff-body);
+  outline: none; transition: border-color 0.2s;
+  appearance: none; -webkit-appearance: none;
+}
+.reg-field input::placeholder { color: rgba(255,255,255,0.28); }
+.reg-field input:focus, .reg-field select:focus { border-color: var(--amber); }
+.reg-field select option { background: #155C46; color: white; }
+.reg-submit {
+  width: 100%; margin-top: 1rem;
+  background: var(--amber); color: var(--green-deep);
+  font-family: var(--ff-body); font-size: 1.05rem; font-weight: 700;
+  padding: 1rem; border-radius: 10px; border: none; cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+.reg-submit:hover { background: var(--amber-light); transform: translateY(-2px); }
+.reg-privacy { font-size: 0.76rem; color: rgba(255,255,255,0.28); margin-top: 1rem; line-height: 1.6; }
+
+/* ── WHATSAPP FLOAT ── */
+.wa-float {
+  position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
+  background: #25D366; color: white;
+  width: 56px; height: 56px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.5);
+  font-size: 1.5rem; text-decoration: none;
+  animation: wabounce 3s ease infinite;
+}
+@keyframes wabounce { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink); padding: 2.5rem 3rem;
+  display: flex; flex-wrap: wrap; gap: 1rem;
+  justify-content: space-between; align-items: center;
+}
+.footer-brand { font-family: var(--ff-head); font-size: 1.25rem; color: var(--white); letter-spacing: 0.04em; }
+.footer-brand span { color: var(--amber-light); }
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a { font-size: 0.82rem; color: rgba(255,255,255,0.45); transition: color 0.2s; }
+.footer-links a:hover { color: rgba(255,255,255,0.8); }
+.footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+@media (max-width: 768px) { footer { flex-direction: column; text-align: center; padding: 2rem 1.5rem; } }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+.hero-pill { animation: fadeUp 0.5s ease 0.1s both; }
+.hero h1   { animation: fadeUp 0.6s ease 0.2s both; }
+.hero p    { animation: fadeUp 0.6s ease 0.3s both; }
+.hero-btns { animation: fadeUp 0.6s ease 0.4s both; }
+.hero-right { animation: fadeUp 0.7s ease 0.5s both; }
+</style>
+</head>
+<body>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/91XXXXXXXXXX" class="wa-float" title="Chat on WhatsApp" target="_blank">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">
+    <div class="nav-logo-mark">TW</div>
+    <div>
+      <div class="nav-logo-text">TWIN<span>SURE</span></div>
+      <span class="nav-tagline">by Twins Consultancy</span>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="#">Home</a>
+    <a href="#">iCARE Claims</a>
+    <a href="#">OASIS Services</a>
+    <a href="#">PMS</a>
+    <a href="#apply" class="nav-cta">Join as Partner →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-pill">Partner Programme — Open Across Tamil Nadu</div>
+      <h1>Grow Your Income<br>with <em>TWINSURE's</em><br>Partner Network</h1>
+      <p>We have 15+ years of insurance expertise. You have the local trust. Together, we help policyholders get the claims they deserve — and you earn well every single time.</p>
+      <div class="hero-btns">
+        <a href="#apply" class="btn-amber">Register as Partner — Free</a>
+        <a href="#how" class="btn-ghost">See How It Works</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-card">
+        <div class="hero-card-title">Partner Earnings — Sample Month</div>
+        <div class="earn-preview">
+          <div class="ep-row">
+            <div>
+              <div class="ep-label">Referral Commissions</div>
+              <div class="ep-sub">% of claim fee collected</div>
+            </div>
+            <div class="ep-val">₹7,500</div>
+          </div>
+          <div class="ep-row">
+            <div>
+              <div class="ep-label">Field Visit Fees</div>
+              <div class="ep-sub">Document collection visits</div>
+            </div>
+            <div class="ep-val">₹3,200</div>
+          </div>
+          <div class="ep-row">
+            <div>
+              <div class="ep-label">Bonus — Large Claim</div>
+              <div class="ep-sub">High-value settlement referral</div>
+            </div>
+            <div class="ep-val">₹2,400</div>
+          </div>
+        </div>
+        <div class="hero-card-divider"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+          <span style="font-size:0.8rem;color:rgba(255,255,255,0.45)">Monthly Total</span>
+          <span style="font-family:'Cormorant Garamond',serif;font-size:1.75rem;font-weight:700;color:#E8A030">₹13,100+</span>
+        </div>
+        <div class="hero-badges">
+          <span class="hbadge">✓ Zero Investment</span>
+          <span class="hbadge">✓ UPI Payouts</span>
+          <span class="hbadge">✓ Free Training</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="statsbar">
+  <div class="statsbar-inner">
+    <div class="sbar-item"><div class="sbar-num">15+</div><div class="sbar-lbl">Years in Insurance</div></div>
+    <div class="sbar-item"><div class="sbar-num">1,200+</div><div class="sbar-lbl">Claims Settled</div></div>
+    <div class="sbar-item"><div class="sbar-num">350+</div><div class="sbar-lbl">Active Partners</div></div>
+    <div class="sbar-item"><div class="sbar-num">98%</div><div class="sbar-lbl">Claim Success Rate</div></div>
+    <div class="sbar-item"><div class="sbar-num">₹5K+</div><div class="sbar-lbl">Avg. Monthly Earning</div></div>
+  </div>
+</div>
+
+<!-- WHO CAN JOIN -->
+<section class="pad who-section" id="who">
+  <div class="container">
+    <div class="ctr">
+      <span class="sec-tag">Who Can Partner With Us</span>
+      <h2 class="sec-head">Built for People Already<br>Trusted in Their Community</h2>
+      <p class="sec-sub">No office. No investment. Just your existing network and our 15 years of insurance expertise behind you.</p>
+    </div>
+    <div class="who-grid">
+      <div class="who-card wc1">
+        <span class="who-tag wt1">⭐ Ideal Fit</span>
+        <div class="who-num wn1">01</div>
+        <h3>IRDAI Licensed Agents</h3>
+        <p>You advise clients on policies — now earn through claim time too. Add a strong second income stream with zero conflict. Your client is already yours; we just help when the claim comes.</p>
+      </div>
+      <div class="who-card wc2">
+        <span class="who-tag wt2">🎓 Part-Time Earner</span>
+        <div class="who-num wn2">02</div>
+        <h3>College Students</h3>
+        <p>Flexible hours. Zero targets. No office. Refer your neighbour's family, collect documents in the evenings, and earn cash. Perfect for B.Com, BA, BBA and any commerce stream students.</p>
+      </div>
+      <div class="who-card wc3">
+        <span class="who-tag wt3">🏪 High Volume</span>
+        <div class="who-num wn3">03</div>
+        <h3>E-Seva / Meeseva / CSC Centers</h3>
+        <p>Your centre is already a trusted hub. Add TWINSURE claim assistance to your service list. Customers walk in daily — now you have one more high-value service that earns recurring income.</p>
+      </div>
+      <div class="who-card wc4">
+        <span class="who-tag wt4">🏦 Trust + Volume</span>
+        <div class="who-num wn4">04</div>
+        <h3>Bank CSP / Customer Service Point Owners</h3>
+        <p>Your banking customers hold insurance policies. You are already their most trusted financial contact. When claims arise, guide them through TWINSURE — and earn referral income each time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLATFORMS CALLOUT -->
+<section class="platforms">
+  <div class="plat-inner">
+    <span class="sec-tag">Our Platforms — You Represent All Three</span>
+    <h2 class="sec-head" style="color:white">What You're Backing<br>When You Partner with Us</h2>
+    <p class="plat-intro">As a TWINSURE partner, you're not just referring claims. You represent a complete insurance services ecosystem trusted by thousands of families.</p>
+    <div class="plat-grid">
+      <div class="plat-card">
+        <div class="plat-name">iCARE</div>
+        <div class="plat-full">Insurance Claims Assistance & Resolution Engine</div>
+        <p>End-to-end claim support — from form filling to follow-up, document collection, insurer negotiation, and Ombudsman escalation if needed.</p>
+        <div class="plat-tags">
+          <span class="ptag">Life Insurance</span>
+          <span class="ptag">Health Insurance</span>
+          <span class="ptag">Motor Claims</span>
+          <span class="ptag">General Insurance</span>
+        </div>
+      </div>
+      <div class="plat-card">
+        <div class="plat-name">OASIS</div>
+        <div class="plat-full">On-demand After-Sales Insurance Services</div>
+        <p>All post-policy services in one place — name/address changes, nominee updates, policy loans, surrender, revival, renewal, duplicate policy, and more.</p>
+        <div class="plat-tags">
+          <span class="ptag">Endorsements</span>
+          <span class="ptag">Renewal</span>
+          <span class="ptag">Loan & Surrender</span>
+          <span class="ptag">E-Documentation</span>
+        </div>
+      </div>
+      <div class="plat-card">
+        <div class="plat-name">PMS</div>
+        <div class="plat-full">Profit Maximisation Service for ULIP Policies</div>
+        <p>ULIP policyholders often leave money on the table. TWINSURE's PMS guides fund switching and portfolio optimisation to maximise returns from ULIP policies.</p>
+        <div class="plat-tags">
+          <span class="ptag">ULIP Fund Switch</span>
+          <span class="ptag">Portfolio Review</span>
+          <span class="ptag">Return Optimisation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EARNINGS -->
+<section class="pad earnings-section" id="earn">
+  <div class="container">
+    <div class="earn-layout">
+      <div>
+        <span class="sec-tag">Earning Structure</span>
+        <h2 class="sec-head">Two Streams.<br>Every Single Referral.</h2>
+        <p class="sec-sub" style="margin-bottom:0">Transparent, fair, and paid via UPI within 7 days of claim settlement.</p>
+        <div class="earn-streams">
+          <div class="estream">
+            <div class="estream-icon ei-amber">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#C8831A" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <div>
+              <h4>Referral Commission — % of Fees Collected</h4>
+              <p>When your referred client's claim is successfully settled, you earn a percentage of our service fee. Bigger claims, bigger commission. Fully recurring — every client referral keeps earning.</p>
+            </div>
+          </div>
+          <div class="estream">
+            <div class="estream-icon ei-green">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#1E8A63" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div>
+              <h4>Fixed Field Visit Fee — Per Document Collection</h4>
+              <p>Visit a policyholder, collect their claim documents as per our checklist, and hand them over to us. Get paid a fixed fee per visit — regardless of claim outcome. Simple and immediate.</p>
+            </div>
+          </div>
+          <div class="estream">
+            <div class="estream-icon ei-amber">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#C8831A" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <div>
+              <h4>Top Partner Quarterly Bonus</h4>
+              <p>High-performing partners receive quarterly recognition bonuses. No targets required — just stay active and consistent. The top partners in each district get rewarded every 3 months.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="earn-calculator">
+        <div class="calc-title">Sample Monthly Earnings Calculator</div>
+        <div class="calc-total">₹13,100</div>
+        <div class="calc-sublabel">Estimated Monthly Income</div>
+        <div class="calc-rows">
+          <div class="calc-row"><span>5 Claim Referrals (avg. fee share)</span><span>₹7,500</span></div>
+          <div class="calc-row"><span>8 Document Collection Visits</span><span>₹2,400</span></div>
+          <div class="calc-row"><span>2 High-Value Claim Referrals</span><span>₹3,200</span></div>
+        </div>
+        <div class="calc-note">
+          ⚠️ Actual earnings depend on claim types, settlement amounts, and your referral volume. The above is an illustrative example only. Top partners earn ₹15,000–₹20,000/month.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="pad how-section" id="how">
+  <div class="container">
+    <div class="ctr">
+      <span class="sec-tag">The Process</span>
+      <h2 class="sec-head">From Sign-Up to First Payout<br>in Under 48 Hours</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-circle">1</div>
+        <h4>Register Free</h4>
+        <p>Fill the form below. Our team calls you within 24 hours.</p>
+      </div>
+      <div class="step">
+        <div class="step-circle">2</div>
+        <h4>Online Orientation</h4>
+        <p>2-hour session in Tamil & English. Learn claims, documents, and referral process.</p>
+      </div>
+      <div class="step">
+        <div class="step-circle">3</div>
+        <h4>Refer or Visit</h4>
+        <p>Share TWINSURE with a client or go meet them and collect documents on our behalf.</p>
+      </div>
+      <div class="step">
+        <div class="step-circle">4</div>
+        <h4>We Handle the Claim</h4>
+        <p>Our expert team manages the insurer. You track everything on your partner dashboard.</p>
+      </div>
+      <div class="step">
+        <div class="step-circle">5</div>
+        <h4>Get Paid via UPI</h4>
+        <p>Earnings credited within 7 days of settlement. Full transparency, no deductions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS BAND -->
+<div class="benefits-band">
+  <div class="container ctr">
+    <span class="sec-tag">What You Get</span>
+    <h2 class="sec-head">Everything Provided — You Just Focus on Referrals</h2>
+  </div>
+  <div class="benefits-grid">
+    <div class="ben-item">
+      <div class="ben-icon">📱</div>
+      <h5>Partner Dashboard</h5>
+      <p>Live tracking of referrals, claim status & earnings</p>
+    </div>
+    <div class="ben-item">
+      <div class="ben-icon">🎓</div>
+      <h5>Free Training</h5>
+      <p>Online modules in Tamil & English — no exam</p>
+    </div>
+    <div class="ben-item">
+      <div class="ben-icon">📋</div>
+      <h5>Document Checklists</h5>
+      <p>Ready-made guides for every type of insurance claim</p>
+    </div>
+    <div class="ben-item">
+      <div class="ben-icon">🤝</div>
+      <h5>Dedicated Manager</h5>
+      <p>A named contact you can call any time for support</p>
+    </div>
+    <div class="ben-item">
+      <div class="ben-icon">💬</div>
+      <h5>WhatsApp Group</h5>
+      <p>Partner community for tips, updates & fast support</p>
+    </div>
+    <div class="ben-item">
+      <div class="ben-icon">🏆</div>
+      <h5>Quarterly Rewards</h5>
+      <p>Recognition bonuses for top-performing partners</p>
+    </div>
+  </div>
+</div>
+
+<!-- WHY TWINSURE -->
+<section class="pad why-section">
+  <div class="container">
+    <div class="why-layout">
+      <div class="why-visual">
+        <div class="why-visual-top">
+          <div class="why-visual-brand">TWIN<span>SURE</span></div>
+          <div class="why-visual-sub">by Twins Consultancy</div>
+          <div class="why-metrics">
+            <div class="wm-box"><div class="wm-num">15+</div><div class="wm-lbl">Years Experience</div></div>
+            <div class="wm-box"><div class="wm-num">98%</div><div class="wm-lbl">Claim Success</div></div>
+            <div class="wm-box"><div class="wm-num">3</div><div class="wm-lbl">Platforms: iCARE, OASIS, PMS</div></div>
+            <div class="wm-box"><div class="wm-num">TN</div><div class="wm-lbl">Tamil Nadu Wide</div></div>
+          </div>
+        </div>
+        <div class="why-quote">
+          "Our basic objective is to help you establish your rights and ensure benefits without depending on the policy issuing agent, brokerage firm, or insurance company."
+        </div>
+      </div>
+      <div>
+        <span class="sec-tag">Why Partner With TWINSURE</span>
+        <h2 class="sec-head">We're Claim Specialists — Not Just Middlemen</h2>
+        <p class="sec-sub" style="margin-bottom:0.75rem">TWINSURE handles the hard work — escalations, Ombudsman filings, insurer follow-ups. You refer, we resolve, you earn.</p>
+        <ul class="checklist">
+          <li><span class="chk">✓</span>15+ years in insurance — Life, Health, and General all covered</li>
+          <li><span class="chk">✓</span>Full claim lifecycle management via the iCARE platform</li>
+          <li><span class="chk">✓</span>Post-policy services (renewals, endorsements, loans) via OASIS</li>
+          <li><span class="chk">✓</span>ULIP fund switch optimisation via PMS — unique revenue source</li>
+          <li><span class="chk">✓</span>Ombudsman and IRDAI complaint filing support when needed</li>
+          <li><span class="chk">✓</span>Policy analysis reports in Tamil — your clients will love it</li>
+          <li><span class="chk">✓</span>Zero investment, zero monthly fee for partners — ever</li>
+          <li><span class="chk">✓</span>Monthly partner meetups and knowledge-sharing sessions</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testi-section">
+  <div class="container">
+    <div class="ctr">
+      <span class="sec-tag">Partner Stories</span>
+      <h2 class="sec-head">Real Partners. Real Earnings.</h2>
+    </div>
+    <div class="t-grid">
+      <div class="t-card">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"I've been an LIC agent for 12 years. When my client's family was struggling with a death claim after the insurer kept delaying, I referred them to TWINSURE's iCARE. Settled in 3 weeks. I earned ₹4,200. Now I refer every difficult claim to them."</p>
+        <div class="t-author">
+          <div class="t-av ta1">RM</div>
+          <div><div class="t-name">Rajesh M.</div><div class="t-role">IRDAI Agent, Coimbatore</div></div>
+        </div>
+      </div>
+      <div class="t-card">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"I run a Meeseva center in Tiruppur. Adding TWINSURE to our services was the smartest move. Our customers love it. We earn between ₹8,000 and ₹11,000 every month from referrals and document collection alone — all without any investment."</p>
+        <div class="t-author">
+          <div class="t-av ta2">SP</div>
+          <div><div class="t-name">Suresh P.</div><div class="t-role">E-Seva Center Owner, Tiruppur</div></div>
+        </div>
+      </div>
+      <div class="t-card">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"As a final-year B.Com student, I started helping families nearby collect their claim documents during my free time. In just 2 months I earned over ₹7,500 — enough to pay my semester fees. TWINSURE pays fairly and on time every time."</p>
+        <div class="t-author">
+          <div class="t-av ta3">PK</div>
+          <div><div class="t-name">Priya K.</div><div class="t-role">Final Year B.Com Student, Erode</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REGISTER FORM -->
+<section class="register-section" id="apply">
+  <div class="container" style="position:relative;z-index:1">
+    <span class="sec-tag">Join the Network</span>
+    <h2 class="sec-head">Become a TWINSURE Partner<br>in Under 48 Hours</h2>
+    <p class="reg-sub">Registration is completely free. Our team will contact you to complete onboarding.</p>
+
+    <div class="reg-form">
+      <div class="reg-form-title">Partner Registration</div>
+      <div class="reg-form-sub">Fill in your details — we'll call you within 24 hours</div>
+      <div class="reg-grid">
+        <div class="reg-field">
+          <label>Full Name *</label>
+          <input type="text" placeholder="Your full name" />
+        </div>
+        <div class="reg-field">
+          <label>WhatsApp Number *</label>
+          <input type="tel" placeholder="+91 XXXXX XXXXX" />
+        </div>
+        <div class="reg-field">
+          <label>City / Town *</label>
+          <input type="text" placeholder="Eg: Tiruppur, Erode" />
+        </div>
+        <div class="reg-field">
+          <label>District</label>
+          <input type="text" placeholder="Eg: Tiruppur District" />
+        </div>
+        <div class="reg-field">
+          <label>I Am A... *</label>
+          <select>
+            <option value="" disabled selected>Select your profile</option>
+            <option>IRDAI Licensed Insurance Agent</option>
+            <option>College Student</option>
+            <option>E-Seva / Meeseva / CSC Center Owner</option>
+            <option>Bank CSP / Customer Service Point Owner</option>
+            <option>Other Professional</option>
+          </select>
+        </div>
+        <div class="reg-field">
+          <label>How Did You Hear About Us?</label>
+          <select>
+            <option value="" disabled selected>Select source</option>
+            <option>Existing TWINSURE Partner</option>
+            <option>WhatsApp Forward</option>
+            <option>Google Search</option>
+            <option>Social Media</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <button class="reg-submit" type="button">Register as TWINSURE Partner — It's Free →</button>
+      <p class="reg-privacy">🔒 Your information is 100% private and will only be used by our partner team. By submitting you agree to be contacted via WhatsApp or phone call. You can opt out anytime.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-brand">TWIN<span>SURE</span></div>
+    <div style="font-size:0.75rem;color:rgba(255,255,255,0.3);margin-top:0.25rem">by Twins Consultancy | Tiruppur, Tamil Nadu</div>
+  </div>
+  <div class="footer-links">
+    <a href="#">Home</a>
+    <a href="#">iCARE</a>
+    <a href="#">OASIS</a>
+    <a href="#">PMS</a>
+    <a href="#">Contact</a>
+  </div>
+  <div class="footer-copy">© 2025 TWINSURE. All rights reserved.<br>IRDAI-Compliant Insurance Assistance Services.</div>
+</footer>
+
+</body>
+</html>
+
+
