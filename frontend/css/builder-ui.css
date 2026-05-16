@@ -137,3 +137,7 @@ body, html { margin: 0; padding: 0; height: 100%; background: #f8f9fc; font-fami
 .flow-node.border-yellow { border-color: #f6e6c4 !important; background-color: #fffcf5 !important; }
 .flow-node.border-indigo { border-color: #c4d5f6 !important; background-color: #f5f7ff !important; }
 .flow-node.border-cyan { border-color: #c4f6f6 !important; background-color: #f5ffff !important; }
+
+/* Node Input Type Previews */
+.node-input-preview { display:flex; align-items:center; gap:0.6rem; padding:0.55rem 0.9rem; background:#f4f4f8; border:1.5px dashed #c9c9e0; border-radius:10px; color:#6b6b9a; font-size:0.83rem; font-weight:500; margin-top:0.3rem; }
+.node-input-preview i { font-size:0.9rem; color:#7b5eea; }

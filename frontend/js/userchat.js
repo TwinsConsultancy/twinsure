@@ -122,37 +122,7 @@ class UserChatEngine {
     }
     
     renderOptions(node) {
-        const area = document.getElementById('chatMessagesArea');
-        let optionsHtml = '';
-        
-        if(node.type === 'radio' || node.type === 'checkbox') {
-            const opts = node.options.map(opt => `
-                <button class="chat-option-pill ${opt.color ? 'color-'+opt.color : ''}" onclick="window.userChat.selectOption('${node.id}', '${opt.id}', '${opt.text.replace(/'/g,"\\'")}')">${opt.text}</button>
-            `).join('');
-            optionsHtml = `<div class="chat-options-container" id="opts_${node.id}">${opts}</div>`;
-        } else if (node.type === 'dropdown') {
-            const opts = node.options.map(opt => `<option value="${opt.id}">${opt.text}</option>`).join('');
-            optionsHtml = `
-                <div class="chat-options-container" id="opts_${node.id}">
-                    <select class="chat-dropdown" onchange="window.userChat.selectOption('${node.id}', this.value, this.options[this.selectedIndex].text)">
-                        <option value="" disabled selected>Select an option ^</option>
-                        ${opts}
-                    </select>
-                </div>
-            `;
-        } else if (node.type === 'text') {
-            optionsHtml = `
-                <div class="chat-options-container" id="opts_${node.id}" style="width: 100%; max-width: 300px;">
-                    <input type="text" class="chat-text-input" placeholder="Type your answer..." id="text_${node.id}">
-                    <button class="btn btn-purple-small" style="margin-top:0.5rem;" onclick="window.userChat.selectOption('${node.id}', 'default_text_opt', document.getElementById('text_${node.id}').value)">Send</button>
-                </div>
-            `;
-        }
-        
-        if(optionsHtml) {
-            area.insertAdjacentHTML('beforeend', optionsHtml);
-            this.scrollToBottom();
-        }
+        ChatInputs.render(node, this, 'userChat');
     }
     
     selectOption(nodeId, optionId, optionText) {

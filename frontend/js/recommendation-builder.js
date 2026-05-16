@@ -289,11 +289,50 @@ class AdvancedBuilder {
                 });
                 optionsHtml += '</div>';
             } else if (node.type === 'text') {
-                optionsHtml = `<input type="text" class="prop-input" placeholder="User input area" disabled style="background:#f9f9f9;">
-                               <div class="port port-out" data-node="${node.id}" data-opt="default_text_opt" style="position:absolute; right:-11px; top:50%; transform:translateY(-50%);"><i class="fas fa-plus"></i></div>`;
+                optionsHtml = `
+                    <div class="node-input-preview">
+                        <i class="fas fa-font"></i>
+                        <span>Text input</span>
+                    </div>
+                    <div class="port port-out" data-node="${node.id}" data-opt="default_text_opt" style="position:absolute; right:-11px; top:50%; transform:translateY(-50%);"><i class="fas fa-plus"></i></div>`;
             } else if (node.type === 'slider') {
                 optionsHtml = `<input type="range" style="width:100%" disabled>
                                <div class="port port-out" data-node="${node.id}" data-opt="default_slider_opt" style="position:absolute; right:-11px; top:50%; transform:translateY(-50%);"><i class="fas fa-plus"></i></div>`;
+            } else if (node.type === 'phone') {
+                optionsHtml = `
+                    <div class="node-input-preview">
+                        <i class="fas fa-phone"></i>
+                        <span>Phone number (10 digits)</span>
+                    </div>
+                    <div class="port port-out" data-node="${node.id}" data-opt="phone_input" style="position:absolute; right:-11px; top:50%; transform:translateY(-50%);"><i class="fas fa-plus"></i></div>`;
+            } else if (node.type === 'email') {
+                optionsHtml = `
+                    <div class="node-input-preview">
+                        <i class="fas fa-envelope"></i>
+                        <span>Email address</span>
+                    </div>
+                    <div class="port port-out" data-node="${node.id}" data-opt="email_input" style="position:absolute; right:-11px; top:50%; transform:translateY(-50%);"><i class="fas fa-plus"></i></div>`;
+            } else if (node.type === 'dob') {
+                optionsHtml = `
+                    <div class="node-input-preview">
+                        <i class="fas fa-birthday-cake"></i>
+                        <span>Date of Birth (Year → Month → Day)</span>
+                    </div>
+                    <div class="port port-out" data-node="${node.id}" data-opt="date_input" style="position:absolute; right:-11px; top:50%; transform:translateY(-50%);"><i class="fas fa-plus"></i></div>`;
+            } else if (node.type === 'daterange') {
+                optionsHtml = `
+                    <div class="node-input-preview">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Date Range (Start → End, optional)</span>
+                    </div>
+                    <div class="port port-out" data-node="${node.id}" data-opt="daterange_input" style="position:absolute; right:-11px; top:50%; transform:translateY(-50%);"><i class="fas fa-plus"></i></div>`;
+            } else if (node.type === 'time') {
+                optionsHtml = `
+                    <div class="node-input-preview">
+                        <i class="fas fa-clock"></i>
+                        <span>Time Picker (HH:MM AM/PM)</span>
+                    </div>
+                    <div class="port port-out" data-node="${node.id}" data-opt="time_input" style="position:absolute; right:-11px; top:50%; transform:translateY(-50%);"><i class="fas fa-plus"></i></div>`;
             }
 
             el.innerHTML = `
