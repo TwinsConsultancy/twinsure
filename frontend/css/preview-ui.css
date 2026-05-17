@@ -116,6 +116,7 @@
     background: white; font-size: 1.4rem; font-weight: 700;
     color: #333; font-family: inherit; outline: none;
     -moz-appearance: textfield;
+    appearance: textfield;
 }
 .time-input-h::-webkit-inner-spin-button,
 .time-input-m::-webkit-inner-spin-button { display: none; }
@@ -167,7 +168,7 @@
 /* --- Time picker --- */
 .time-clock-face { background:#f8f9fc; border-radius:16px; padding:1rem 1.2rem 1rem; border:1px solid #e8eaf6; margin-bottom:0.5rem; }
 .time-display { display:flex; align-items:center; gap:0.4rem; margin-bottom:0.8rem; justify-content:center; }
-.time-input-h, .time-input-m { width:56px; text-align:center; padding:0.5rem 0.3rem; border-radius:10px; border:1.5px solid #e2e8f0; background:white; font-size:1.4rem; font-weight:700; color:#333; font-family:inherit; outline:none; -moz-appearance:textfield; }
+.time-input-h, .time-input-m { width:56px; text-align:center; padding:0.5rem 0.3rem; border-radius:10px; border:1.5px solid #e2e8f0; background:white; font-size:1.4rem; font-weight:700; color:#333; font-family:inherit; outline:none; -moz-appearance:textfield; appearance:textfield; }
 .time-input-h::-webkit-inner-spin-button, .time-input-m::-webkit-inner-spin-button { display:none; }
 .time-input-h:focus, .time-input-m:focus { border-color:#7b5eea; }
 .time-colon { font-size:1.5rem; font-weight:700; color:#444; }

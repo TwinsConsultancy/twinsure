@@ -24,7 +24,7 @@ function authenticate() {
     exit();
 }
 
-function requireRole($role) {
+function requireRole(string $role) {
     $user = authenticate();
     if ($user->role !== $role) {
         http_response_code(403);

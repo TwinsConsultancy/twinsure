@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 
 class Database {
-    private $manager = null;
+    private ?MongoDB\Driver\Manager $manager = null;
     private $db_name = "twinsdb"; // default
 
     public function __construct() {

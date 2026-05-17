@@ -95,7 +95,7 @@ class UserChatEngine {
         const area = document.getElementById('chatMessagesArea');
         area.insertAdjacentHTML('beforeend', `
             <div class="chat-row bot-row">
-                <div class="chat-bot-icon"><i class="fas fa-robot"></i></div>
+                <div class="chat-bot-icon" style="background:#04122d; border-color:var(--accent-gold, #fdc500);"><i class="fas fa-user-astronaut" style="color:#ffd500;"></i></div>
                 <div class="chat-bubble bot-bubble">${text}</div>
             </div>`);
         this.scrollToBottom();
@@ -104,8 +104,11 @@ class UserChatEngine {
     renderUserMessage(text) {
         const area = document.getElementById('chatMessagesArea');
         area.insertAdjacentHTML('beforeend', `
-            <div class="chat-row user-row">
-                <div class="chat-bubble user-bubble">${text}</div>
+            <div class="chat-row user-row" style="margin-bottom: 0.2rem;">
+                <div style="display:flex; flex-direction:column; align-items:flex-end; gap:0.2rem;">
+                    <div class="chat-bubble user-bubble">${text}</div>
+                    <span style="font-size:0.68rem; color:rgba(255,255,255,0.4); margin-right: 0.2rem;">Delivered</span>
+                </div>
             </div>`);
         this.scrollToBottom();
     }
