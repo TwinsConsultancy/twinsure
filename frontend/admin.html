@@ -23,40 +23,334 @@
                 <i class="fas fa-file-export"></i> Export
             </button>
             <div class="admin-profile">
-                <img src="https://ui-avatars.com/api/?name=Admin&background=5136a8&color=fff" alt="Admin">
+                <img src="https://ui-avatars.com/api/?name=Admin&background=00296b&color=fff" alt="Admin">
                 <div class="info">
                     <span class="name" id="adminNameDisplay">Admin User</span>
                     <span class="role">System Administrator</span>
                 </div>
                 <i class="fas fa-chevron-down" style="font-size: 0.7rem; color: #888; margin-left: 0.5rem;"></i>
+                <div class="profile-dropdown">
+                    <a href="#"><i class="fas fa-user-circle" style="margin-right: 0.5rem; color: var(--primary-purple);"></i> My Profile</a>
+                    <a href="#"><i class="fas fa-cog" style="margin-right: 0.5rem; color: var(--primary-purple);"></i> Settings</a>
+                    <a href="#" id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt" style="margin-right: 0.5rem;"></i> Logout</a>
+                </div>
             </div>
-            <a href="#" id="logoutBtn" style="color: var(--danger); margin-left: 1.5rem; font-size: 0.9rem; font-weight: 600; text-decoration: none;">Logout</a>
         </div>
     </nav>
 
     <div class="admin-layout">
-        <aside class="sidebar">
-            <ul>
-                <li><a href="#" class="active" onclick="showSection('dashboard', this)">Dashboard Overview</a></li>
-                <li><a href="#" onclick="showSection('users', this)">User Management</a></li>
-                <li><a href="#" onclick="showSection('leads', this)" style="display:flex; align-items:center; justify-content:space-between;">Leads <span class="nav-dot"></span></a></li>
-                <li><a href="#" onclick="showSection('contacts', this)" style="display:flex; align-items:center; justify-content:space-between;">Contacts <span class="nav-dot"></span></a></li>
-                <li><a href="recommendation.html">Recommendation Builder</a> <i class="fas fa-external-link-alt" style="font-size:0.7rem; margin-left:5px;"></i></li>
-                <li><a href="#" onclick="showSection('settings', this)">Settings</a></li>
-            </ul>
+        <aside class="sidebar glassy-sidebar">
+            <div>
+                <div style="font-size: 1.6rem; font-weight: 800; color: #fff; margin-bottom: 2rem; display: flex; align-items: center; justify-content: center; padding: 0.5rem 0;">
+                    <i class="fas fa-chart-pie" style="color: var(--warning); font-size: 2rem;"></i>
+                </div>
+                <ul>
+                    <li><a href="#" class="active" onclick="showSection('dashboard', this)">
+                        <i class="fas fa-th-large"></i> Dashboard
+                    </a></li>
+                    <li><a href="recommendation.html">
+                        <i class="fas fa-magic"></i> Recommendation Builder
+                    </a></li>
+                    <li><a href="#" onclick="showSection('leads', this)">
+                        <i class="fas fa-users"></i> Leads
+                        <span style="margin-left: auto; background: rgba(255, 255, 255, 0.2); padding: 2px 6px; border-radius: 12px; font-size: 0.65rem; color: #fff;" id="sbLeadCount">--</span>
+                    </a></li>
+                    <li><a href="#" onclick="showSection('contacts', this)">
+                        <i class="fas fa-handshake"></i> Contacts
+                        <span style="margin-left: auto; background: rgba(255, 255, 255, 0.2); padding: 2px 6px; border-radius: 12px; font-size: 0.65rem; color: #fff;" id="sbPartnerCount">--</span>
+                    </a></li>
+                    <li><a href="#" onclick="showSection('users', this)">
+                        <i class="fas fa-user-friends"></i> Team Management
+                    </a></li>
+                    <li><a href="#" onclick="showSection('settings', this)">
+                        <i class="fas fa-cog"></i> Settings
+                    </a></li>
+                </ul>
+            </div>
+            <a href="#" style="border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                <i class="fas fa-headset"></i> Support/Help
+            </a>
         </aside>
 
         <main class="main-content">
-            <section id="dashboard" class="content-section">
-                <h2>Control Tower Overview</h2>
-                <div class="grid" style="margin-top: 2rem;">
-                    <div class="card">
-                        <h3>Total Users</h3>
-                        <p id="userCount" style="font-size: 2rem; font-weight: bold;">Loading...</p>
+            <section id="dashboard" class="content-section" style="padding-top: 0;">
+                
+                <!-- Full Width Top Elements -->
+                <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1rem;">
+                    <!-- 1. Welcome Banner -->
+                    <div class="welcome-banner" style="margin-bottom: 0;">
+                        <div class="welcome-banner-content">
+                            <h1 id="welcomeAdminName">Welcome back, Admin!</h1>
+                            <p>Here's a live overview of your recommendation ecosystem today.</p>
+                        </div>
+                        <div class="welcome-stats">
+                            <div class="welcome-stat-item">
+                                <span class="welcome-stat-label">Current Date</span>
+                                <span class="welcome-stat-value" id="currentDateTime">Oct 26, 2023 10:30 AM</span>
+                            </div>
+                            <div class="welcome-stat-item">
+                                <span class="welcome-stat-label">Live System Status</span>
+                                <span class="welcome-stat-value" style="color: var(--success);"><span class="status-dot online"></span> SYSTEMS ONLINE</span>
+                            </div>
+                            <div class="welcome-stat-item">
+                                <span class="welcome-stat-label">Active Engine</span>
+                                <span class="welcome-stat-value">Rec Engine: V2.1 ACTIVE</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card">
-                        <h3>Pending Claims</h3>
-                        <p style="font-size: 2rem; font-weight: bold;">0</p>
+
+                    <!-- 2. Quick Actions -->
+                    <div class="quick-actions-row" style="margin-bottom: 0;">
+                        <a href="recommendation.html" class="quick-action-card">
+                            <div class="quick-action-icon qac-1"><i class="fas fa-project-diagram"></i></div>
+                            <div class="quick-action-text">
+                                <h4>Create Recommendation</h4>
+                                <p>Build new interactive logic</p>
+                            </div>
+                        </a>
+                        <a href="#" class="quick-action-card" onclick="showSection('leads')">
+                            <div class="quick-action-icon qac-2"><i class="fas fa-users"></i></div>
+                            <div class="quick-action-text">
+                                <h4>View Active Leads</h4>
+                                <p>Monitor real-time prospects</p>
+                            </div>
+                        </a>
+                        <a href="#" class="quick-action-card" onclick="showSection('users')">
+                            <div class="quick-action-icon qac-3"><i class="fas fa-user-plus"></i></div>
+                            <div class="quick-action-text">
+                                <h4>Manage Team</h4>
+                                <p>Add/remove system users</p>
+                            </div>
+                        </a>
+                        <a href="#" class="quick-action-card" onclick="showSection('contacts')">
+                            <div class="quick-action-icon qac-4"><i class="fas fa-comments"></i></div>
+                            <div class="quick-action-text">
+                                <h4>Open Conversation Logs</h4>
+                                <p>Analyze interaction history</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <!-- 3. Top Analytics Cards -->
+                    <div class="metrics-grid" style="margin-bottom: 0;">
+                        <div class="metric-card">
+                            <div class="metric-header"><i class="fas fa-chart-line" style="background: #e0eaf5; color: var(--primary-purple);"></i> Total Leads</div>
+                            <div class="metric-value-row">
+                                <span class="metric-value" id="dashTotalLeads">--</span>
+                                <span class="metric-change positive">+8%</span>
+                            </div>
+                            <div class="sparkline-container" id="dashSparkLeads"></div>
+                            <div class="mini-analytics-label">Comparison over time</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-header"><i class="fas fa-user-clock" style="background: #e0eaf5; color: #003f88;"></i> Active Sessions</div>
+                            <div class="metric-value-row">
+                                <span class="metric-value" id="dashActiveSessions">--</span>
+                                <span class="metric-change positive">+15%</span>
+                            </div>
+                            <div class="sparkline-container" id="dashSparkSessions"></div>
+                            <div class="mini-analytics-label">Live recommendations</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-header"><i class="fas fa-check-circle" style="background: #e6f6ee; color: var(--success);"></i> Completed Flows</div>
+                            <div class="metric-value-row">
+                                <span class="metric-value" id="dashCompleted">--</span>
+                                <span class="metric-change positive">+10%</span>
+                            </div>
+                            <div class="sparkline-container" id="dashSparkCompleted"></div>
+                            <div class="mini-analytics-label">Fully answered questionnaires</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-header"><i class="fas fa-bullseye" style="background: #fff8e6; color: var(--warning);"></i> Conversion Rate</div>
+                            <div class="metric-value-row">
+                                <span class="metric-value" id="dashConversionRate">--</span>
+                                <span class="metric-change positive">+2%</span>
+                            </div>
+                            <div class="sparkline-container" id="dashSparkConversion"></div>
+                            <div class="mini-analytics-label">Lead to closed status</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-header"><i class="fas fa-envelope" style="background: #fce8e8; color: var(--danger);"></i> Contact Enquiries</div>
+                            <div class="metric-value-row">
+                                <span class="metric-value" id="dashTotalContacts">--</span>
+                                <span class="metric-change positive">+20%</span>
+                            </div>
+                            <div class="sparkline-container" id="dashSparkRevenue"></div>
+                            <div class="mini-analytics-label">Active contacts</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Dashboard Layout (2-Column below Hero) -->
+                <div class="dashboard-grid" style="margin-top: 0;">
+                    
+                    <!-- LEFT COLUMN -->
+                    <div style="display: flex; flex-direction: column; gap: 1rem;">
+                        <!-- Live Recommendation Activity -->
+                        <div class="dashboard-section-card">
+                            <div class="dashboard-section-header">
+                                <h3>Live Recommendation Activity Panel</h3>
+                                <a href="#" class="view-all-link" onclick="showSection('leads')">View all feeds</a>
+                            </div>
+                            <div class="activity-feed" id="dashActivityFeed">
+                                <!-- Populated dynamically by JS -->
+                                <div style="padding: 2rem; text-align: center; color: #aaa;">Loading activity...</div>
+                            </div>
+                        </div>
+
+                        <!-- Recommendation Flow Performance -->
+                        <div class="dashboard-section-card">
+                            <div class="dashboard-section-header">
+                                <h3>Recommendation Flow Performance</h3>
+                                <div class="filter-group">
+                                    <select class="filter-select"><option>Property Insurance</option><option>Health Insurance</option></select>
+                                </div>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                                <div>
+                                    <h4 style="font-size: 0.8rem; color: #888; margin: 0 0 0.5rem 0; text-transform: uppercase;">Most Answered</h4>
+                                    <ol id="dashMostAnswered" style="margin: 0; padding-left: 1.2rem; font-size: 0.85rem; color: #444; line-height: 1.6;">
+                                        <li>Loading...</li>
+                                    </ol>
+                                </div>
+                                <div>
+                                    <h4 style="font-size: 0.8rem; color: #888; margin: 0 0 0.5rem 0; text-transform: uppercase;">High Drop-off</h4>
+                                    <ol style="margin: 0; padding-left: 1.2rem; font-size: 0.85rem; color: #e53e3e; line-height: 1.6; font-weight: 600;">
+                                        <li>Business Revenue</li>
+                                        <li>Claims History</li>
+                                    </ol>
+                                </div>
+                                <div>
+                                    <h4 style="font-size: 0.8rem; color: #888; margin: 0 0 0.5rem 0; text-transform: uppercase;">Top Path</h4>
+                                    <div id="dashTopPath" style="font-size: 0.85rem; color: #444; background: #f9f9f9; padding: 0.5rem; border-radius: 6px; border: 1px solid #eee;">
+                                        <strong>Loading...</strong>
+                                    </div>
+                                    <div style="margin-top: 0.8rem;">
+                                        <span id="dashCompletionRate" style="font-size: 1.5rem; font-weight: 800; color: #111;">0%</span>
+                                        <span style="font-size: 0.75rem; color: #888; display: block;">User Completion Rate</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Visual Mockups -->
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div class="visual-mockup">
+                                    <i class="fas fa-filter"></i>
+                                    <span>Funnel Chart Analysis<br><small>Visualizing Flow Drop-offs</small></span>
+                                </div>
+                                <div class="visual-mockup">
+                                    <i class="fas fa-project-diagram"></i>
+                                    <span>User Path Diagram<br><small>Interactive Node Traversal</small></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT COLUMN -->
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <!-- System Users -->
+                        <div class="dashboard-section-card">
+                            <div class="dashboard-section-header">
+                                <h3>Recent System Users</h3>
+                                <a href="#" class="view-all-link" onclick="showSection('users')">Manage Users</a>
+                            </div>
+                            <div class="partner-list" id="dashRecentUsers">
+                                <div style="padding: 1rem; text-align: center; color: #aaa;">Loading users...</div>
+                            </div>
+                        </div>
+
+                        <!-- Pending Enquiries -->
+                        <div class="dashboard-section-card">
+                            <div class="dashboard-section-header">
+                                <h3>Pending Follow-ups</h3>
+                                <a href="#" class="view-all-link" onclick="showSection('contacts')">View all</a>
+                            </div>
+                            <div class="task-list" id="dashPendingEnquiries">
+                                <div style="padding: 1rem; text-align: center; color: #aaa;">Loading enquiries...</div>
+                            </div>
+                            <button class="crm-action-btn" style="margin-top: 1rem; margin-bottom: 0;" onclick="showSection('contacts')">
+                                <i class="fas fa-arrow-right"></i> Go to Contacts
+                            </button>
+                        </div>
+
+                        <!-- Notifications & Alerts Panel -->
+                        <div class="dashboard-section-card">
+                            <div class="dashboard-section-header" style="margin-bottom: 0.8rem;">
+                                <h3>Notifications & Alerts Panel</h3>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.8rem; border: 1px solid #fce8e8; border-radius: 8px; background: #fff;">
+                                    <span style="font-size: 0.8rem; font-weight: 600; color: #444;">New Lead alerts</span>
+                                    <i class="fas fa-bell" style="color: var(--danger); font-size: 0.8rem;"></i>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.8rem; border: 1px solid #f0edff; border-radius: 8px; background: #fff;">
+                                    <span style="font-size: 0.8rem; font-weight: 600; color: #444;">Failed recommendation</span>
+                                    <i class="fas fa-exclamation-circle" style="color: var(--primary-purple); font-size: 0.8rem;"></i>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.8rem; border: 1px solid #fff8e6; border-radius: 8px; background: #fff;">
+                                    <span style="font-size: 0.8rem; font-weight: 600; color: #444;">Unassigned leads</span>
+                                    <i class="fas fa-exclamation-triangle" style="color: var(--warning); font-size: 0.8rem;"></i>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.8rem; border: 1px solid #fff8e6; border-radius: 8px; background: #fff;">
+                                    <span style="font-size: 0.8rem; font-weight: 600; color: #444;">System warnings</span>
+                                    <i class="fas fa-exclamation-triangle" style="color: var(--warning); font-size: 0.8rem;"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Conversation Analytics -->
+                        <div class="dashboard-section-card">
+                            <div class="dashboard-section-header" style="margin-bottom: 0.8rem;">
+                                <h3>Conversation Analytics</h3>
+                                <select class="filter-select" style="padding: 0.2rem 0.5rem; font-size: 0.7rem;"><option>All companies</option></select>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;">
+                                <!-- Pie Chart Mock -->
+                                <div style="text-align: center; border: 1px solid #f5f5f5; border-radius: 8px; padding: 0.8rem 0.5rem;">
+                                    <div style="font-size: 0.7rem; color: #888; margin-bottom: 0.6rem; font-weight: 600;">Total convos</div>
+                                    <div style="width: 50px; height: 50px; border-radius: 50%; background: conic-gradient(var(--primary-purple) 0% 60%, var(--success) 60% 85%, var(--warning) 85% 100%); margin: 0 auto;"></div>
+                                </div>
+                                <!-- Bar Chart Mock -->
+                                <div style="text-align: center; border: 1px solid #f5f5f5; border-radius: 8px; padding: 0.8rem 0.5rem;">
+                                    <div style="font-size: 0.7rem; color: #888; margin-bottom: 0.6rem; font-weight: 600;">Avg response</div>
+                                    <div style="display: flex; align-items: flex-end; justify-content: center; gap: 6px; height: 50px;">
+                                        <div style="width: 10px; height: 25px; background: var(--primary-purple); border-radius: 2px;"></div>
+                                        <div style="width: 10px; height: 35px; background: var(--primary-purple); border-radius: 2px;"></div>
+                                        <div style="width: 10px; height: 50px; background: var(--primary-purple); border-radius: 2px;"></div>
+                                        <div style="width: 10px; height: 15px; background: var(--primary-purple); border-radius: 2px;"></div>
+                                    </div>
+                                </div>
+                                <!-- Line Chart Mock 1 -->
+                                <div style="text-align: center; border: 1px solid #f5f5f5; border-radius: 8px; padding: 0.8rem 0.5rem;">
+                                    <div style="font-size: 0.7rem; color: #888; margin-bottom: 0.6rem; font-weight: 600;">Common path</div>
+                                    <div style="height: 50px; display: flex; align-items: center; justify-content: center;">
+                                        <svg width="60" height="35" viewBox="0 0 60 35"><polyline fill="none" stroke="#7b5eea" stroke-width="2.5" points="0,25 15,10 30,30 45,5 60,15"/></svg>
+                                    </div>
+                                </div>
+                                <!-- Line Chart Mock 2 -->
+                                <div style="text-align: center; border: 1px solid #f5f5f5; border-radius: 8px; padding: 0.8rem 0.5rem;">
+                                    <div style="font-size: 0.7rem; color: #888; margin-bottom: 0.6rem; font-weight: 600;">Engagement</div>
+                                    <div style="height: 50px; display: flex; align-items: center; justify-content: center;">
+                                        <svg width="60" height="35" viewBox="0 0 60 35"><polyline fill="none" stroke="#38a169" stroke-width="2.5" points="0,30 15,15 30,20 45,5 60,10"/></svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Export & Reporting Section -->
+                        <div class="dashboard-section-card">
+                            <div class="dashboard-section-header" style="margin-bottom: 0.8rem; border-bottom: none; padding-bottom: 0;">
+                                <h3 style="font-size: 0.9rem;">Export & Reporting Section</h3>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                                <button style="background: linear-gradient(135deg, var(--primary-purple), var(--accent-purple)); color: white; border: none; padding: 0.8rem 0.2rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem; text-align: center;"><i class="fas fa-download" style="font-size: 1.1rem;"></i> Reports</button>
+                                <button style="background: #fff; border: 1px solid #eee; color: #444; padding: 0.8rem 0.2rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem; text-align: center;"><i class="fas fa-upload" style="font-size: 1.1rem;"></i> Leads</button>
+                                <button style="background: #fff; border: 1px solid #eee; color: #444; padding: 0.8rem 0.2rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem; text-align: center;"><i class="fas fa-file-pdf" style="font-size: 1.1rem;"></i> Gen PDF</button>
+                                <button style="background: #fff; border: 1px solid #eee; color: #444; padding: 0.8rem 0.2rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem; text-align: center;"><i class="fas fa-envelope" style="font-size: 1.1rem;"></i> Emails</button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </section>
@@ -656,6 +950,8 @@
                 drawSparkline('sparkInProgEnq', getTrend(contacts.filter(c => c.status === 'in-progress')), '#003f88');
                 drawSparkline('sparkResolvedEnq', getTrend(contacts.filter(c => c.status === 'resolved')), '#38a169');
 
+                updateDashboardOverview();
+
                 renderContacts();
             } catch(e) { console.error('Error loading contacts', e); }
         }
@@ -810,6 +1106,12 @@
                 drawSparkline('sparkConverted', getTrend(leads.filter(l => l.status === 'closed')), '#1b8a4f');
                 drawSparkline('sparkPending', getTrend(leads.filter(l => l.status === 'new')), '#d97706');
                 drawSparkline('sparkHighPriority', getTrend(leads.filter(l => (l.score || 0) > 80)), '#e53e3e');
+
+                drawSparkline('dashSparkLeads', getTrend(leads), '#5136a8');
+                drawSparkline('dashSparkSessions', getTrend(leads.filter(l => l.status !== 'closed')), '#003f88');
+                drawSparkline('dashSparkCompleted', getTrend(leads.filter(l => (l.answers || []).length > 0)), '#38a169');
+
+                updateDashboardOverview();
 
                 renderLeads();
             } catch(e) { console.error('Error loading leads', e); }
@@ -1004,6 +1306,8 @@
                 drawSparkline('sparkSignups', [1, 2, 0, 3, 1, 4, 2], '#d97706');
                 drawSparkline('sparkSessions', [4, 6, 8, 5, 7, 9, 8], '#38a169');
 
+                updateDashboardOverview();
+
                 renderUsers();
             } catch (error) { console.error("Error loading users", error); }
         }
@@ -1071,9 +1375,129 @@
             }
         }
 
+        function updateDashboardOverview() {
+            // Dashboard Leads Data
+            if (typeof allLeads !== 'undefined' && allLeads.length) {
+                const closedCount = allLeads.filter(l => l.status === 'closed').length;
+                document.getElementById('dashTotalLeads').textContent = allLeads.length;
+                document.getElementById('dashActiveSessions').textContent = allLeads.length - closedCount;
+                document.getElementById('dashCompleted').textContent = allLeads.filter(l => (l.answers || []).length > 0).length;
+                
+                const conversionRate = allLeads.length ? ((closedCount / allLeads.length) * 100).toFixed(1) : 0;
+                document.getElementById('dashConversionRate').textContent = conversionRate + '%';
+
+                // Activity Feed (Last 4 leads)
+                const activityFeed = document.getElementById('dashActivityFeed');
+                if (activityFeed) {
+                    const recentLeads = [...allLeads].reverse().slice(0, 4);
+                    if(recentLeads.length === 0) {
+                        activityFeed.innerHTML = '<div style="padding: 2rem; text-align: center; color: #aaa;">No recent activity.</div>';
+                    } else {
+                        activityFeed.innerHTML = recentLeads.map((l, i) => {
+                            const timeAgo = l.submittedAt ? l.submittedAt.split(' ')[1] || 'Today' : 'Recent';
+                            let icon = '<i class="fas fa-question"></i>'; let bg = 'act-icon-blue';
+                            let text = `New lead received from <strong>${l.name || 'Anonymous'}</strong>`;
+                            if (l.status === 'closed') { icon = '<i class="fas fa-check"></i>'; bg = 'act-icon-green'; text = `Conversion: Lead <strong>${l.name || 'Anonymous'}</strong> was closed.`; }
+                            else if (l.status === 'contacted') { icon = '<i class="fas fa-phone"></i>'; bg = 'act-icon-purple'; text = `Lead <strong>${l.name || 'Anonymous'}</strong> was contacted.`; }
+                            return `<div class="activity-item">
+                                <div class="activity-icon ${bg}">${icon}</div>
+                                <div class="activity-content">
+                                    <span class="activity-time">${timeAgo}</span>
+                                    <p class="activity-text">${text}</p>
+                                </div>
+                            </div>`;
+                        }).join('');
+                    }
+                }
+
+                // Flow Performance
+                const mostAnsweredEl = document.getElementById('dashMostAnswered');
+                if(mostAnsweredEl) {
+                    mostAnsweredEl.innerHTML = `
+                        <li>Property Type</li>
+                        <li>Coverage Amount</li>
+                        <li>Contact Info</li>
+                    `;
+                }
+                const topPathEl = document.getElementById('dashTopPath');
+                if(topPathEl) {
+                    topPathEl.innerHTML = `<strong>Health</strong> <i class="fas fa-arrow-right" style="color: #ccc; font-size: 0.7rem; margin: 0 4px;"></i> <strong>Premium Plan</strong>`;
+                }
+                const completionEl = document.getElementById('dashCompletionRate');
+                if(completionEl) {
+                    const completed = allLeads.filter(l => (l.answers || []).length > 0).length;
+                    completionEl.textContent = allLeads.length ? Math.round((completed / allLeads.length) * 100) + '%' : '0%';
+                }
+
+                // Update sidebar badge
+                const sbLeadCount = document.getElementById('sbLeadCount');
+                if(sbLeadCount) sbLeadCount.textContent = allLeads.length;
+            }
+
+            // Dashboard Contacts Data
+            if (typeof allContacts !== 'undefined' && allContacts.length) {
+                const dashContactsEl = document.getElementById('dashTotalContacts');
+                if(dashContactsEl) dashContactsEl.textContent = allContacts.length;
+
+                // Update sidebar badge
+                const sbPartnerCount = document.getElementById('sbPartnerCount');
+                if(sbPartnerCount) sbPartnerCount.textContent = allContacts.length;
+
+                const pendingEnquiries = document.getElementById('dashPendingEnquiries');
+                if(pendingEnquiries) {
+                    const newContacts = allContacts.filter(c => c.status === 'new').slice(0, 3);
+                    if(newContacts.length === 0) {
+                        pendingEnquiries.innerHTML = '<div style="padding: 1rem; text-align: center; color: #aaa;">No pending follow-ups.</div>';
+                    } else {
+                        pendingEnquiries.innerHTML = newContacts.map(c => `
+                            <label class="task-item">
+                                <input type="checkbox" onclick="event.preventDefault(); showSection('contacts'); setTimeout(() => openContactDetail('${c._id}'), 100);">
+                                <span class="task-text">Follow up with <strong>${c.name}</strong> (${c.enquiryType || 'General'})</span>
+                                <span class="task-date">Pending</span>
+                            </label>
+                        `).join('');
+                    }
+                }
+            }
+
+            // Dashboard Users Data
+            if (typeof allUsers !== 'undefined' && allUsers.length) {
+                const recentUsersEl = document.getElementById('dashRecentUsers');
+                if(recentUsersEl) {
+                    const recent = [...allUsers].reverse().slice(0, 3);
+                    if(recent.length === 0) {
+                        recentUsersEl.innerHTML = '<div style="padding: 1rem; text-align: center; color: #aaa;">No users found.</div>';
+                    } else {
+                        recentUsersEl.innerHTML = recent.map(u => `
+                            <div class="partner-item">
+                                <div class="partner-info">
+                                    <div class="partner-avatar" style="background: url('https://ui-avatars.com/api/?name=${encodeURIComponent(u.name)}&background=random') center/cover;"></div>
+                                    <div>
+                                        <div class="partner-name">${u.name}</div>
+                                        <div class="partner-badge" style="background: ${u.role==='admin'?'#f0edff':'#f5f5f5'}; color: ${u.role==='admin'?'#5136a8':'#666'};">${u.role.toUpperCase()}</div>
+                                    </div>
+                                </div>
+                                <div class="partner-stats">
+                                    <div class="val" style="color: var(--success); font-size: 0.8rem;"><i class="fas fa-circle"></i></div>
+                                </div>
+                            </div>
+                        `).join('');
+                    }
+                }
+            }
+        }
+
         // Initial load
         loadUsers();
         loadLeads(); // Load leads early for dashboard stats
+        loadContacts(); // Load contacts for dashboard stats
+
+        // Set Welcome Banner
+        const adminName = localStorage.getItem('name') || 'Admin';
+        document.getElementById('welcomeAdminName').textContent = `Welcome back, ${adminName.split(' ')[0]}!`;
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute:'2-digit' };
+        document.getElementById('currentDateTime').textContent = now.toLocaleDateString('en-US', options);
 
         // Initialize Builder
         const builder = new VisualBuilder('builderContainer');
