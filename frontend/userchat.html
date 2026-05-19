@@ -448,97 +448,687 @@
         .progress-bar-track { flex-grow: 1; height: 4px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
         .progress-bar-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--accent-gold), var(--accent-gold-light)); transition: width 0.4s ease; }
 
-        /* Lead modal glass styling */
+        /* ═══════════════ NEW MULTI-STAGE PREMIUM LEAD MODAL STYLES ═══════════════ */
         .lead-modal-overlay {
-            position: fixed; inset: 0; background: rgba(0, 8, 20, 0.85);
-            backdrop-filter: blur(10px); z-index: 1000;
+            position: fixed; inset: 0; background: rgba(2, 11, 30, 0.85);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            z-index: 10000;
             display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-            padding: 1.5rem;
+            opacity: 0; pointer-events: none; transition: opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            padding: 1rem;
         }
         .lead-modal-overlay.active { opacity: 1; pointer-events: all; }
 
         .lead-modal {
-            background: linear-gradient(135deg, #001230, #000918);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px; width: 100%; max-width: 580px;
-            max-height: 90vh; overflow-y: auto;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.65);
-            animation: modalSlide 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            background: linear-gradient(135deg, #001b44 0%, #000a1f 100%);
+            border: 1.5px solid rgba(253, 197, 0, 0.45);
+            border-radius: 28px; width: 100%; max-width: 950px;
+            max-height: 90vh; overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.85), 0 0 40px rgba(253, 197, 0, 0.15);
+            animation: modalSlideIn 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
         }
-        .lead-modal::-webkit-scrollbar { width: 5px; }
-        .lead-modal::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
-
-        .lead-modal-header {
-            text-align: center; padding: 2rem 2rem 1.2rem;
-            background: linear-gradient(135deg, rgba(0, 80, 157, 0.35), rgba(0, 41, 107, 0.5));
-            border-bottom: 1px solid rgba(255,255,255,0.05); color: white;
+        @keyframes modalSlideIn {
+            from { transform: scale(0.92) translateY(30px); opacity: 0; }
+            to { transform: scale(1) translateY(0); opacity: 1; }
         }
-        .lead-modal-icon {
-            width: 50px; height: 50px; background: rgba(253, 197, 0, 0.12); border: 1.5px solid var(--accent-gold);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.8rem;
-            font-size: 1.3rem; color: var(--accent-gold-light);
+
+        /* Notch & AI Icon at top middle */
+        .modal-bot-badge {
+            position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%);
+            width: 58px; height: 58px; background: #001230;
+            border: 2px solid var(--accent-gold); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 20px rgba(253, 197, 0, 0.4); z-index: 10010;
         }
-        .lead-modal-header h2 { font-size: 1.5rem; font-weight: 800; font-family: 'Outfit'; }
-        .lead-modal-header p { font-size: 0.85rem; color: var(--text-gray); line-height: 1.5; }
+        .modal-bot-badge-inner {
+            width: 46px; height: 46px; border-radius: 50%; background: #00296b;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .modal-bot-badge i { color: var(--accent-gold); font-size: 1.5rem; }
 
-        .lead-summary-section { padding: 1.2rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .lead-summary-title { font-size: 0.78rem; font-weight: 700; color: var(--accent-gold-light); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.4rem; }
-        .lead-summary-scroll { display: flex; flex-direction: column; gap: 0.5rem; max-height: 120px; overflow-y: auto; }
-        .lead-summary-row { background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); border-radius: 10px; padding: 0.6rem 0.8rem; border-left: 3px solid var(--accent-gold); }
-        .lead-summary-q { font-size: 0.72rem; color: var(--text-gray); display: flex; align-items: center; gap: 0.3rem; }
-        .lead-summary-a { font-size: 0.85rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 0.3rem; }
-        
-        .lead-form-section { padding: 1.2rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .lead-form-title { font-size: 0.78rem; font-weight: 700; color: var(--accent-gold-light); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.4rem; }
-        .lead-form-hint { font-size: 0.72rem; color: var(--text-gray); margin-bottom: 0.8rem; }
+        /* Top Bar inside modal */
+        .modal-top-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.2rem 2rem 0.5rem; z-index: 10;
+        }
+        .modal-brand {
+            font-size: 1.2rem; font-weight: 800; color: white; display: flex; align-items: center; gap: 0.5rem;
+        }
+        .modal-brand i { color: var(--accent-gold); }
+        .modal-close-btn {
+            background: none; border: none; color: var(--text-gray); font-size: 1.5rem; cursor: pointer;
+            transition: color 0.2s, transform 0.2s; display: flex; align-items: center; justify-content: center;
+        }
+        .modal-close-btn:hover { color: white; transform: scale(1.1); }
 
-        .lead-field { margin-bottom: 0.9rem; }
-        .lead-field label { display: block; font-size: 0.78rem; font-weight: 700; color: white; margin-bottom: 0.3rem; }
+        /* Progress step indicator */
+        .modal-steps-container {
+            padding: 0 2rem; margin-bottom: 1rem;
+        }
+        .modal-steps-title {
+            text-align: center; font-size: 0.72rem; font-weight: 800; color: var(--accent-gold);
+            text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 1rem;
+        }
+        .modal-steps-indicator {
+            display: flex; justify-content: space-between; align-items: center;
+            position: relative; padding: 0 1rem; margin: 0 auto; max-width: 600px;
+        }
+        .modal-progress-line {
+            position: absolute; top: 7px; left: 10%; right: 10%; height: 2px;
+            background: rgba(255, 255, 255, 0.08); z-index: 1;
+        }
+        .modal-progress-fill {
+            position: absolute; top: 0; left: 0; height: 100%;
+            background: linear-gradient(90deg, var(--accent-gold), var(--accent-gold-light));
+            width: 0%; transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .step-dot-wrapper {
+            display: flex; flex-direction: column; align-items: center; z-index: 2; position: relative;
+        }
+        .step-dot {
+            width: 14px; height: 14px; border-radius: 50%; background: #000c1f;
+            border: 2px solid rgba(255, 255, 255, 0.15); transition: all 0.3s ease;
+        }
+        .step-dot-wrapper.active .step-dot {
+            background: var(--accent-gold-light); border-color: var(--accent-gold-light);
+            box-shadow: 0 0 12px var(--accent-gold);
+        }
+        .step-dot-wrapper.completed .step-dot {
+            background: var(--accent-gold); border-color: var(--accent-gold);
+        }
+        .step-label {
+            font-size: 0.65rem; font-weight: 700; color: var(--text-gray); margin-top: 0.4rem;
+            text-transform: uppercase; letter-spacing: 0.5px; transition: color 0.3s;
+        }
+        .step-dot-wrapper.active .step-label { color: white; }
+
+        /* Main split body */
+        .modal-split-body {
+            display: flex; flex: 1; overflow: hidden;
+        }
+        .modal-left-content {
+            flex: 1; padding: 1.5rem 2rem 2rem; overflow-y: auto; display: flex; flex-direction: column;
+        }
+        .modal-left-content::-webkit-scrollbar { width: 5px; }
+        .modal-left-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
+
+        /* Left contents wrapper step views */
+        .modal-step {
+            display: none; flex-direction: column; flex: 1; animation: stepFadeIn 0.35s ease;
+        }
+        .modal-step.active { display: flex; }
+        @keyframes stepFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-headline { font-size: 1.4rem; font-weight: 800; color: white; font-family: 'Outfit'; margin-bottom: 0.4rem; }
+        .step-subheading { font-size: 0.85rem; color: var(--text-gray); line-height: 1.5; margin-bottom: 1.2rem; }
+
+        /* Summary bubble styles */
+        .summary-chat-feed {
+            display: flex; flex-direction: column; gap: 0.8rem; max-height: 240px; overflow-y: auto;
+            padding: 0.8rem; background: rgba(0, 0, 0, 0.2); border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.04); margin-bottom: 1.5rem;
+        }
+        .summary-chat-feed::-webkit-scrollbar { width: 4px; }
+        .summary-chat-feed::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); border-radius: 2px; }
+        .summary-chat-row { display: flex; flex-direction: column; gap: 0.3rem; }
+        .summary-bubble-q {
+            align-self: flex-start; background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.06); color: #c4d1db;
+            padding: 0.55rem 0.9rem; border-radius: 14px 14px 14px 2px; font-size: 0.8rem; max-width: 85%;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .summary-bubble-q i { color: var(--accent-gold); font-size: 0.75rem; }
+        .summary-bubble-a {
+            align-self: flex-end; background: linear-gradient(135deg, #00509d, #00296b);
+            border: 1px solid rgba(0, 80, 157, 0.4); color: white;
+            padding: 0.55rem 0.9rem; border-radius: 14px 14px 2px 14px; font-size: 0.82rem; font-weight: 700;
+            max-width: 85%; box-shadow: 0 4px 12px rgba(0, 80, 157, 0.25);
+        }
+
+        /* Form styling */
+        .lead-field { margin-bottom: 1.2rem; }
+        .lead-field label { display: block; font-size: 0.8rem; font-weight: 700; color: white; margin-bottom: 0.4rem; }
         .lead-field label span.required-star { color: #e53e3e; }
         
-        .chat-text-input {
-            background: rgba(0,0,0,0.4); border: 1.5px solid var(--glass-border); color: white;
-            padding: 0.65rem 1rem 0.65rem 2.3rem; border-radius: 10px; outline: none; font-size: 0.88rem;
-            width: 100%; transition: 0.3s;
+        .glass-input-wrapper { position: relative; width: 100%; }
+        .glass-input-wrapper i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-gray); font-size: 0.9rem; }
+        .glass-input {
+            background: rgba(255, 255, 255, 0.03); border: 1.5px solid rgba(255, 255, 255, 0.08); color: white;
+            padding: 0.75rem 1rem 0.75rem 2.6rem; border-radius: 12px; outline: none; font-size: 0.88rem;
+            width: 100%; transition: all 0.3s ease; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
-        .chat-text-input:focus { border-color: var(--accent-gold); }
-        .input-icon-wrap { position: relative; width: 100%; max-width: 320px; }
-        .input-icon-wrap i { position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); color: var(--text-gray); }
-
-        .callback-slots-grid { display: flex; align-items: center; gap: 0.8rem; }
-        .callback-slot { flex: 1; display: flex; flex-direction: column; gap: 0.3rem; }
-        .slot-label { font-size: 0.7rem; font-weight: 700; color: var(--text-gray); }
-        .ymd-select {
-            flex: 1; background: rgba(0,0,0,0.4); border: 1.5px solid var(--glass-border);
-            color: white; padding: 0.6rem; border-radius: 8px; cursor: pointer; outline: none; font-size: 0.8rem;
+        .glass-input:focus {
+            border-color: var(--accent-gold); background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 0 12px rgba(253, 197, 0, 0.25), inset 0 2px 4px rgba(0,0,0,0.2);
         }
-        .callback-slot-sep { color: rgba(255,255,255,0.08); font-size: 0.8rem; padding-top: 1.2rem; }
-
-        .lead-agree-section { padding: 1.2rem 1.5rem 1.8rem; }
-        .lead-agree-label { display: flex; gap: 0.7rem; align-items: flex-start; font-size: 0.78rem; color: var(--text-gray); line-height: 1.5; cursor: pointer; }
-        .lead-agree-label input[type="checkbox"] { margin-top: 0.15rem; flex-shrink: 0; width: 14px; height: 14px; accent-color: var(--accent-gold); }
-        .lead-agree-label a { color: var(--accent-gold-light); }
-
-        .lead-submit-btn {
-            display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-            width: 100%; padding: 0.85rem; margin-top: 1rem;
-            background: linear-gradient(135deg, var(--accent-gold-light), var(--accent-gold));
-            color: var(--primary-dark); border: none; border-radius: 10px;
-            font-size: 0.92rem; font-weight: 700; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(253, 197, 0, 0.25);
+        .privacy-assurance {
+            display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.7rem; color: var(--text-gray);
+            line-height: 1.4; margin-top: 1rem; padding-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.04);
         }
-        .lead-submit-btn:hover:not(:disabled) { transform: translateY(-1px); }
-        .lead-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .privacy-assurance i { color: #25d366; margin-top: 0.1rem; }
 
-        .lead-cancel-btn { display: block; width: 100%; padding: 0.5rem; margin-top: 0.6rem; background: none; border: none; color: var(--text-gray); font-size: 0.78rem; cursor: pointer; text-decoration: underline; }
-        .lead-cancel-btn:hover { color: white; }
-
-        .lead-success-screen { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 3rem 1.5rem; }
-        .success-icon { font-size: 3.5rem; color: #25d366; margin-bottom: 1rem; filter: drop-shadow(0 0 10px rgba(37,211,102,0.2)); }
-        .lead-success-screen h2 { font-size: 1.6rem; font-weight: 800; font-family: 'Outfit'; color: white; }
-        .lead-success-screen p { color: var(--text-gray); line-height: 1.5; font-size: 0.88rem; }
+        /* Step 3: Callback styles */
+        .callback-card-container {
+            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px; padding: 1rem; margin-bottom: 1.2rem;
+        }
+        .callback-sub-title {
+            font-size: 0.78rem; font-weight: 700; color: var(--accent-gold-light); text-transform: uppercase;
+            letter-spacing: 0.5px; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.4rem;
+        }
         
+        /* Calendar and Time split */
+        .calendar-and-time-split {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        @media (max-width: 600px) {
+            .calendar-and-time-split {
+                flex-direction: column;
+            }
+        }
+        
+        /* Calendar Widget */
+        .calendar-widget {
+            flex: 1.2;
+            background: rgba(2, 11, 30, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 0.8rem;
+            display: flex;
+            flex-direction: column;
+        }
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 0.4rem;
+        }
+        .cal-nav-btn {
+            background: none;
+            border: none;
+            color: var(--text-gray);
+            cursor: pointer;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.75rem;
+            transition: color 0.2s;
+        }
+        .cal-nav-btn:hover {
+            color: white;
+        }
+        .calendar-month-title {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: white;
+            font-family: 'Outfit';
+        }
+        .calendar-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-size: 0.65rem;
+            color: var(--text-gray);
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+        .calendar-days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.2rem;
+        }
+        .cal-day-cell {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.76rem;
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+            border: 1.5px solid transparent;
+        }
+        .cal-day-cell:hover:not(.disabled) {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(253, 197, 0, 0.25);
+        }
+        .cal-day-cell.active {
+            border-color: var(--accent-gold);
+            background: rgba(253, 197, 0, 0.15);
+            color: var(--accent-gold-light);
+            box-shadow: 0 0 8px rgba(253, 197, 0, 0.25);
+        }
+        .cal-day-cell.today {
+            font-weight: 800;
+            color: var(--accent-gold-light);
+            text-decoration: underline;
+        }
+        .cal-day-cell.disabled {
+            opacity: 0.25;
+            cursor: not-allowed;
+            color: var(--text-gray);
+        }
+        .cal-day-cell.empty {
+            pointer-events: none;
+        }
+        
+        /* Modern Time Widget */
+        .modern-time-widget {
+            flex: 0.9;
+            background: rgba(2, 11, 30, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 0.8rem;
+            display: flex;
+            flex-direction: column;
+            max-height: 220px;
+        }
+        .modern-time-header {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.6rem;
+            font-family: 'Outfit';
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 0.4rem;
+        }
+        .modern-time-list {
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            padding-right: 0.2rem;
+        }
+        .modern-time-list::-webkit-scrollbar {
+            width: 3px;
+        }
+        .modern-time-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 2px;
+        }
+        .modern-time-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1.5px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 0.45rem;
+            text-align: center;
+            color: white;
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .modern-time-btn:hover:not(.disabled) {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(253, 197, 0, 0.35);
+        }
+        .modern-time-btn.active {
+            background: var(--accent-gold);
+            color: var(--primary-dark);
+            border-color: var(--accent-gold);
+            font-weight: 700;
+            box-shadow: 0 0 8px rgba(253, 197, 0, 0.3);
+        }
+        .modern-time-btn.disabled {
+            opacity: 0.2;
+            cursor: not-allowed;
+            background: rgba(255, 255, 255, 0.01);
+            border-color: rgba(255, 255, 255, 0.02);
+            color: var(--text-gray);
+        }
+
+        /* Displays below input box styles */
+        .slot-fields-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.6rem;
+        }
+        .slot-field-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-gray);
+            width: 90px;
+            flex-shrink: 0;
+            text-transform: uppercase;
+        }
+        .slot-field-inputs {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-grow: 1;
+        }
+        .slot-field-input-wrapper {
+            position: relative;
+            flex: 1;
+        }
+        .slot-field-input-wrapper i {
+            position: absolute;
+            left: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-gold);
+            font-size: 0.8rem;
+        }
+        .slot-field-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            color: white;
+            padding: 0.5rem 0.5rem 0.5rem 2rem;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            outline: none;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+        .slot-field-box:focus {
+            border-color: var(--accent-gold);
+            background: rgba(0, 0, 0, 0.4);
+        }
+        .slot-to-text {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-gray);
+            text-transform: uppercase;
+        }
+        .slot-or-separator {
+            text-align: center;
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: var(--text-gray);
+            margin: 0.4rem 0;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: calc(100% - 100px);
+            margin-left: 90px;
+        }
+        .slot-or-separator::before, .slot-or-separator::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 35%;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .slot-or-separator::before { left: 0; }
+        .slot-or-separator::after { right: 0; }
+
+        /* Calendar mini illustration graphic on right of inputs card */
+        .calendar-mini-graphic-card {
+            position: absolute;
+            right: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 84px;
+            background: rgba(2, 11, 30, 0.5);
+            border: 1.5px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        @media (max-width: 650px) {
+            .calendar-mini-graphic-card {
+                display: none;
+            }
+        }
+        .mini-graphic-header {
+            height: 14px;
+            background: var(--accent-gold);
+            position: relative;
+        }
+        .mini-graphic-header::before, .mini-graphic-header::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            width: 4px;
+            height: 8px;
+            background: #cbd5e1;
+            border-radius: 2px;
+        }
+        .mini-graphic-header::before { left: 15px; }
+        .mini-graphic-header::after { right: 15px; }
+        .mini-graphic-grid {
+            padding: 0.4rem;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.25rem;
+            flex-grow: 1;
+        }
+        .mini-graphic-grid div {
+            height: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 1px;
+        }
+        .mini-graphic-grid div.dot-active {
+            background: #0070f3;
+        }
+        .live-availability-badge {
+            background: rgba(37, 211, 102, 0.12);
+            color: #25d366;
+            font-size: 0.55rem;
+            font-weight: 700;
+            padding: 0.2rem 0;
+            text-align: center;
+            border-top: 1px solid rgba(37, 211, 102, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.15rem;
+        }
+        .live-dot {
+            width: 4px;
+            height: 4px;
+            background: #25d366;
+            border-radius: 50%;
+            animation: livePulse 1.5s infinite;
+        }
+        @keyframes livePulse {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.8); opacity: 0.5; }
+        }
+
+        /* Suggestion chips styling updates */
+        .suggestion-chips-label { font-size: 0.68rem; color: var(--text-gray); font-weight: 700; margin-bottom: 0.35rem; text-transform: uppercase; }
+        .suggestion-chips-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.2rem; }
+        .suggestion-chip {
+            background: rgba(255,255,255,0.03); border: 1.5px solid rgba(255,255,255,0.08);
+            border-radius: 20px; padding: 0.35rem 0.8rem; font-size: 0.72rem; color: white; cursor: pointer;
+            font-weight: 600; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.3rem;
+        }
+        .suggestion-chip i { font-size: 0.65rem; color: var(--accent-gold); }
+        .suggestion-chip:hover { background: rgba(255,255,255,0.06); border-color: rgba(253,197,0,0.4); }
+        .suggestion-chip.active {
+            border-color: var(--accent-gold); background: rgba(253, 197, 0, 0.08); color: var(--accent-gold-light);
+            box-shadow: 0 0 6px rgba(253,197,0,0.15);
+        }
+
+        /* Step 4: Confirmation review */
+        .confirm-review-card {
+            background: rgba(255, 255, 255, 0.02); border: 1.5px solid rgba(255, 255, 255, 0.06);
+            border-radius: 18px; padding: 1.2rem; margin-bottom: 1.2rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+        .confirm-review-title {
+            font-size: 0.95rem; font-weight: 700; color: white; font-family: 'Outfit';
+            border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 0.6rem; margin-bottom: 0.8rem;
+            display: flex; align-items: center; gap: 0.4rem;
+        }
+        .confirm-user-info-row {
+            display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.02); padding: 0.6rem 0.8rem; border-radius: 10px;
+        }
+        .confirm-user-icon {
+            width: 32px; height: 32px; border-radius: 50%; background: #00296b;
+            display: flex; align-items: center; justify-content: center; color: var(--accent-gold);
+        }
+        .confirm-user-summary-text { font-size: 0.78rem; color: var(--text-gray); }
+        .confirm-user-summary-text strong { color: white; display: block; font-size: 0.82rem; }
+
+        .confirm-info-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;
+        }
+        .confirm-info-item {
+            display: flex; flex-direction: column; gap: 0.2rem;
+        }
+        .confirm-lbl { font-size: 0.68rem; color: var(--text-gray); font-weight: 700; text-transform: uppercase; }
+        .confirm-val { font-size: 0.82rem; color: white; font-weight: 600; line-height: 1.3; }
+
+        .custom-agree-checkbox {
+            display: flex; gap: 0.6rem; align-items: flex-start; font-size: 0.76rem; color: var(--text-gray);
+            line-height: 1.4; cursor: pointer; margin-bottom: 1.2rem;
+        }
+        .custom-agree-checkbox input { margin-top: 0.15rem; flex-shrink: 0; }
+        .custom-agree-checkbox a { color: var(--accent-gold-light); text-decoration: underline; }
+
+        /* Modal Footer Buttons */
+        .modal-buttons-row {
+            display: flex; gap: 0.8rem; margin-top: auto; padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.04);
+        }
+        .modal-btn-primary {
+            flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+            padding: 0.85rem; background: linear-gradient(135deg, var(--accent-gold-light), var(--accent-gold));
+            color: var(--primary-dark); border: none; border-radius: 12px;
+            font-size: 0.95rem; font-weight: 800; cursor: pointer; transition: all 0.25s;
+            box-shadow: 0 4px 15px rgba(253, 197, 0, 0.35); font-family: 'Outfit', sans-serif;
+        }
+        .modal-btn-primary:hover {
+            transform: translateY(-2px); box-shadow: 0 6px 20px rgba(253, 197, 0, 0.45);
+        }
+        .modal-btn-primary:active { transform: translateY(0); }
+        .modal-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .modal-btn-secondary {
+            flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+            padding: 0.85rem; background: transparent; border: 1.5px solid rgba(255,255,255,0.15);
+            color: white; border-radius: 12px; font-size: 0.95rem; font-weight: 700; cursor: pointer;
+            transition: all 0.25s; font-family: 'Outfit', sans-serif;
+        }
+        .modal-btn-secondary:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.25); }
+
+        .modal-btn-full { width: 100%; margin-top: 0.6rem; }
+
+        /* Success screen confetti + animation */
+        .modal-success-screen {
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            padding: 3rem 1.5rem; margin: auto; position: relative;
+        }
+        .success-checkmark-wrapper {
+            position: relative; width: 68px; height: 68px; margin-bottom: 1.5rem;
+        }
+        .success-circle-bg {
+            width: 100%; height: 100%; background: rgba(37, 211, 102, 0.15); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; border: 2px solid #25d366;
+            filter: drop-shadow(0 0 10px rgba(37,211,102,0.3));
+            animation: successScale 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .success-circle-bg i { font-size: 2.2rem; color: #25d366; }
+        
+        /* Floating confetti */
+        .confetti-piece {
+            position: absolute; width: 6px; height: 10px; background: var(--accent-gold);
+            border-radius: 2px; opacity: 0;
+            animation: confettiFly 2s infinite ease-out;
+        }
+        .c1 { top: 10%; left: 30%; background: #ffd500; animation-delay: 0.1s; }
+        .c2 { top: 20%; right: 25%; background: #0070f3; animation-delay: 0.4s; }
+        .c3 { bottom: 30%; left: 20%; background: #25d366; animation-delay: 0.7s; }
+        .c4 { bottom: 15%; right: 35%; background: #e53e3e; animation-delay: 0.2s; }
+        .c5 { top: 40%; left: 45%; background: var(--accent-gold); animation-delay: 0.9s; }
+        
+        @keyframes successScale {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes confettiFly {
+            0% { transform: translate(0, 0) rotate(0deg) scale(0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translate(var(--x, 30px), var(--y, -40px)) rotate(180deg) scale(1); opacity: 0; }
+        }
+
+        /* ─── Right Column Panel (Desktop View) ─── */
+        .modal-right-panel {
+            width: 380px; background: linear-gradient(135deg, #00296b 0%, #001230 100%);
+            border-left: 1px solid rgba(255, 255, 255, 0.05); padding: 2.2rem;
+            display: flex; flex-direction: column; gap: 1.2rem; justify-content: center;
+            position: relative; overflow: hidden;
+        }
+        
+        /* Glowing orb for right panel */
+        .right-panel-orb {
+            position: absolute; width: 220px; height: 220px; background: radial-gradient(circle, rgba(253, 197, 0, 0.08) 0%, transparent 70%);
+            top: -30px; right: -30px; filter: blur(30px); pointer-events: none;
+        }
+        
+        /* Floating mini cards in right panel */
+        .right-card {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(8px); border-radius: 16px; padding: 1rem 1.2rem;
+            display: flex; align-items: center; gap: 1rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+            transition: all 0.3s;
+            animation: floatingCard 4s infinite alternate ease-in-out;
+        }
+        .right-card:nth-child(2) { animation-delay: 1s; }
+        .right-card:nth-child(3) { animation-delay: 2s; }
+        .right-card:hover { transform: translateY(-3px); border-color: rgba(253, 197, 0, 0.3); }
+
+        @keyframes floatingCard {
+            from { transform: translateY(0); }
+            to { transform: translateY(-6px); }
+        }
+
+        .right-card-icon {
+            width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center;
+            justify-content: center; font-size: 1.2rem; flex-shrink: 0;
+        }
+        .rc-blue { background: rgba(0, 80, 157, 0.2); color: #0070f3; border: 1px solid rgba(0, 80, 157, 0.3); }
+        .rc-gold { background: rgba(253, 197, 0, 0.12); color: var(--accent-gold); border: 1px solid rgba(253, 197, 0, 0.25); }
+        
+        .right-card-info { display: flex; flex-direction: column; gap: 0.15rem; }
+        .right-card-title { font-size: 0.78rem; font-weight: 800; color: white; font-family: 'Outfit'; }
+        .right-card-sub { font-size: 0.68rem; color: var(--text-gray); }
+
+        /* Assistant visual bubble card */
+        .assistant-visual-card {
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 18px; padding: 1.2rem 1rem; position: relative;
+        }
+        .assistant-visual-card img, .assistant-visual-avatar {
+            width: 64px; height: 64px; border-radius: 50%; border: 2.5px solid var(--accent-gold);
+            background: #020b1e; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 15px rgba(253, 197, 0, 0.35); margin-bottom: 0.6rem;
+        }
+        .assistant-visual-avatar i { font-size: 1.8rem; color: var(--accent-gold-light); }
+        .assistant-speech-bubble {
+            background: var(--primary-lighter); border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px; padding: 0.5rem 0.8rem; font-size: 0.72rem; color: white;
+            font-weight: 600; line-height: 1.4; max-width: 90%;
+            position: relative;
+        }
+        .assistant-speech-bubble::after {
+            content: ''; position: absolute; top: -6px; left: 50%; transform: translateX(-50%) rotate(45deg);
+            width: 10px; height: 10px; background: var(--primary-lighter); border-left: 1px solid rgba(255,255,255,0.06);
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
         .lead-err { display: block; font-size: 0.72rem; color: #e53e3e; margin-top: 0.15rem; min-height: 0.85rem; }
 
         /* Floating Actions Bottom-Right */
@@ -648,7 +1238,7 @@
             <a href="index.html">Home</a>
             <a href="about.html">About</a>
             <a href="services.html" class="active">Services</a>
-            <a href="claims.html">Claims</a>
+            <a href="downloads.html">Claims</a>
             <a href="contact.html">Contact</a>
             <a href="partner.html">Partner</a>
             <a href="login.html" class="btn btn-gold" style="padding: 0.5rem 1.5rem;">Login</a>
@@ -952,101 +1542,333 @@
     <!-- ═══════════════ LEAD CAPTURE GLASS MODAL ═══════════════ -->
     <div class="lead-modal-overlay" id="leadModal">
         <div class="lead-modal">
-            <!-- MAIN BODY -->
-            <div id="leadModalBody">
-                <div class="lead-modal-header">
-                    <div class="lead-modal-icon"><i class="fas fa-clipboard-check"></i></div>
-                    <h2>You've Reached the End!</h2>
-                    <p>Almost there — please fill in your details so a Twinsure representative can contact you with a customized insurance portfolio.</p>
-                </div>
-
-                <!-- Summary -->
-                <div class="lead-summary-section">
-                    <div class="lead-summary-title"><i class="fas fa-list-alt"></i> Your Responses Summary</div>
-                    <div class="lead-summary-scroll" id="leadSummaryBody"></div>
-                </div>
-
-                <!-- Inputs -->
-                <div class="lead-form-section">
-                    <div class="lead-form-title"><i class="fas fa-user-circle"></i> Your Contact Details</div>
-
-                    <div class="lead-field">
-                        <label>Full Name <span class="required-star">*</span></label>
-                        <div class="input-icon-wrap">
-                            <i class="fas fa-user"></i>
-                            <input type="text" class="chat-text-input" id="leadName" placeholder="Enter your full name">
-                        </div>
-                        <span class="lead-err" id="errName"></span>
-                    </div>
-
-                    <div class="lead-field">
-                        <label>Phone Number <span class="required-star">*</span></label>
-                        <div class="input-icon-wrap">
-                            <i class="fas fa-phone"></i>
-                            <input type="tel" class="chat-text-input" id="leadPhone" maxlength="10" inputmode="numeric"
-                                placeholder="10-digit mobile number"
-                                oninput="this.value=this.value.replace(/[^0-9]/g,'')">
-                        </div>
-                        <span class="lead-err" id="errPhone"></span>
-                    </div>
-
-                    <div class="lead-field">
-                        <label>Email Address <span class="optional-tag">optional</span></label>
-                        <div class="input-icon-wrap">
-                            <i class="fas fa-envelope"></i>
-                            <input type="email" class="chat-text-input" id="leadEmail" placeholder="your@email.com">
-                        </div>
-                        <span class="lead-err" id="errEmail"></span>
-                    </div>
-                </div>
-
-                <!-- Callbacks -->
-                <div class="lead-form-section">
-                    <div class="lead-form-title"><i class="fas fa-calendar-alt"></i> Preferred Callback Slots <span class="optional-tag">optional</span></div>
-                    <p class="lead-form-hint">Choose up to 2 preferred callback slots. Slot 2 must be at least 30 minutes after Slot 1.</p>
-
-                    <div class="callback-slots-grid">
-                        <div class="callback-slot">
-                            <div class="slot-label">Slot 1</div>
-                            <input type="date" class="ymd-select" id="slot1Date">
-                            <input type="time" class="ymd-select" id="slot1Time">
-                        </div>
-                        <div class="callback-slot-sep"><i class="fas fa-ellipsis-v"></i></div>
-                        <div class="callback-slot">
-                            <div class="slot-label">Slot 2 <span class="optional-tag">optional</span></div>
-                            <input type="date" class="ymd-select" id="slot2Date">
-                            <input type="time" class="ymd-select" id="slot2Time">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Agree -->
-                <div class="lead-agree-section">
-                    <label class="lead-agree-label">
-                        <input type="checkbox" id="leadAgree">
-                        <span>By clicking Confirm, I agree to the <a href="terms.html" target="_blank">Terms & Conditions</a> and <a href="privacy.html" target="_blank">Privacy Policy</a>.</span>
-                    </label>
-                    <span class="lead-err" id="errAgree"></span>
-
-                    <button class="lead-submit-btn" id="leadSubmitBtn" onclick="window.userChat.submitLead()">
-                        <i class="fas fa-check"></i> Confirm & Submit
-                    </button>
-                    <button class="lead-cancel-btn" onclick="window.userChat.closeModal()">
-                        Cancel, go back
-                    </button>
+            <!-- Notch & AI Icon -->
+            <div class="modal-bot-badge">
+                <div class="modal-bot-badge-inner">
+                    <i class="fas fa-robot"></i>
                 </div>
             </div>
 
-            <!-- SUCCESS BODY -->
-            <div id="leadSuccessBody" style="display:none; width:100%;">
-                <div class="lead-success-screen">
-                    <div class="success-icon"><i class="fas fa-check-circle"></i></div>
-                    <h2>Thank You!</h2>
-                    <p>Your recommendation request was registered successfully. A Twinsure agent will follow up shortly with a customized insurance portfolio recommendation.</p>
-                    <p class="success-sub">Our response times are usually within <strong>24 business hours</strong>.</p>
-                    <a href="services.html" class="lead-submit-btn" style="text-decoration:none; margin-top:2rem; max-width:280px;">
-                        <i class="fas fa-arrow-left"></i> Back to Services
-                    </a>
+            <!-- Top Bar -->
+            <div class="modal-top-bar">
+                <div class="modal-brand">
+                    <i class="fas fa-shield-alt"></i> Twinsure
+                </div>
+                <button class="modal-close-btn" onclick="window.userChat.closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Steps Indicator -->
+            <div class="modal-steps-container">
+                <div class="modal-steps-title" id="activeStepTitle">Summary</div>
+                <div class="modal-steps-indicator">
+                    <div class="modal-progress-line">
+                        <div class="modal-progress-fill" id="modalProgressFill" style="width: 0%;"></div>
+                    </div>
+                    <div class="step-dot-wrapper active" id="dotStep1" onclick="goToStep(1)">
+                        <div class="step-dot"></div>
+                        <span class="step-label">Summary</span>
+                    </div>
+                    <div class="step-dot-wrapper" id="dotStep2" onclick="goToStep(2)">
+                        <div class="step-dot"></div>
+                        <span class="step-label">Contact</span>
+                    </div>
+                    <div class="step-dot-wrapper" id="dotStep3" onclick="goToStep(3)">
+                        <div class="step-dot"></div>
+                        <span class="step-label">Schedule</span>
+                    </div>
+                    <div class="step-dot-wrapper" id="dotStep4" onclick="goToStep(4)">
+                        <div class="step-dot"></div>
+                        <span class="step-label">Confirm</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-split-body">
+                <!-- LEFT CONTENT: STEPS 1-4 FORM -->
+                <div class="modal-left-content" id="leadModalBody">
+                    <!-- STEP 1: SUMMARY -->
+                    <div class="modal-step active" id="modalStep1">
+                        <h3 class="step-headline">You've Reached the End!</h3>
+                        <p class="step-subheading">Almost there — please fill in your details so a Twinsure representative can contact you with a customized insurance portfolio.</p>
+                        
+                        <div class="lead-summary-title" style="margin-bottom:0.5rem;"><i class="fas fa-list-alt"></i> Your Responses Summary</div>
+                        <div class="summary-chat-feed" id="leadSummaryBody"></div>
+                        
+                        <div class="modal-buttons-row">
+                            <button class="modal-btn-secondary" onclick="window.userChat.closeModal()">Back to Chat</button>
+                            <button class="modal-btn-primary" onclick="goToStep(2)">Continue <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: CONTACT DETAILS -->
+                    <div class="modal-step" id="modalStep2">
+                        <h3 class="step-headline">Your Contact Details</h3>
+                        <p class="step-subheading">Please provide your contact information to receive your tailored recommendations portfolio.</p>
+                        
+                        <div class="lead-field">
+                            <label>Full Name <span class="required-star">*</span></label>
+                            <div class="glass-input-wrapper">
+                                <i class="fas fa-user"></i>
+                                <input type="text" class="glass-input" id="leadName" placeholder="Enter your full name">
+                            </div>
+                            <span class="lead-err" id="errName"></span>
+                        </div>
+                        
+                        <div class="lead-field">
+                            <label>Phone Number <span class="required-star">*</span></label>
+                            <div class="glass-input-wrapper">
+                                <i class="fas fa-phone"></i>
+                                <input type="tel" class="glass-input" id="leadPhone" maxlength="10" inputmode="numeric"
+                                    placeholder="10-digit mobile number"
+                                    oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+                            </div>
+                            <span class="lead-err" id="errPhone"></span>
+                        </div>
+                        
+                        <div class="lead-field">
+                            <label>Email Address <span class="optional-tag" style="color:var(--text-gray); font-size:0.75rem;">(optional)</span></label>
+                            <div class="glass-input-wrapper">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" class="glass-input" id="leadEmail" placeholder="your@email.com">
+                            </div>
+                            <span class="lead-err" id="errEmail"></span>
+                        </div>
+                        
+                        <div class="privacy-assurance">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Security/Privacy assurance: we respect your privacy and secure all your information under our Privacy Guidelines.</span>
+                        </div>
+                        
+                        <div class="modal-buttons-row">
+                            <button class="modal-btn-secondary" onclick="goToStep(1)">Back</button>
+                            <button class="modal-btn-primary" onclick="validateStep2()">Continue <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3: CALLBACK SCHEDULE -->
+                    <div class="modal-step" id="modalStep3">
+                        <h3 class="step-headline">Preferred Callback Slots</h3>
+                        <p class="step-subheading">Choose up to 2 preferred callback slots. Slot 2 must be at least 30 minutes after Slot 1 on the same date.</p>
+                        
+                        <div class="callback-card-container">
+                            <div class="callback-sub-title">SLOT 1</div>
+                            
+                            <div class="calendar-and-time-split">
+                                <!-- Calendar Widget -->
+                                <div class="calendar-widget">
+                                    <div class="calendar-header">
+                                        <button type="button" class="cal-nav-btn" onclick="navigateMonth(-1)"><i class="fas fa-chevron-left"></i></button>
+                                        <div class="calendar-month-title" id="calMonthTitle">Calendar</div>
+                                        <button type="button" class="cal-nav-btn" onclick="navigateMonth(1)"><i class="fas fa-chevron-right"></i></button>
+                                    </div>
+                                    <div class="calendar-weekdays">
+                                        <div>Su</div><div>Mo</div><div>To</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
+                                    </div>
+                                    <div class="calendar-days-grid" id="calDaysGrid"></div>
+                                </div>
+                                
+                                <!-- Modern Time Widget -->
+                                <div class="modern-time-widget">
+                                    <div class="modern-time-header">Modern time</div>
+                                    <div class="modern-time-list" id="modernTimeList"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="suggestion-chips-label">AI suggestion chips</div>
+                            <div class="suggestion-chips-row">
+                                <div class="suggestion-chip" id="chipMorning" onclick="applySuggestion('morning')">
+                                    <i class="fas fa-sun"></i> Morning Preferred
+                                </div>
+                                <div class="suggestion-chip" id="chipEvening" onclick="applySuggestion('evening')">
+                                    <i class="fas fa-moon"></i> Evening Support
+                                </div>
+                                <div class="suggestion-chip" id="chipFastest" onclick="applySuggestion('fastest')">
+                                    <i class="fas fa-bolt"></i> Fastest Available Slot
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="callback-card-container" style="position:relative; min-height: 140px;">
+                            <div class="callback-sub-title">SELECTED CALLBACK DETAILS</div>
+                            
+                            <div class="slot-fields-row">
+                                <div class="slot-field-label">Slot 1</div>
+                                <div class="slot-field-inputs">
+                                    <div class="slot-field-input-wrapper">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        <input type="date" id="slot1Date" class="slot-field-box" onchange="syncFromInputs()">
+                                    </div>
+                                    <span class="slot-to-text">to</span>
+                                    <div class="slot-field-input-wrapper">
+                                        <i class="fas fa-clock"></i>
+                                        <input type="time" id="slot1Time" class="slot-field-box" onchange="syncFromInputs()">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="slot-or-separator">OR</div>
+                            
+                            <div class="slot-fields-row">
+                                <div class="slot-field-label">Optional Slot 2</div>
+                                <div class="slot-field-inputs">
+                                    <div class="slot-field-input-wrapper">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        <input type="date" id="slot2Date" class="slot-field-box" onchange="syncFromInputs()">
+                                    </div>
+                                    <span class="slot-to-text">to</span>
+                                    <div class="slot-field-input-wrapper">
+                                        <i class="fas fa-clock"></i>
+                                        <input type="time" id="slot2Time" class="slot-field-box" onchange="syncFromInputs()">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Calendar mini illustration graphic on right -->
+                            <div class="calendar-mini-graphic-card">
+                                <div class="mini-graphic-header"></div>
+                                <div class="mini-graphic-grid">
+                                    <div></div><div></div><div></div><div></div>
+                                    <div></div><div class="dot-active"></div><div></div><div></div>
+                                    <div></div><div></div><div class="dot-active"></div><div></div>
+                                </div>
+                                <div class="live-availability-badge">
+                                    <span class="live-dot"></span> Live availability
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <span class="lead-err" id="errSlots" style="margin-bottom:0.5rem; text-align:center;"></span>
+                        
+                        <div class="modal-buttons-row">
+                            <button class="modal-btn-secondary" onclick="goToStep(2)">Back</button>
+                            <button class="modal-btn-primary" onclick="validateStep3()">Continue <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 4: FINAL CONFIRMATION -->
+                    <div class="modal-step" id="modalStep4">
+                        <h3 class="step-headline">Final Confirmation</h3>
+                        <p class="step-subheading">Please review your submission summary before finalizing your recommendation request.</p>
+                        
+                        <div class="confirm-review-card">
+                            <div class="confirm-review-title">
+                                <i class="fas fa-clipboard-check" style="color:var(--accent-gold);"></i> Premium Confirmation Review
+                            </div>
+                            
+                            <div class="confirm-user-info-row">
+                                <div class="confirm-user-icon"><i class="fas fa-user-shield"></i></div>
+                                <div class="confirm-user-summary-text">
+                                    User Summary
+                                    <strong id="confirmSummaryText">Health insurance</strong>
+                                </div>
+                            </div>
+                            
+                            <div class="confirm-info-grid">
+                                <div class="confirm-info-item">
+                                    <span class="confirm-lbl">Full Name</span>
+                                    <span class="confirm-val" id="confirmName">John Doe</span>
+                                </div>
+                                <div class="confirm-info-item">
+                                    <span class="confirm-lbl">Contact Details</span>
+                                    <span class="confirm-val" id="confirmPhone">+91 9876543210</span>
+                                </div>
+                                <div class="confirm-info-item">
+                                    <span class="confirm-lbl">Preferred Callback Slots</span>
+                                    <span class="confirm-val" id="confirmSlots">Sep 18, 2023 at 3:50 PM</span>
+                                </div>
+                                <div class="confirm-info-item">
+                                    <span class="confirm-lbl">Recommendation Category</span>
+                                    <span class="confirm-val" id="confirmEmail">john@example.com</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <label class="custom-agree-checkbox">
+                            <input type="checkbox" id="leadAgree">
+                            <span>By clicking Confirm, I agree to the <a href="terms.html" target="_blank">Terms & Conditions</a> and <a href="privacy.html" target="_blank">Privacy Policy</a>. I consent to being contacted by a Twinsure representative.</span>
+                        </label>
+                        
+                        <span class="lead-err" id="errAgree" style="margin-bottom:0.5rem; text-align:center;"></span>
+                        
+                        <div class="modal-buttons-row">
+                            <button class="modal-btn-secondary" onclick="goToStep(3)">Cancel, Go Back</button>
+                            <button class="modal-btn-primary" id="leadSubmitBtn" onclick="window.userChat.submitLead()">Confirm & Submit</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LEFT CONTENT: SUCCESS STATE -->
+                <div class="modal-left-content" id="leadSuccessBody" style="display:none;">
+                    <div class="modal-success-screen">
+                        <div class="success-checkmark-wrapper">
+                            <div class="success-circle-bg">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="confetti-piece c1" style="--x: 35px; --y: -50px;"></div>
+                            <div class="confetti-piece c2" style="--x: -45px; --y: -35px;"></div>
+                            <div class="confetti-piece c3" style="--x: 20px; --y: 40px;"></div>
+                            <div class="confetti-piece c4" style="--x: -30px; --y: 35px;"></div>
+                            <div class="confetti-piece c5" style="--x: -50px; --y: -60px;"></div>
+                        </div>
+                        
+                        <h3 class="step-headline" style="font-size:1.6rem;">Your Request Has Been Submitted!</h3>
+                        <p class="step-subheading" style="margin-bottom:2rem; max-width:380px;">A Twinsure representative will contact you shortly with your personalized insurance portfolio.</p>
+                        
+                        <div class="modal-buttons-row" style="width:100%; max-width:400px; border:none; margin:0 auto;">
+                            <a href="index.html" class="modal-btn-secondary" style="text-decoration:none; text-align:center;">Return to Home</a>
+                            <button class="modal-btn-primary" onclick="window.userChat.closeModal()">Continue Exploring</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT PANEL: PREMIUM VISUAL PANEL (Desktop only) -->
+                <div class="modal-right-panel" id="modalRightPanel">
+                    <div class="right-panel-orb"></div>
+                    
+                    <!-- Assistant Card -->
+                    <div class="assistant-visual-card">
+                        <div class="assistant-visual-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="assistant-speech-bubble" id="assistantBubbleText">
+                            Hi! I'm your Twinsure AI. Let's finish building your optimal coverage recommendation!
+                        </div>
+                    </div>
+                    
+                    <!-- Maturity Portfolio Card -->
+                    <div class="right-card">
+                        <div class="right-card-icon rc-blue">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <div class="right-card-info">
+                            <span class="right-card-title">Maturity Portfolio</span>
+                            <span class="right-card-sub" id="rcMaturitySub">Calculated growth projection</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Protection Shield Card -->
+                    <div class="right-card">
+                        <div class="right-card-icon rc-gold">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="right-card-info">
+                            <span class="right-card-title">Protection Shield</span>
+                            <span class="right-card-sub">Active high-grade security</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Customer Support Card -->
+                    <div class="right-card" style="background: rgba(253, 197, 0, 0.05); border-color: rgba(253, 197, 0, 0.15);">
+                        <div class="right-card-icon rc-gold">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <div class="right-card-info">
+                            <span class="right-card-title" style="color:var(--accent-gold);">Customer Support</span>
+                            <span class="right-card-sub" style="color:#c4d1db;">Personal Advisor assigned</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1187,10 +2009,511 @@
             alert('Your Premium Calculation Estimate is being compiled and downloaded in background.');
         }
 
+        // State management for multi-stage lead modal
+        let currentModalStep = 1;
+        
+        function goToStep(step) {
+            if (step < 1 || step > 4) return;
+            
+            // Update steps layout
+            for(let i=1; i<=4; i++) {
+                const stepEl = document.getElementById('modalStep' + i);
+                const dotEl = document.getElementById('dotStep' + i);
+                if (stepEl) {
+                    stepEl.classList.toggle('active', i === step);
+                }
+                if (dotEl) {
+                    dotEl.classList.toggle('active', i === step);
+                    dotEl.classList.toggle('completed', i < step);
+                }
+            }
+            
+            // In case success screen was toggled, reset it
+            const successEl = document.getElementById('leadSuccessBody');
+            if (successEl) {
+                successEl.style.display = 'none';
+            }
+            const modalBody = document.getElementById('leadModalBody');
+            if (modalBody) {
+                modalBody.style.display = 'block';
+                modalBody.scrollTop = 0; // scroll back to top!
+            }
+            
+            currentModalStep = step;
+            
+            // Update title and progress line
+            const titles = ["Summary", "Contact Details", "Callback Schedule", "Confirmation"];
+            document.getElementById('activeStepTitle').innerText = titles[step - 1];
+            
+            // 0%, 33%, 66%, 100% width
+            const pct = ((step - 1) / 3) * 100;
+            document.getElementById('modalProgressFill').style.width = pct + '%';
+            
+            // Update right assistant bubble
+            const bubbleTexts = [
+                "Review your answers to ensure the AI recommender captured your needs precisely.",
+                "Please provide your contact details so our agents can reach you.",
+                "Choose a date and time that fits your schedule for our consultation.",
+                "Double check everything. Once ready, click Confirm to register your portfolio request."
+            ];
+            document.getElementById('assistantBubbleText').innerText = bubbleTexts[step - 1];
+            
+            // If final step, populate reviews
+            if (step === 4) {
+                populateConfirmationReview();
+            }
+        }
+        window.goToStep = goToStep;
+        
+        function populateConfirmationReview() {
+            const nameVal = document.getElementById('leadName').value.trim();
+            const phoneVal = document.getElementById('leadPhone').value.trim();
+            const emailVal = document.getElementById('leadEmail').value.trim();
+            
+            document.getElementById('confirmName').innerText = nameVal || 'Not entered';
+            document.getElementById('confirmPhone').innerText = phoneVal || 'Not entered';
+            document.getElementById('confirmEmail').innerText = emailVal || 'None';
+            
+            const dateVal = document.getElementById('slot1Date').value;
+            const timeVal = document.getElementById('slot1Time').value;
+            
+            if (dateVal && timeVal) {
+                // format date
+                const dateObj = new Date(dateVal);
+                const dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                
+                // format time
+                let timeStr = timeVal;
+                const parts = timeVal.split(':');
+                if (parts.length >= 2) {
+                    let hr = parseInt(parts[0]);
+                    const min = parts[1];
+                    const ampm = hr >= 12 ? 'PM' : 'AM';
+                    hr = hr % 12;
+                    hr = hr ? hr : 12; // 0 should be 12
+                    timeStr = hr + ':' + min + ' ' + ampm;
+                }
+                document.getElementById('confirmSlots').innerText = dateStr + ' at ' + timeStr;
+            } else {
+                document.getElementById('confirmSlots').innerText = 'Not scheduled';
+            }
+            
+            // Add chat category summary if present
+            let category = "Insurance Plan";
+            if (window.userChat && window.userChat.selectedOptions) {
+                const options = Object.values(window.userChat.selectedOptions);
+                if (options.length > 0) {
+                    category = options[0].text + " Recommendation";
+                }
+            }
+            document.getElementById('confirmSummaryText').innerText = category;
+        }
+        
+        function validateStep2() {
+            const nameEl = document.getElementById('leadName');
+            const phoneEl = document.getElementById('leadPhone');
+            const errName = document.getElementById('errName');
+            const errPhone = document.getElementById('errPhone');
+            
+            let valid = true;
+            errName.innerText = '';
+            errPhone.innerText = '';
+            
+            if (!nameEl.value.trim()) {
+                errName.innerText = 'Full name is required.';
+                valid = false;
+            }
+            
+            const phoneVal = phoneEl.value.trim();
+            if (!phoneVal) {
+                errPhone.innerText = 'Phone number is required.';
+                valid = false;
+            } else if (!/^\d{10}$/.test(phoneVal)) {
+                errPhone.innerText = 'Enter a valid 10-digit mobile number.';
+                valid = false;
+            }
+            
+            if (valid) {
+                goToStep(3);
+            }
+        }
+        window.validateStep2 = validateStep2;
+        
+        function validateStep3() {
+            const dateVal = document.getElementById('slot1Date').value;
+            const timeVal = document.getElementById('slot1Time').value;
+            const errSlots = document.getElementById('errSlots');
+            errSlots.innerText = '';
+            
+            if (!dateVal || !timeVal) {
+                errSlots.innerText = 'Please select Slot 1 date and time details.';
+                return;
+            }
+            
+            // Date-time constraints check (not in past, min 30 minutes after current time)
+            const now = new Date();
+            const selectedDateTime = new Date(`${dateVal}T${timeVal}`);
+            
+            if (isNaN(selectedDateTime.getTime())) {
+                errSlots.innerText = 'Invalid Date or Time entered.';
+                return;
+            }
+            
+            const minAllowedTime = new Date(now.getTime() + 30 * 60 * 1000); // 30 minutes in the future
+            
+            if (selectedDateTime < now) {
+                errSlots.innerText = 'Cannot choose a date or time in the past.';
+                return;
+            }
+            
+            if (selectedDateTime < minAllowedTime) {
+                errSlots.innerText = 'Appointment must be at least 30 minutes in the future.';
+                return;
+            }
+            
+            // If Slot 2 is entered, validate slot gap (must be at least 30 minutes after Slot 1)
+            const date2Val = document.getElementById('slot2Date').value;
+            const time2Val = document.getElementById('slot2Time').value;
+            
+            if (date2Val && time2Val) {
+                const selectedDateTime2 = new Date(`${date2Val}T${time2Val}`);
+                if (isNaN(selectedDateTime2.getTime())) {
+                    errSlots.innerText = 'Invalid Optional Slot 2 Date or Time.';
+                    return;
+                }
+                
+                if (selectedDateTime2 < minAllowedTime) {
+                    errSlots.innerText = 'Optional Slot 2 must be at least 30 minutes in the future.';
+                    return;
+                }
+                
+                if (dateVal === date2Val) {
+                    const diffMins = Math.abs(selectedDateTime2 - selectedDateTime) / (60 * 1000);
+                    if (diffMins < 30) {
+                        errSlots.innerText = 'Slot 2 must be at least 30 minutes after Slot 1.';
+                        return;
+                    }
+                }
+            } else if (date2Val || time2Val) {
+                errSlots.innerText = 'Please complete both date and time for Optional Slot 2, or leave both empty.';
+                return;
+            }
+            
+            goToStep(4);
+        }
+        window.validateStep3 = validateStep3;
+        
+        // Calendar & Scheduler state
+        let currentYear = new Date().getFullYear();
+        let currentMonth = new Date().getMonth(); // 0-indexed
+        let selectedDateStr = ''; // YYYY-MM-DD
+        let selectedTimeStr = ''; // HH:MM
+        
+        // Time slot database
+        const timeSlots = [
+            "09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
+            "12:00 PM", "12:30 PM", "01:00 PM", "01:30 PM", "02:00 PM", "02:30 PM",
+            "03:00 PM", "03:30 PM", "04:00 PM", "04:30 PM", "05:00 PM", "05:30 PM",
+            "06:00 PM", "06:30 PM", "07:00 PM"
+        ];
+
+        function initCalendarAndTimes() {
+            // Set initial dates if not set
+            const today = new Date();
+            // Default slot 1 to tomorrow at 10:00 AM to ensure it is in the future
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+            
+            const tomorrowStr = formatDateYYYYMMDD(tomorrow);
+            
+            if (!document.getElementById('slot1Date').value) {
+                document.getElementById('slot1Date').value = tomorrowStr;
+            }
+            if (!document.getElementById('slot1Time').value) {
+                document.getElementById('slot1Time').value = '10:00';
+            }
+            
+            selectedDateStr = document.getElementById('slot1Date').value;
+            selectedTimeStr = document.getElementById('slot1Time').value;
+            
+            // Sync calendar view month/year to selected date
+            if (selectedDateStr) {
+                const parts = selectedDateStr.split('-');
+                if (parts.length === 3) {
+                    currentYear = parseInt(parts[0]);
+                    currentMonth = parseInt(parts[1]) - 1;
+                }
+            }
+            
+            renderCalendar();
+            renderTimeSlots();
+        }
+        
+        function formatDateYYYYMMDD(date) {
+            const yyyy = date.getFullYear();
+            const mm = String(date.getMonth() + 1).padStart(2, '0');
+            const dd = String(date.getDate()).padStart(2, '0');
+            return `${yyyy}-${mm}-${dd}`;
+        }
+        
+        function renderCalendar() {
+            const monthTitle = document.getElementById('calMonthTitle');
+            const daysGrid = document.getElementById('calDaysGrid');
+            if (!monthTitle || !daysGrid) return;
+            
+            // Month names
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            monthTitle.innerText = `${monthNames[currentMonth]} ${currentYear}`;
+            
+            daysGrid.innerHTML = '';
+            
+            // First day of current month
+            const firstDayIndex = new Date(currentYear, currentMonth, 1).getDay();
+            // Total days in current month
+            const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+            
+            // Render empty cells for leading offset days
+            for (let i = 0; i < firstDayIndex; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'cal-day-cell empty';
+                daysGrid.appendChild(emptyCell);
+            }
+            
+            // Current local time
+            const now = new Date();
+            const todayDateStr = formatDateYYYYMMDD(now);
+            
+            // Render actual month day cells
+            for (let day = 1; day <= totalDays; day++) {
+                const cell = document.createElement('div');
+                cell.className = 'cal-day-cell';
+                cell.innerText = day;
+                
+                // Form date string for this cell
+                const mm = String(currentMonth + 1).padStart(2, '0');
+                const dd = String(day).padStart(2, '0');
+                const dateStr = `${currentYear}-${mm}-${dd}`;
+                
+                cell.setAttribute('data-date', dateStr);
+                
+                // Is this date in the past?
+                const thisDate = new Date(currentYear, currentMonth, day, 23, 59, 59); // end of day comparison
+                const isPast = thisDate < now;
+                
+                if (isPast) {
+                    cell.classList.add('disabled');
+                } else {
+                    if (dateStr === todayDateStr) {
+                        cell.classList.add('today');
+                    }
+                    if (dateStr === selectedDateStr) {
+                        cell.classList.add('active');
+                    }
+                    
+                    cell.onclick = function() {
+                        selectedDateStr = dateStr;
+                        document.getElementById('slot1Date').value = dateStr;
+                        
+                        // Clear suggestion chips active state
+                        document.querySelectorAll('.suggestion-chip').forEach(c => c.classList.remove('active'));
+                        
+                        renderCalendar();
+                        renderTimeSlots(); // Re-render times because today's times constraint might apply
+                    };
+                }
+                
+                daysGrid.appendChild(cell);
+            }
+        }
+        
+        function renderTimeSlots() {
+            const timeList = document.getElementById('modernTimeList');
+            if (!timeList) return;
+            
+            timeList.innerHTML = '';
+            
+            const now = new Date();
+            const isToday = (selectedDateStr === formatDateYYYYMMDD(now));
+            const minTimeLimit = new Date(now.getTime() + 30 * 60 * 1000); // 30 mins in future
+            
+            timeSlots.forEach(slot => {
+                const parts = slot.split(' ');
+                const timeParts = parts[0].split(':').map(Number);
+                let hr = timeParts[0];
+                const min = timeParts[1];
+                const ampm = parts[1];
+                
+                if (ampm === 'PM' && hr < 12) hr += 12;
+                if (ampm === 'AM' && hr === 12) hr = 0;
+                
+                const valStr = `${String(hr).padStart(2, '0')}:${String(min).padStart(2, '0')}`;
+                
+                const btn = document.createElement('div');
+                btn.className = 'modern-time-btn';
+                btn.innerText = slot;
+                btn.setAttribute('data-val', valStr);
+                
+                // Validate past/30-minute limit if selected date is today
+                let isPast = false;
+                if (isToday) {
+                    const slotDateTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hr, min, 0);
+                    if (slotDateTime < minTimeLimit) {
+                        isPast = true;
+                    }
+                }
+                
+                if (isPast) {
+                    btn.classList.add('disabled');
+                } else {
+                    if (valStr === selectedTimeStr) {
+                        btn.classList.add('active');
+                    }
+                    
+                    btn.onclick = function() {
+                        selectedTimeStr = valStr;
+                        document.getElementById('slot1Time').value = valStr;
+                        
+                        // Clear suggestion chips active state
+                        document.querySelectorAll('.suggestion-chip').forEach(c => c.classList.remove('active'));
+                        
+                        document.querySelectorAll('.modern-time-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                    };
+                }
+                
+                timeList.appendChild(btn);
+            });
+        }
+        
+        function navigateMonth(direction) {
+            currentMonth += direction;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            } else if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar();
+        }
+        window.navigateMonth = navigateMonth;
+        
+        function syncFromInputs() {
+            const date1 = document.getElementById('slot1Date').value;
+            const time1 = document.getElementById('slot1Time').value;
+            
+            if (date1) {
+                selectedDateStr = date1;
+                const parts = date1.split('-');
+                if (parts.length === 3) {
+                    currentYear = parseInt(parts[0]);
+                    currentMonth = parseInt(parts[1]) - 1;
+                }
+            }
+            
+            if (time1) {
+                selectedTimeStr = time1;
+            }
+            
+            // Clear suggestion chips active state on manual edit
+            document.querySelectorAll('.suggestion-chip').forEach(c => c.classList.remove('active'));
+            
+            renderCalendar();
+            renderTimeSlots();
+        }
+        window.syncFromInputs = syncFromInputs;
+        
+        function applySuggestion(type) {
+            document.querySelectorAll('.suggestion-chip').forEach(c => c.classList.remove('active'));
+            const chip = document.getElementById('chip' + type.charAt(0).toUpperCase() + type.slice(1));
+            if (chip) chip.classList.add('active');
+            
+            const today = new Date();
+            let targetDate = new Date(today);
+            
+            let timeVal = '10:00';
+            
+            if (type === 'morning') {
+                // Tomorrow at 9:30 AM
+                targetDate.setDate(today.getDate() + 1);
+                timeVal = '09:30';
+            } else if (type === 'evening') {
+                // Tomorrow at 5:30 PM
+                targetDate.setDate(today.getDate() + 1);
+                timeVal = '17:30';
+            } else if (type === 'fastest') {
+                // Minimum 30 minutes in the future
+                // If current time is early (before 5:00 PM), schedule 1 hour from now
+                const curHour = today.getHours();
+                if (curHour < 17) {
+                    const targetTime = new Date(today.getTime() + 45 * 60 * 1000); // 45 mins in future
+                    let hr = targetTime.getHours();
+                    let min = targetTime.getMinutes();
+                    // round to nearest 30 mins
+                    if (min < 30) {
+                        min = 30;
+                    } else {
+                        min = 0;
+                        hr++;
+                    }
+                    timeVal = `${String(hr).padStart(2, '0')}:${String(min).padStart(2, '0')}`;
+                } else {
+                    // Next business day morning
+                    targetDate.setDate(today.getDate() + 1);
+                    timeVal = '09:30';
+                }
+            }
+            
+            document.getElementById('slot1Date').value = formatDateYYYYMMDD(targetDate);
+            document.getElementById('slot1Time').value = timeVal;
+            
+            syncFromInputs();
+        }
+        window.applySuggestion = applySuggestion;
+
         // Initialize sliders
         window.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.calc-slider').forEach(s => updateSliderVisual(s));
             calculatePremium();
+            
+            // Inject overrides on window.UserChatEngine if defined
+            if (window.UserChatEngine) {
+                // Intercept showLeadModal
+                const origShowLeadModal = UserChatEngine.prototype.showLeadModal;
+                UserChatEngine.prototype.showLeadModal = function() {
+                    origShowLeadModal.call(this);
+                    
+                    // Always reset to step 1
+                    goToStep(1);
+                    
+                    // Initialize calendar
+                    initCalendarAndTimes();
+                };
+                
+                // Intercept showSuccessScreen
+                const origShowSuccessScreen = UserChatEngine.prototype.showSuccessScreen;
+                UserChatEngine.prototype.showSuccessScreen = function() {
+                    origShowSuccessScreen.call(this);
+                    
+                    // Update steps & active title to Success
+                    for(let i=1; i<=4; i++) {
+                        const dotEl = document.getElementById('dotStep' + i);
+                        if (dotEl) {
+                            dotEl.classList.add('completed');
+                            dotEl.classList.remove('active');
+                        }
+                    }
+                    document.getElementById('activeStepTitle').innerText = "Success";
+                    document.getElementById('modalProgressFill').style.width = '100%';
+                    document.getElementById('assistantBubbleText').innerText = "All set! Your Twinsure agent will connect with you soon.";
+                    
+                    // Update maturity card sub value to match user calculator returns if available
+                    const resReturns = document.getElementById('resReturns')?.innerText;
+                    if (resReturns) {
+                        document.getElementById('rcMaturitySub').innerText = "Est. returns: " + resReturns;
+                    }
+                };
+            }
         });
     </script>
 </body>

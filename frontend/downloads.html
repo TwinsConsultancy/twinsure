@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claims Support & Downloads - Twinsure</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS resets and variables */
+        :root {
+            --primary-dark: #001533;
+            --primary-mid: #00296b;
+            --primary-light: #003f88;
+            --primary-lighter: #00509d;
+            --accent-gold: #fdc500;
+            --accent-gold-light: #ffd500;
+            --text-white: #ffffff;
+            --text-gray: #94a3b8;
+            --text-dark: #1e293b;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-glow: rgba(0, 80, 157, 0.25);
+            --glass-gold-glow: rgba(253, 197, 0, 0.15);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--primary-dark); color: var(--text-white); overflow-x: hidden; scroll-behavior: smooth; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Outfit', sans-serif; }
+        a { text-decoration: none; }
+        ul { list-style: none; }
+        
+        /* Typography & Utility classes */
+        .gradient-text {
+            background: linear-gradient(135deg, var(--accent-gold-light), var(--accent-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .blue-gradient-text {
+            background: linear-gradient(135deg, #38bdf8, #00509d);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Navbar */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            padding: 1.5rem 5%; transition: all 0.3s ease;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .navbar.scrolled {
+            background: rgba(0, 21, 51, 0.9);
+            backdrop-filter: blur(12px);
+            padding: 1rem 5%;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+        }
+        .logo { font-size: 1.8rem; font-weight: 800; color: var(--text-white); font-family: 'Outfit'; display: flex; align-items: center; gap: 0.5rem; }
+        .logo i { color: var(--accent-gold); }
+        .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+        .nav-links a { color: var(--text-gray); font-weight: 500; font-size: 0.95rem; transition: 0.3s; position: relative; }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent-gold-light) !important; font-weight: 700 !important; }
+        .nav-links a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0; background: var(--accent-gold); transition: 0.3s; }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        
+        .btn { padding: 0.8rem 1.8rem; border-radius: 30px; font-weight: 600; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; border: none; font-family: 'Inter', sans-serif; }
+        .btn-gold { background: linear-gradient(135deg, var(--accent-gold-light), var(--accent-gold)); color: var(--primary-dark) !important; box-shadow: 0 4px 15px rgba(253, 197, 0, 0.3); }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(253, 197, 0, 0.4); }
+        .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: white !important; }
+        .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: white; transform: translateY(-2px); }
+        
+        /* Layout Sections */
+        .section { padding: 6rem 5%; max-width: 1400px; margin: 0 auto; position: relative; }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-header h2 { font-size: 3rem; margin-bottom: 1rem; font-weight: 800; }
+        .section-header p { color: var(--text-gray); font-size: 1.1rem; max-width: 700px; margin: 0 auto; line-height: 1.6; }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 95vh;
+            background: radial-gradient(circle at 80% 20%, rgba(0, 80, 157, 0.35) 0%, transparent 50%),
+                        radial-gradient(circle at 20% 80%, rgba(253, 197, 0, 0.08) 0%, transparent 40%);
+            padding: 9rem 5% 4rem 5%;
+            display: flex; align-items: center; position: relative;
+        }
+        
+        /* Sparkle system */
+        .bg-spot { position: absolute; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 1; }
+        .spot-1 { top: 15%; right: 10%; width: 350px; height: 350px; background: rgba(0, 80, 157, 0.2); }
+        .spot-2 { bottom: 10%; left: 5%; width: 400px; height: 400px; background: rgba(253, 197, 0, 0.05); }
+        .spot-3 { top: 50%; left: 50%; width: 300px; height: 300px; background: rgba(0, 63, 136, 0.15); transform: translate(-50%, -50%); }
+        
+        .hero-container {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1400px; margin: 0 auto; width: 100%; position: relative; z-index: 2;
+        }
+        .hero-content { display: flex; flex-direction: column; justify-content: center; }
+        .badge { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--glass-bg); padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid var(--glass-border); font-size: 0.85rem; color: var(--accent-gold-light); width: fit-content; margin-bottom: 1.5rem; font-weight: 600; letter-spacing: 0.5px; }
+        .hero h1 { font-size: 4.2rem; line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -1px; font-weight: 800; }
+        .hero p { font-size: 1.1rem; color: var(--text-gray); line-height: 1.6; margin-bottom: 2rem; max-width: 90%; }
+        .hero-quote { border-left: 3px solid var(--accent-gold); padding-left: 1rem; font-style: italic; color: rgba(255,255,255,0.85); margin-bottom: 2.5rem; font-size: 1.05rem; line-height: 1.5; }
+        .hero-btns { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+        
+        .hero-visuals { display: flex; align-items: center; justify-content: center; position: relative; }
+        
+        /* Dashboard Mockup Visual */
+        .visual-glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+            backdrop-filter: blur(25px); border: 1px solid var(--glass-border); border-radius: 24px;
+            padding: 2.2rem; box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            width: 100%; max-width: 520px; position: relative; z-index: 5;
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-12px); } 100% { transform: translateY(0); } }
+        
+        .mock-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.8rem; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 1rem; }
+        .mock-title { display: flex; align-items: center; gap: 0.6rem; }
+        .mock-title i { color: var(--accent-gold); font-size: 1.2rem; }
+        .mock-title span { font-weight: 700; font-size: 0.95rem; font-family: 'Outfit'; color: white; letter-spacing: 0.5px; }
+        .mock-status { background: rgba(37, 211, 102, 0.12); color: #25d366; font-size: 0.75rem; padding: 0.3rem 0.8rem; border-radius: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+        .mock-status::before { content: ''; display: inline-block; width: 6px; height: 6px; background: #25d366; border-radius: 50%; box-shadow: 0 0 8px #25d366; }
+        
+        .mock-metric-bar { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.5rem; }
+        .metric-info { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-gray); font-weight: 600; }
+        .metric-info span.high { color: white; }
+        .metric-track { height: 8px; background: rgba(0,0,0,0.3); border-radius: 4px; overflow: hidden; border: 1.5px solid rgba(255,255,255,0.03); }
+        .metric-fill { height: 100%; background: linear-gradient(90deg, var(--primary-light), var(--accent-gold)); border-radius: 4px; width: 85%; animation: fillWidth 2s ease-out forwards; }
+        @keyframes fillWidth { from { width: 0%; } to { width: 85%; } }
+        
+        .mock-checklist { display: flex; flex-direction: column; gap: 0.8rem; }
+        .checklist-item { display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.15); padding: 0.75rem 1rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.02); }
+        .check-left { display: flex; align-items: center; gap: 0.8rem; }
+        .check-box { width: 18px; height: 18px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; }
+        .check-box.checked { background: var(--accent-gold); color: var(--primary-dark); }
+        .check-box.pending { border: 1.5px solid rgba(255,255,255,0.2); }
+        .check-text { font-size: 0.85rem; font-weight: 500; }
+        .checklist-item.done .check-text { color: var(--text-white); }
+        .checklist-item.todo .check-text { color: var(--text-gray); }
+        .check-action-lbl { font-size: 0.75rem; font-weight: 600; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .floating-shield-visual {
+            position: absolute; width: 65px; height: 65px; background: rgba(0, 41, 107, 0.9); border: 1.5px solid var(--accent-gold); border-radius: 16px;
+            display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: var(--accent-gold);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4); filter: drop-shadow(0 0 10px rgba(253, 197, 0, 0.15));
+            animation: floatReverse 7s ease-in-out infinite; z-index: 10;
+        }
+        .v-shield-1 { top: -20px; right: -25px; }
+        .v-shield-2 { bottom: -20px; left: -25px; border-color: #38bdf8; color: #38bdf8; }
+        
+        @keyframes floatReverse { 0% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(12px) rotate(3deg); } 100% { transform: translateY(0) rotate(0deg); } }
+        
+        /* Claims List Section */
+        .claims-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; width: 100%;
+        }
+        .claim-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+            border: 1px solid var(--glass-border); border-radius: 20px; padding: 2rem 1.5rem;
+            display: flex; flex-direction: column; justify-content: space-between;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative; overflow: hidden; height: 260px; cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        .claim-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-gold);
+            box-shadow: 0 15px 35px var(--glass-gold-glow), 0 0 20px var(--glass-glow);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+        }
+        .claim-card::before {
+            content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 100% 0%, var(--glass-glow), transparent 60%);
+            opacity: 0; transition: opacity 0.4s ease; pointer-events: none;
+        }
+        .claim-card:hover::before { opacity: 1; }
+        
+        .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; }
+        .card-category-icon {
+            width: 50px; height: 50px; background: rgba(0, 80, 157, 0.2); border: 1.5px solid rgba(0, 80, 157, 0.4); border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: #38bdf8; transition: 0.3s;
+        }
+        .claim-card:hover .card-category-icon {
+            background: rgba(253, 197, 0, 0.15); border-color: var(--accent-gold); color: var(--accent-gold-light);
+        }
+        .card-doc-icon { font-size: 1.2rem; color: var(--text-gray); }
+        .card-body h3 { font-size: 1.15rem; font-weight: 700; color: white; margin-bottom: 0.6rem; font-family: 'Outfit'; line-height: 1.3; }
+        .card-body p { font-size: 0.82rem; color: var(--text-gray); line-height: 1.5; }
+        
+        .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 1rem; }
+        .card-file-lbl { font-size: 0.72rem; color: var(--accent-gold); font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; }
+        .card-arrow { width: 26px; height: 26px; border-radius: 50%; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: white; transition: 0.3s; }
+        .claim-card:hover .card-arrow { background: var(--accent-gold); color: var(--primary-dark); transform: translateX(3px); }
+        
+        /* Modal Overlay & Modal Popup */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0, 8, 20, 0.75); backdrop-filter: blur(12px);
+            z-index: 10000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: all 0.4s ease; padding: 2rem;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        
+        .modal-card {
+            background: linear-gradient(135deg, rgba(2, 12, 32, 0.98), rgba(4, 18, 48, 0.95));
+            border: 1.5px solid var(--glass-border); border-radius: 24px; max-width: 900px; width: 100%;
+            box-shadow: 0 35px 70px rgba(0,0,0,0.6), 0 0 40px rgba(0, 80, 157, 0.15);
+            display: grid; grid-template-columns: 1.2fr 1fr; overflow: hidden;
+            position: relative; transform: scale(0.9) translateY(20px); transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            max-height: 85vh;
+        }
+        .modal-overlay.active .modal-card { transform: scale(1) translateY(0); }
+        
+        .modal-close-btn {
+            position: absolute; top: 1.2rem; right: 1.2rem; width: 34px; height: 34px; border-radius: 50%;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; z-index: 10;
+        }
+        .modal-close-btn:hover { background: var(--accent-gold); color: var(--primary-dark); border-color: var(--accent-gold); transform: rotate(90deg); }
+        
+        /* Modal Left Area: Document Live Preview Mockup */
+        .modal-preview-area {
+            background: rgba(0,0,0,0.3); border-right: 1.5px solid rgba(255,255,255,0.05);
+            padding: 2rem; display: flex; flex-direction: column; justify-content: space-between; overflow-y: auto;
+        }
+        .preview-doc-wrapper {
+            background: white; color: var(--text-dark); border-radius: 12px; padding: 1.8rem;
+            width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.4); aspect-ratio: 1 / 1.3;
+            display: flex; flex-direction: column; justify-content: space-between; font-family: 'Inter', sans-serif;
+            position: relative; overflow: hidden; margin-top: 1rem;
+        }
+        .preview-doc-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #00296b; padding-bottom: 0.6rem; }
+        .preview-logo { font-size: 0.85rem; font-weight: 800; color: #00296b; display: flex; align-items: center; gap: 4px; font-family: 'Outfit'; }
+        .preview-logo i { color: #fdc500; font-size: 0.9rem; }
+        .preview-doc-header span { font-size: 0.6rem; color: #64748b; font-weight: 700; text-transform: uppercase; }
+        
+        .preview-doc-body { flex-grow: 1; padding: 1rem 0; display: flex; flex-direction: column; gap: 0.8rem; }
+        .preview-doc-title { font-size: 0.95rem; font-weight: 800; color: #00296b; font-family: 'Outfit'; text-align: center; text-transform: uppercase; margin-bottom: 0.4rem; }
+        
+        .preview-fields { display: flex; flex-direction: column; gap: 0.6rem; }
+        .preview-field-row { display: grid; grid-template-columns: 0.8fr 1.2fr; align-items: center; font-size: 0.58rem; font-weight: 600; color: #475569; }
+        .field-val-line { height: 10px; background: #f1f5f9; border-bottom: 1px dashed #cbd5e1; position: relative; }
+        
+        .preview-text-block { display: flex; flex-direction: column; gap: 0.25rem; margin-top: 0.4rem; }
+        .preview-line-placeholder { height: 6px; background: #f1f5f9; border-radius: 3px; }
+        .preview-line-placeholder.short { width: 60%; }
+        .preview-line-placeholder.medium { width: 85%; }
+        
+        .preview-seal-sign { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 1rem; }
+        .preview-seal { width: 35px; height: 35px; border-radius: 50%; border: 2px solid rgba(0, 41, 107, 0.15); display: flex; align-items: center; justify-content: center; font-size: 0.5rem; color: rgba(0, 41, 107, 0.25); font-weight: 800; transform: rotate(-15deg); }
+        .preview-sign { border-top: 1.5px solid #cbd5e1; width: 75px; text-align: center; font-size: 0.45rem; padding-top: 0.2rem; color: #64748b; font-weight: 600; }
+        
+        .watermark-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Outfit'; font-size: 2.5rem; font-weight: 800; color: rgba(0, 41, 107, 0.03); transform: rotate(-35deg); pointer-events: none; text-transform: uppercase; letter-spacing: 2px; }
+        
+        /* Modal Right Area: Metadata & Actions */
+        .modal-details-area { padding: 2.2rem; display: flex; flex-direction: column; justify-content: space-between; overflow-y: auto; }
+        .modal-category-badge { background: rgba(0, 80, 157, 0.15); color: #38bdf8; font-size: 0.72rem; padding: 0.35rem 0.85rem; border-radius: 14px; font-weight: 700; width: fit-content; border: 1px solid rgba(0, 80, 157, 0.3); text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .modal-info-block { margin-top: 1.5rem; }
+        .modal-info-block h2 { font-size: 1.8rem; font-weight: 800; font-family: 'Outfit'; color: white; margin-bottom: 0.8rem; line-height: 1.25; }
+        .modal-info-block p { font-size: 0.9rem; color: var(--text-gray); line-height: 1.6; margin-bottom: 1.5rem; }
+        
+        .file-meta-box { background: rgba(0,0,0,0.2); border: 1.5px solid rgba(255,255,255,0.04); border-radius: 14px; padding: 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 2rem; }
+        .meta-item { display: flex; flex-direction: column; gap: 0.2rem; }
+        .meta-lbl { font-size: 0.7rem; color: var(--text-gray); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .meta-val { font-size: 0.85rem; color: white; font-weight: 700; }
+        
+        .modal-actions-wrapper { display: flex; flex-direction: column; gap: 0.8rem; }
+        .btn-full { width: 100%; padding: 0.95rem; border-radius: 14px; font-size: 0.92rem; }
+        
+        /* Interactive download progress inside modal */
+        .download-progress-wrap { display: none; flex-direction: column; gap: 0.5rem; background: rgba(0,0,0,0.2); border-radius: 12px; padding: 1rem; border: 1.5px solid rgba(253, 197, 0, 0.15); margin-top: 1rem; }
+        .progress-header { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; }
+        .progress-bar-track-modal { height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+        .progress-bar-fill-modal { height: 100%; background: linear-gradient(90deg, var(--accent-gold), var(--accent-gold-light)); width: 0%; transition: width 0.1s linear; }
+        
+        /* Help & Guidance Section */
+        .help-banner {
+            background: linear-gradient(135deg, rgba(0, 41, 107, 0.65), rgba(0, 15, 51, 0.85));
+            border: 1.5px solid rgba(255,255,255,0.06); border-radius: 28px; padding: 4rem;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4); display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 3.5rem; align-items: center; overflow: hidden; position: relative;
+        }
+        .help-banner::after { content: ''; position: absolute; top: 0; right: 0; width: 300px; height: 300px; background: radial-gradient(circle, rgba(253,197,0,0.04), transparent 70%); pointer-events: none; }
+        
+        .help-left h2 { font-size: 2.6rem; font-weight: 800; margin-bottom: 1rem; line-height: 1.2; }
+        .help-left p { color: var(--text-gray); font-size: 1.05rem; line-height: 1.6; margin-bottom: 2.2rem; }
+        
+        .expert-avs-block { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 2.2rem; }
+        .av-avatars { display: flex; margin-right: 0.2rem; }
+        .av-img-mock { width: 44px; height: 44px; border-radius: 50%; border: 2.5px solid var(--primary-mid); background-size: cover; background-position: center; margin-left: -12px; box-shadow: 0 0 10px rgba(0,0,0,0.3); }
+        .av-img-mock:first-child { margin-left: 0; }
+        .expert-status-info { display: flex; flex-direction: column; gap: 0.15rem; }
+        .live-indicator { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 700; color: #25d366; text-transform: uppercase; letter-spacing: 0.5px; }
+        .live-dot-pulse { width: 7px; height: 7px; background: #25d366; border-radius: 50%; position: relative; animation: statusPulse 1.6s infinite ease-in-out; }
+        @keyframes statusPulse { 0%, 100% { transform: scale(0.8); opacity: 0.6; } 50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 8px #25d366; } }
+        .expert-status-info span.live-sub { font-size: 0.78rem; color: var(--text-gray); font-weight: 500; }
+        
+        .help-btns-wrapper { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .btn-wa-green { background: #25D366; color: white !important; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.25); }
+        .btn-wa-green:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.35); }
+        
+        .help-right-visual { display: flex; justify-content: center; align-items: center; position: relative; }
+        .timeline-box-mock {
+            background: rgba(0,0,0,0.25); border: 1.5px solid rgba(255,255,255,0.05); border-radius: 20px; padding: 1.8rem; width: 100%; max-width: 380px;
+            display: flex; flex-direction: column; gap: 1.2rem; box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+        .timeline-mini-step { display: flex; gap: 1rem; align-items: flex-start; }
+        .mini-step-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(253, 197, 0, 0.12); border: 1.5px solid var(--accent-gold); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; color: var(--accent-gold-light); flex-shrink: 0; }
+        .timeline-mini-step:hover .mini-step-num { background: var(--accent-gold); color: var(--primary-dark); }
+        .mini-step-text { display: flex; flex-direction: column; gap: 0.15rem; }
+        .mini-step-text span.title { font-size: 0.85rem; font-weight: 700; color: white; }
+        .mini-step-text span.desc { font-size: 0.75rem; color: var(--text-gray); line-height: 1.4; }
+        
+        /* End-to-End Support Section (Timeline) */
+        .timeline-section { background: radial-gradient(circle at 50% 50%, rgba(0, 63, 136, 0.1) 0%, transparent 60%); }
+        .timeline-container { display: flex; justify-content: space-between; position: relative; margin-top: 4rem; padding-bottom: 2rem; }
+        .timeline-container::before { content: ''; position: absolute; top: 38px; left: 5%; right: 5%; height: 3px; background: rgba(255,255,255,0.06); z-index: 1; }
+        
+        /* Filled progress connector */
+        .timeline-progress-line { position: absolute; top: 38px; left: 5%; width: 50%; height: 3px; background: linear-gradient(90deg, var(--primary-light), var(--accent-gold)); z-index: 2; transition: width 0.6s ease; }
+        
+        .timeline-step { display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1; position: relative; z-index: 3; cursor: pointer; }
+        .timeline-icon-wrap {
+            width: 76px; height: 76px; border-radius: 50%; background: #001533; border: 2.5px solid rgba(255,255,255,0.08);
+            display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: var(--text-gray);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3); transition: all 0.4s ease; margin-bottom: 1.5rem;
+        }
+        .timeline-step:hover .timeline-icon-wrap, .timeline-step.active .timeline-icon-wrap {
+            border-color: var(--accent-gold); color: var(--accent-gold-light);
+            box-shadow: 0 0 25px var(--glass-gold-glow), 0 5px 15px rgba(253, 197, 0, 0.2);
+            transform: scale(1.08);
+        }
+        .timeline-step.completed .timeline-icon-wrap { border-color: #38bdf8; color: #38bdf8; box-shadow: 0 0 20px rgba(56, 189, 248, 0.15); }
+        
+        .timeline-step h4 { font-size: 0.95rem; font-weight: 700; color: white; margin-bottom: 0.4rem; font-family: 'Outfit'; padding: 0 0.5rem; }
+        .timeline-step p { font-size: 0.76rem; color: var(--text-gray); line-height: 1.4; max-width: 85%; }
+        
+        /* FAQ & Support Section */
+        .faq-split-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 3.5rem; }
+        .faq-left-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .faq-q-card {
+            background: var(--glass-bg); border: 1.5px solid var(--glass-border); border-radius: 20px; padding: 2rem;
+            display: flex; flex-direction: column; gap: 1rem; transition: 0.3s;
+        }
+        .faq-q-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); }
+        .faq-card-icon { width: 44px; height: 44px; border-radius: 10px; background: rgba(0, 80, 157, 0.15); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #38bdf8; }
+        .faq-q-card h3 { font-size: 1.1rem; font-weight: 700; color: white; font-family: 'Outfit'; }
+        .faq-q-card p { font-size: 0.82rem; color: var(--text-gray); line-height: 1.5; }
+        
+        .faq-right-panel {
+            background: linear-gradient(135deg, rgba(0, 41, 107, 0.4) 0%, rgba(0, 15, 51, 0.6) 100%);
+            border: 1.5px solid rgba(255,255,255,0.06); border-radius: 24px; padding: 3rem 2.5rem;
+            display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            position: relative; overflow: hidden;
+        }
+        .faq-right-panel::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 0% 100%, var(--glass-glow), transparent 60%); pointer-events: none; }
+        .faq-right-top h3 { font-size: 1.6rem; font-weight: 800; color: white; margin-bottom: 0.8rem; font-family: 'Outfit'; }
+        .faq-right-top p { font-size: 0.9rem; color: var(--text-gray); line-height: 1.6; margin-bottom: 2rem; }
+        .faq-right-btns { display: flex; flex-direction: column; gap: 0.8rem; z-index: 5; position: relative; }
+        
+        /* Smart AI Assistance Section */
+        .ai-assist-box {
+            background: linear-gradient(135deg, rgba(2, 11, 30, 0.95), rgba(4, 18, 45, 0.9));
+            border: 1.5px solid var(--accent-gold); border-radius: 28px; padding: 4rem;
+            display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: center;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 30px rgba(253,197,0,0.1);
+        }
+        .ai-left h2 { font-size: 2.6rem; font-weight: 800; margin-bottom: 1rem; line-height: 1.2; }
+        .ai-left p { color: var(--text-gray); font-size: 1.05rem; line-height: 1.6; margin-bottom: 2.2rem; }
+        
+        .ai-stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 2rem; }
+        .ai-stat-card { display: flex; flex-direction: column; gap: 0.2rem; }
+        .ai-stat-num { font-size: 2.2rem; font-weight: 800; color: var(--accent-gold); font-family: 'Outfit'; }
+        .ai-stat-lbl { font-size: 0.75rem; color: var(--text-gray); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .ai-right-card {
+            background: rgba(0,0,0,0.25); border: 1.5px solid rgba(255,255,255,0.04); border-radius: 20px; padding: 2.2rem;
+            display: flex; flex-direction: column; gap: 1.5rem; box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        .ai-chat-preview-header { display: flex; align-items: center; gap: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 1rem; }
+        .ai-chat-avatar { width: 38px; height: 38px; border-radius: 50%; background: #00296b; border: 1.5px solid var(--accent-gold); display: flex; align-items: center; justify-content: center; color: var(--accent-gold-light); font-size: 1rem; }
+        .ai-chat-title-info { display: flex; flex-direction: column; gap: 0.1rem; }
+        .ai-chat-title-info span.name { font-size: 0.85rem; font-weight: 700; color: white; }
+        .ai-chat-title-info span.desc { font-size: 0.7rem; color: #25d366; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+        .ai-chat-title-info span.desc::before { content: ''; display: inline-block; width: 4px; height: 4px; background: #25d366; border-radius: 50%; }
+        
+        .ai-chat-bubbles { display: flex; flex-direction: column; gap: 0.8rem; }
+        .ai-bubble { padding: 0.75rem 1rem; border-radius: 14px; font-size: 0.8rem; line-height: 1.4; max-width: 85%; }
+        .ai-bubble.bot { background: rgba(0, 80, 157, 0.15); border: 1px solid rgba(0, 80, 157, 0.3); color: white; border-top-left-radius: 2px; }
+        .ai-bubble.user { background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text-gray); align-self: flex-end; border-top-right-radius: 2px; }
+        
+        /* Footer */
+        .footer {
+            background: #000b1a; border-top: 1px solid rgba(255,255,255,0.05); padding: 5rem 5% 2rem 5%;
+        }
+        .footer-grid {
+            display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 4rem; max-width: 1400px; margin: 0 auto 4rem auto;
+        }
+        .footer-logo { font-size: 1.8rem; font-weight: 800; color: var(--text-white); font-family: 'Outfit'; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; }
+        .footer-logo i { color: var(--accent-gold); }
+        .footer p { color: var(--text-gray); font-size: 0.9rem; line-height: 1.6; margin-bottom: 2rem; max-width: 90%; }
+        .social-links { display: flex; gap: 1rem; }
+        .social-links a { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; color: white; transition: 0.3s; border: 1px solid rgba(255,255,255,0.1); }
+        .social-links a:hover { background: var(--primary-mid); border-color: var(--accent-gold); transform: translateY(-3px); }
+        
+        .footer-col h4 { font-size: 1.2rem; margin-bottom: 1.5rem; font-family: 'Outfit'; font-weight: 700; }
+        .footer-col ul li { margin-bottom: 0.8rem; }
+        .footer-col ul a { color: #94a3b8; transition: 0.3s; font-size: 0.9rem; }
+        .footer-col ul a:hover { color: var(--accent-gold); padding-left: 5px; }
+        
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 2rem; display: flex; justify-content: space-between; color: #94a3b8; font-size: 0.9rem; max-width: 1400px; margin: 0 auto; }
+        
+        /* Floating Actions */
+        .floating-actions { position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 1000; }
+        .float-btn { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: white; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.3); transition: 0.3s; position: relative; text-decoration: none; }
+        .float-ai { background: linear-gradient(135deg, var(--primary-light), var(--primary-mid)); border: 1.5px solid var(--accent-gold); }
+        .float-wa { background: #25D366; border: 1.5px solid rgba(255,255,255,0.1); }
+        .float-btn:hover { transform: scale(1.1); color: white; }
+        .float-btn::before {
+            content: attr(data-tooltip); position: absolute; right: 80px; background: white; color: var(--text-dark); font-size: 0.85rem; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; white-space: nowrap; opacity: 0; pointer-events: none; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.1); font-family: 'Inter';
+        }
+        .float-btn:hover::before { opacity: 1; right: 75px; }
+        
+        /* Responsiveness */
+        @media (max-width: 1200px) {
+            .hero h1 { font-size: 3.2rem; }
+            .claims-grid { grid-template-columns: repeat(3, 1fr); }
+            .footer-grid { gap: 2rem; }
+        }
+        @media (max-width: 992px) {
+            .hero-container { grid-template-columns: 1fr; text-align: center; }
+            .hero-content { align-items: center; }
+            .hero p { max-width: 100%; }
+            .hero-visuals { margin-top: 3rem; }
+            .claims-grid { grid-template-columns: repeat(2, 1fr); }
+            .help-banner { grid-template-columns: 1fr; text-align: center; gap: 2.5rem; padding: 3rem 2rem; }
+            .expert-avs-block { justify-content: center; }
+            .help-btns-wrapper { justify-content: center; }
+            .help-right-visual { display: none; }
+            .timeline-container { flex-direction: column; gap: 3rem; align-items: center; }
+            .timeline-container::before { width: 3px; top: 0; bottom: 0; left: 50%; transform: translateX(-50%); height: auto; }
+            .timeline-progress-line { width: 3px; top: 0; left: 50%; transform: translateX(-50%); height: 50%; }
+            .timeline-step p { max-width: 300px; }
+            .faq-split-grid { grid-template-columns: 1fr; }
+            .ai-assist-box { grid-template-columns: 1fr; text-align: center; gap: 2.5rem; padding: 3rem 2rem; }
+            .ai-stats-grid { justify-content: center; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .modal-card { grid-template-columns: 1fr; max-height: 90vh; }
+            .modal-preview-area { display: none; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .claims-grid { grid-template-columns: 1fr; }
+            .faq-left-cards { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sparkle Spot Lights Background System -->
+    <div class="bg-spot spot-1"></div>
+    <div class="bg-spot spot-2"></div>
+    <div class="bg-spot spot-3"></div>
+
+    <!-- Sticky Navigation Bar -->
+    <nav class="navbar" id="navbar">
+        <a href="index.html" class="logo">
+            <i class="fas fa-shield-alt"></i> Twinsure
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="services.html">Services</a>
+            <a href="downloads.html" class="active">Claims</a>
+            <a href="contact.html">Contact</a>
+            <a href="partner.html">Partner</a>
+            <a href="login.html" class="btn btn-gold" style="padding: 0.5rem 1.5rem; margin-left:1rem;">Login</a>
+        </div>
+    </nav>
+
+    <!-- CINEMATIC HERO SECTION -->
+    <section class="hero">
+        <div class="hero-container">
+            <!-- Left Side Content -->
+            <div class="hero-content">
+                <div class="badge">
+                    <i class="fas fa-bolt"></i> Fast & Guided Claim Assistance
+                </div>
+                <h1>Insurance Claim Support Made Simple.</h1>
+                <p>Download claim forms, preview required documents, and receive complete end-to-end assistance from our insurance experts.</p>
+                <div class="hero-quote">
+                    “From choosing your policy to successfully filing your final claim — Twinsure stays with you throughout the journey.”
+                </div>
+                <div class="hero-btns">
+                    <a href="#available-forms" class="btn btn-gold">
+                        <i class="fas fa-download"></i> Explore Claim Forms
+                    </a>
+                    <a href="contact.html" class="btn btn-outline">
+                        <i class="fas fa-phone-alt"></i> Talk to an Expert
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Right Side Visual Mockup -->
+            <div class="hero-visuals">
+                <div class="floating-shield-visual v-shield-1">
+                    <i class="fas fa-check"></i>
+                </div>
+                <div class="floating-shield-visual v-shield-2">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                </div>
+                
+                <!-- Mockup Glass Dashboard -->
+                <div class="visual-glass-card">
+                    <div class="mock-header">
+                        <div class="mock-title">
+                            <i class="fas fa-robot"></i>
+                            <span>Claim #CLM-98240 Status</span>
+                        </div>
+                        <div class="mock-status">Processing</div>
+                    </div>
+                    
+                    <div class="mock-metric-bar">
+                        <div class="metric-info">
+                            <span>Document Validation Progress</span>
+                            <span class="high">85%</span>
+                        </div>
+                        <div class="metric-track">
+                            <div class="metric-fill"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mock-checklist">
+                        <div class="checklist-item done">
+                            <div class="check-left">
+                                <div class="check-box checked"><i class="fas fa-check"></i></div>
+                                <span class="check-text">Claim Form Downloaded</span>
+                            </div>
+                            <span class="check-action-lbl">Verified</span>
+                        </div>
+                        
+                        <div class="checklist-item done">
+                            <div class="check-left">
+                                <div class="check-box checked"><i class="fas fa-check"></i></div>
+                                <span class="check-text">ID Verification Complete</span>
+                            </div>
+                            <span class="check-action-lbl">Verified</span>
+                        </div>
+                        
+                        <div class="checklist-item todo">
+                            <div class="check-left">
+                                <div class="check-box pending"></div>
+                                <span class="check-text">Medical Bill Audit</span>
+                            </div>
+                            <span class="check-action-lbl" style="color: var(--text-gray)">Pending</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CLAIMS LIST SECTION -->
+    <section class="section" id="available-forms">
+        <div class="section-header">
+            <h2>Available <span class="gradient-text">Claim Forms</span></h2>
+            <p>Browse and access claim forms for various insurance categories.</p>
+        </div>
+        
+        <div class="claims-grid">
+            <!-- 1. Health Insurance Claim Form -->
+            <div class="claim-card" onclick="openClaimModal('Health Insurance Claim Form', 'Comprehensive form to request health insurance claim payouts, hospital bill auditing, or medical service reimbursements.', 'Health', 'health-claim.pdf', '245 KB')">
+                <div class="card-top">
+                    <div class="card-category-icon"><i class="fas fa-heartbeat"></i></div>
+                    <i class="far fa-file-pdf card-doc-icon"></i>
+                </div>
+                <div class="card-body">
+                    <h3>Health Insurance Claim Form</h3>
+                    <p>Request hospital treatment coverage, medical payouts, or health reimbursements.</p>
+                </div>
+                <div class="card-footer">
+                    <span class="card-file-lbl">PDF (245 KB)</span>
+                    <div class="card-arrow"><i class="fas fa-chevron-right"></i></div>
+                </div>
+            </div>
+            
+            <!-- 2. Vehicle Insurance Claim Form -->
+            <div class="claim-card" onclick="openClaimModal('Vehicle Insurance Claim Form', 'Standardized form to report vehicle accidents, collisions, thefts, or third-party physical damage claims.', 'Vehicle', 'vehicle-claim.pdf', '310 KB')">
+                <div class="card-top">
+                    <div class="card-category-icon"><i class="fas fa-car"></i></div>
+                    <i class="far fa-file-pdf card-doc-icon"></i>
+                </div>
+                <div class="card-body">
+                    <h3>Vehicle Insurance Claim Form</h3>
+                    <p>File claims for automobile accidents, collisions, vehicle damage, or thefts.</p>
+                </div>
+                <div class="card-footer">
+                    <span class="card-file-lbl">PDF (310 KB)</span>
+                    <div class="card-arrow"><i class="fas fa-chevron-right"></i></div>
+                </div>
+            </div>
+            
+            <!-- 3. Life Insurance Claim Form -->
+            <div class="claim-card" onclick="openClaimModal('Life Insurance Claim Form', 'Form designed for nominees and legal heirs to file for life insurance policy claims and death benefit settlements.', 'Life', 'life-claim.pdf', '412 KB')">
+                <div class="card-top">
+                    <div class="card-category-icon"><i class="fas fa-user-shield"></i></div>
+                    <i class="far fa-file-pdf card-doc-icon"></i>
+                </div>
+                <div class="card-body">
+                    <h3>Life Insurance Claim Form</h3>
+                    <p>File death benefit payouts, maturity returns, or life insurance policy settlements.</p>
+                </div>
+                <div class="card-footer">
+                    <span class="card-file-lbl">PDF (412 KB)</span>
+                    <div class="card-arrow"><i class="fas fa-chevron-right"></i></div>
+                </div>
+            </div>
+            
+            <!-- 4. Cashless Hospitalization Form -->
+            <div class="claim-card" onclick="openClaimModal('Cashless Hospitalization Request', 'Pre-authorization request form to clear medical bills directly at network hospitals in cashless formats.', 'Health', 'cashless-hospitalization.pdf', '198 KB')">
+                <div class="card-top">
+                    <div class="card-category-icon"><i class="fas fa-hospital"></i></div>
+                    <i class="far fa-file-pdf card-doc-icon"></i>
+                </div>
+                <div class="card-body">
+                    <h3>Cashless Hospitalization Form</h3>
+                    <p>Request pre-authorization code to clear hospital bills in direct cashless formats.</p>
+                </div>
+                <div class="card-footer">
+                    <span class="card-file-lbl">PDF (198 KB)</span>
+                    <div class="card-arrow"><i class="fas fa-chevron-right"></i></div>
+                </div>
+            </div>
+            
+            <!-- 5. Accident Claim Form -->
+            <div class="claim-card" onclick="openClaimModal('Accident Claim Form', 'Comprehensive form to file for personal accidents, disability coverages, or critical emergency treatments.', 'Accident', 'accident-claim.pdf', '285 KB')">
+                <div class="card-top">
+                    <div class="card-category-icon"><i class="fas fa-user-injured"></i></div>
+                    <i class="far fa-file-pdf card-doc-icon"></i>
+                </div>
+                <div class="card-body">
+                    <h3>Accident Claim Form</h3>
+                    <p>File for personal injury treatments, emergency room expenses, or disability coverage.</p>
+                </div>
+                <div class="card-footer">
+                    <span class="card-file-lbl">PDF (285 KB)</span>
+                    <div class="card-arrow"><i class="fas fa-chevron-right"></i></div>
+                </div>
+            </div>
+            
+            <!-- 6. Reimbursement Form -->
+            <div class="claim-card" onclick="openClaimModal('Reimbursement Claim Form', 'Request refund payouts for medical treatments, pharmacy prescriptions, or out-of-network services.', 'Finance', 'reimbursement-claim.pdf', '215 KB')">
+                <div class="card-top">
+                    <div class="card-category-icon"><i class="fas fa-hand-holding-usd"></i></div>
+                    <i class="far fa-file-pdf card-doc-icon"></i>
+                </div>
+                <div class="card-body">
+                    <h3>Reimbursement Form</h3>
+                    <p>Request refund payouts for personal medical expenditures or prescription costs.</p>
+                </div>
+                <div class="card-footer">
+                    <span class="card-file-lbl">PDF (215 KB)</span>
+                    <div class="card-arrow"><i class="fas fa-chevron-right"></i></div>
+                </div>
+            </div>
+            
+            <!-- 7. Travel Insurance Claim Form -->
+            <div class="claim-card" onclick="openClaimModal('Travel Insurance Claim Form', 'Report flight cancellations, baggage losses, passport loss emergencies, or international medical issues.', 'Travel', 'travel-claim.pdf', '270 KB')">
+                <div class="card-top">
+                    <div class="card-category-icon"><i class="fas fa-plane-departure"></i></div>
+                    <i class="far fa-file-pdf card-doc-icon"></i>
+                </div>
+                <div class="card-body">
+                    <h3>Travel Insurance Claim Form</h3>
+                    <p>Claim for flight cancellations, luggage losses, passport emergencies, or trip issues.</p>
+                </div>
+                <div class="card-footer">
+                    <span class="card-file-lbl">PDF (270 KB)</span>
+                    <div class="card-arrow"><i class="fas fa-chevron-right"></i></div>
+                </div>
+            </div>
+            
+            <!-- 8. Policy Renewal Request Form -->
+            <div class="claim-card" onclick="openClaimModal('Policy Renewal Request Form', 'Standard request form to extend and renew active policies, update terms, or add premium riders.', 'Renewal', 'policy-renewal.pdf', '180 KB')">
+                <div class="card-top">
+                    <div class="card-category-icon"><i class="fas fa-sync-alt"></i></div>
+                    <i class="far fa-file-pdf card-doc-icon"></i>
+                </div>
+                <div class="card-body">
+                    <h3>Policy Renewal Request Form</h3>
+                    <p>Extend policy term structures, renew protection values, or update premium schedules.</p>
+                </div>
+                <div class="card-footer">
+                    <span class="card-file-lbl">PDF (180 KB)</span>
+                    <div class="card-arrow"><i class="fas fa-chevron-right"></i></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HELP & GUIDANCE SECTION -->
+    <section class="section">
+        <div class="help-banner">
+            <div class="help-left">
+                <h2>Need Help <span class="gradient-text">Filling the Form?</span></h2>
+                <p>Our experts will guide you end-to-end through the entire claim filing process with minimal service charges.</p>
+                
+                <div class="expert-avs-block">
+                    <div class="av-avatars">
+                        <!-- Simulated Support Avatars -->
+                        <div class="av-img-mock" style="background-color: var(--primary-light);"></div>
+                        <div class="av-img-mock" style="background-color: var(--primary-mid);"></div>
+                        <div class="av-img-mock" style="background-color: var(--primary-lighter);"></div>
+                    </div>
+                    <div class="expert-status-info">
+                        <div class="live-indicator">
+                            <div class="live-dot-pulse"></div>
+                            <span>Live Support Available</span>
+                        </div>
+                        <span class="live-sub">Average response rate: 3 minutes</span>
+                    </div>
+                </div>
+                
+                <div class="help-btns-wrapper">
+                    <a href="contact.html" class="btn btn-gold">
+                        <i class="fas fa-calendar-check"></i> Book a Call With Experts
+                    </a>
+                    <a href="https://wa.me/" class="btn btn-wa-green">
+                        <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+                    </a>
+                    <a href="userchat.html" class="btn btn-outline">
+                        <i class="fas fa-robot"></i> Start AI Assistance
+                    </a>
+                </div>
+            </div>
+            
+            <div class="help-right-visual">
+                <!-- Mini Claim Checklist/Timeline Display -->
+                <div class="timeline-box-mock">
+                    <div class="timeline-mini-step">
+                        <div class="mini-step-num">1</div>
+                        <div class="mini-step-text">
+                            <span class="title">Expert Consultation</span>
+                            <span class="desc">Quick assessment of your claim eligibility and benefits.</span>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-mini-step">
+                        <div class="mini-step-num">2</div>
+                        <div class="mini-step-text">
+                            <span class="title">Document Verification</span>
+                            <span class="desc">A thorough audit of bills, certificates, and ID documents.</span>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-mini-step">
+                        <div class="mini-step-num">3</div>
+                        <div class="mini-step-text">
+                            <span class="title">Seamless Filing</span>
+                            <span class="desc">Direct submission of files to ensure quick, approved payouts.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- END-TO-END SUPPORT TIMELINE SECTION -->
+    <section class="section timeline-section">
+        <div class="section-header">
+            <h2>Complete <span class="gradient-text">Claims Assistance</span></h2>
+            <p>A step-by-step interactive roadmap demonstrating how Twinsure supports your claims process.</p>
+        </div>
+        
+        <div class="timeline-container">
+            <!-- Filled Progress Line -->
+            <div class="timeline-progress-line" id="timelineProgress"></div>
+            
+            <!-- Step 1 -->
+            <div class="timeline-step completed" onclick="setTimelineProgress(0)">
+                <div class="timeline-icon-wrap"><i class="fas fa-handshake"></i></div>
+                <h4>1. Choose Insurance</h4>
+                <p>Select policy guidelines and dynamic premium structures.</p>
+            </div>
+            
+            <!-- Step 2 -->
+            <div class="timeline-step completed" onclick="setTimelineProgress(1)">
+                <div class="timeline-icon-wrap"><i class="fas fa-cloud-download-alt"></i></div>
+                <h4>2. Download Claim Form</h4>
+                <p>Access and download appropriate claim templates easily.</p>
+            </div>
+            
+            <!-- Step 3 -->
+            <div class="timeline-step active" onclick="setTimelineProgress(2)">
+                <div class="timeline-icon-wrap"><i class="fas fa-info-circle"></i></div>
+                <h4>3. Documentation Guidance</h4>
+                <p>Read required attachment lists and checklists.</p>
+            </div>
+            
+            <!-- Step 4 -->
+            <div class="timeline-step" onclick="setTimelineProgress(3)">
+                <div class="timeline-icon-wrap"><i class="fas fa-edit"></i></div>
+                <h4>4. Fill the Form Correctly</h4>
+                <p>Ensure accurate, complete, and verified detail entries.</p>
+            </div>
+            
+            <!-- Step 5 -->
+            <div class="timeline-step" onclick="setTimelineProgress(4)">
+                <div class="timeline-icon-wrap"><i class="fas fa-paper-plane"></i></div>
+                <h4>5. Submit Claim</h4>
+                <p>File medical or vehicle claims to starting auditors.</p>
+            </div>
+            
+            <!-- Step 6 -->
+            <div class="timeline-step" onclick="setTimelineProgress(5)">
+                <div class="timeline-icon-wrap"><i class="fas fa-spinner"></i></div>
+                <h4>6. Processing Support</h4>
+                <p>Receive updates and direct carrier negotiation assistance.</p>
+            </div>
+            
+            <!-- Step 7 -->
+            <div class="timeline-step" onclick="setTimelineProgress(6)">
+                <div class="timeline-icon-wrap"><i class="fas fa-check-double"></i></div>
+                <h4>7. Successful Completion</h4>
+                <p>Funds transferred to account or direct cashless settlement.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ & SUPPORT SECTION -->
+    <section class="section">
+        <div class="faq-split-grid">
+            <!-- Left: Quick support Q cards -->
+            <div class="faq-left-cards">
+                <div class="faq-q-card">
+                    <div class="faq-card-icon"><i class="fas fa-question-circle"></i></div>
+                    <h3>Common Questions</h3>
+                    <p>What documents are essential? What is the standard claim waiting period?</p>
+                </div>
+                
+                <div class="faq-q-card">
+                    <div class="faq-card-icon"><i class="fas fa-file-medical"></i></div>
+                    <h3>Documentation Help</h3>
+                    <p>Get precise checklists for medical bill files, repair invoices, and certs.</p>
+                </div>
+                
+                <div class="faq-q-card">
+                    <div class="faq-card-icon"><i class="fas fa-tasks"></i></div>
+                    <h3>Claim Status Guidance</h3>
+                    <p>Learn how to track claim progress codes and submit missing values.</p>
+                </div>
+                
+                <div class="faq-q-card">
+                    <div class="faq-card-icon"><i class="fas fa-lock"></i></div>
+                    <h3>Policy Support</h3>
+                    <p>Understand exclusions, deductible parameters, and cashless limits.</p>
+                </div>
+            </div>
+            
+            <!-- Right: Support CTA Panel -->
+            <div class="faq-right-panel">
+                <div class="faq-right-top">
+                    <h3>If you have any doubts, our team is always ready to help.</h3>
+                    <p>Common doubts are addressed in our FAQ section, or you can directly speak with our support experts anytime.</p>
+                </div>
+                <div class="faq-right-btns">
+                    <a href="contact.html" class="btn btn-gold">
+                        <i class="fas fa-envelope"></i> Contact Us
+                    </a>
+                    <a href="about.html" class="btn btn-outline">
+                        <i class="fas fa-book-open"></i> Visit FAQ Page
+                    </a>
+                    <a href="contact.html" class="btn btn-outline">
+                        <i class="fas fa-headset"></i> Talk to an Expert
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SMART AI ASSISTANCE SECTION -->
+    <section class="section" style="padding-bottom: 8rem;">
+        <div class="ai-assist-box">
+            <div class="ai-left">
+                <h2>Need Smart <span class="gradient-text">Claim Guidance?</span></h2>
+                <p>Our AI assistant can help you understand claim requirements and guide you through the process instantly.</p>
+                
+                <div class="hero-btns">
+                    <a href="userchat.html" class="btn btn-gold">
+                        <i class="fas fa-robot"></i> Open AI Assistant
+                    </a>
+                    <a href="userchat.html" class="btn btn-outline">
+                        <i class="fas fa-compass"></i> Start Recommendation Journey
+                    </a>
+                </div>
+                
+                <div class="ai-stats-grid">
+                    <div class="ai-stat-card">
+                        <span class="ai-stat-num" data-val="99.8">0%</span>
+                        <span class="ai-stat-lbl">Claims Settled</span>
+                    </div>
+                    <div class="ai-stat-card">
+                        <span class="ai-stat-num" data-val="10">0K+</span>
+                        <span class="ai-stat-lbl">Claims Guided</span>
+                    </div>
+                    <div class="ai-stat-card">
+                        <span class="ai-stat-num" data-val="24">0</span>
+                        <span class="ai-stat-lbl">/7 AI Assistance</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ai-right">
+                <!-- AI Assistant Chat Preview Card -->
+                <div class="ai-right-card">
+                    <div class="ai-chat-preview-header">
+                        <div class="ai-chat-avatar"><i class="fas fa-robot"></i></div>
+                        <div class="ai-chat-title-info">
+                            <span class="name">Twinsure Claims Bot</span>
+                            <span class="desc">Online and Ready</span>
+                        </div>
+                    </div>
+                    <div class="ai-chat-bubbles">
+                        <div class="ai-bubble bot">
+                            Hello! I am your claims assistant. Please tell me which form you downloaded so I can guide you on document requirements.
+                        </div>
+                        <div class="ai-bubble user">
+                            I downloaded the Health Insurance Claim Form. What should I prepare next?
+                        </div>
+                        <div class="ai-bubble bot">
+                            Great choice. Prepare: 1) Original bills, 2) Diagnostic reports, 3) Discharge card, and 4) Direct cancelled bank cheque.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PREMIUM POPUP MODAL OVERLAY -->
+    <div class="modal-overlay" id="claimModalOverlay">
+        <div class="modal-card">
+            <div class="modal-close-btn" onclick="closeClaimModal()"><i class="fas fa-times"></i></div>
+            
+            <!-- Left Side: Interactive Document Mockup -->
+            <div class="modal-preview-area">
+                <span class="modal-category-badge" id="modalCategoryBadge">Category</span>
+                
+                <div class="preview-doc-wrapper">
+                    <div class="watermark-overlay">Twinsure</div>
+                    
+                    <div class="preview-doc-header">
+                        <div class="preview-logo">
+                            <i class="fas fa-shield-alt"></i> Twinsure
+                        </div>
+                        <span>FORM PL-8902</span>
+                    </div>
+                    
+                    <div class="preview-doc-body">
+                        <div class="preview-doc-title" id="previewFormTitle">Form Name</div>
+                        
+                        <div class="preview-fields">
+                            <div class="preview-field-row">
+                                <span>1. POLICY NUMBER</span>
+                                <div class="field-val-line"></div>
+                            </div>
+                            
+                            <div class="preview-field-row">
+                                <span>2. FULL NAME</span>
+                                <div class="field-val-line"></div>
+                            </div>
+                            
+                            <div class="preview-field-row">
+                                <span>3. LOSS DESCRIPTION</span>
+                                <div class="field-val-line"></div>
+                            </div>
+                            
+                            <div class="preview-field-row">
+                                <span>4. CLAIM AMOUNT</span>
+                                <div class="field-val-line"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="preview-text-block">
+                            <div class="preview-line-placeholder medium"></div>
+                            <div class="preview-line-placeholder"></div>
+                            <div class="preview-line-placeholder short"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-seal-sign">
+                        <div class="preview-seal">APPROVED</div>
+                        <div class="preview-sign">Claimant Signature</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Side: Details & Action triggers -->
+            <div class="modal-details-area">
+                <div class="modal-info-block">
+                    <h2 id="modalFormTitle">Form Name</h2>
+                    <p id="modalFormDesc">Detailed claim document explanation comes here.</p>
+                    
+                    <div class="file-meta-box">
+                        <div class="meta-item">
+                            <span class="meta-lbl">File Format</span>
+                            <span class="meta-val">Adobe PDF</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-lbl">File Size</span>
+                            <span class="meta-val" id="modalFileSize">245 KB</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-lbl">Version</span>
+                            <span class="meta-val">v2.4 (Latest)</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-lbl">Last Updated</span>
+                            <span class="meta-val">May 2026</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-actions-wrapper">
+                    <!-- Progress Bar for Downloading simulation -->
+                    <div class="download-progress-wrap" id="downloadProgressWrap">
+                        <div class="progress-header">
+                            <span style="color: var(--accent-gold);"><i class="fas fa-spinner fa-spin"></i> Downloading Document...</span>
+                            <span id="downloadPercent">0%</span>
+                        </div>
+                        <div class="progress-bar-track-modal">
+                            <div class="progress-bar-fill-modal" id="downloadProgressBar"></div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-gold btn-full" onclick="simulateDownload()">
+                        <i class="fas fa-download"></i> Download Claim Form
+                    </button>
+                    <button class="btn btn-outline btn-full" onclick="alert('Live document preview initialized in a high fidelity canvas layer.')">
+                        <i class="fas fa-eye"></i> Preview Form Details
+                    </button>
+                    <button class="btn btn-outline btn-full" onclick="closeClaimModal()" style="border-color: rgba(255,255,255,0.1); color: var(--text-gray) !important;">
+                        Close Popup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PREMIUM FOOTER -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div>
+                <a href="index.html" class="footer-logo">
+                    <i class="fas fa-shield-alt"></i> Twinsure
+                </a>
+                <p>Securing futures through intelligent insurance solutions, trusted partnerships, and unwavering support.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="services.html">Our Services</a></li>
+                    <li><a href="downloads.html">Claims Support</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="partner.html">Partner Portal</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h4>Services</h4>
+                <ul>
+                    <li><a href="services.html">Health Insurance</a></li>
+                    <li><a href="services.html">Life Insurance</a></li>
+                    <li><a href="services.html">Vehicle Insurance</a></li>
+                    <li><a href="services.html">Business Insurance</a></li>
+                    <li><a href="services.html">Travel Insurance</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h4>Contact Info</h4>
+                <ul>
+                    <li style="color: #94a3b8;"><i class="fas fa-envelope" style="margin-right:8px; color:var(--accent-gold);"></i> info@twinsure.com</li>
+                    <li style="color: #94a3b8;"><i class="fas fa-phone-alt" style="margin-right:8px; color:var(--accent-gold);"></i> +1 (800) 123-4567</li>
+                    <li style="color: #94a3b8;"><i class="fas fa-map-marker-alt" style="margin-right:8px; color:var(--accent-gold);"></i> 123 Tech Avenue, NY</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div>&copy; 2026 Twins Consultancy. All rights reserved.</div>
+            <div style="display:flex; gap:1.5rem;">
+                <a href="privacy.html" style="color:#94a3b8;">Privacy Policy</a>
+                <a href="terms.html" style="color:#94a3b8;">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Actions -->
+    <div class="floating-actions">
+        <a href="userchat.html" class="float-btn float-ai" data-tooltip="Insurance Recommender">
+            <i class="fas fa-robot"></i>
+        </a>
+        <a href="https://wa.me/" class="float-btn float-wa" data-tooltip="Professional WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Interactive Timeline management
+        function setTimelineProgress(stepIndex) {
+            const progress = document.getElementById('timelineProgress');
+            const steps = document.querySelectorAll('.timeline-step');
+            
+            // Set line width percentage based on selected step
+            const percent = (stepIndex / (steps.length - 1)) * 90;
+            progress.style.width = (5 + percent) + '%';
+            
+            steps.forEach((step, idx) => {
+                step.classList.remove('active', 'completed');
+                if (idx < stepIndex) {
+                    step.classList.add('completed');
+                } else if (idx === stepIndex) {
+                    step.classList.add('active');
+                }
+            });
+        }
+
+        // Stats Counting Animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.ai-stat-num');
+            counters.forEach(counter => {
+                const target = parseFloat(counter.getAttribute('data-val'));
+                const isFloat = counter.getAttribute('data-val').includes('.');
+                let count = 0;
+                const speed = target / 60;
+                
+                const updateCount = () => {
+                    count += speed;
+                    if (count < target) {
+                        counter.innerText = isFloat ? count.toFixed(1) + '%' : Math.floor(count) + (counter.innerText.includes('K') ? 'K+' : counter.innerText.includes('/') ? '' : '');
+                        setTimeout(updateCount, 20);
+                    } else {
+                        counter.innerText = isFloat ? target + '%' : target + (target >= 10 ? 'K+' : '');
+                    }
+                };
+                updateCount();
+            });
+        }
+
+        // Trigger stats animation when section is in viewport
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+        
+        const aiSection = document.querySelector('.ai-assist-box');
+        if (aiSection) {
+            observer.observe(aiSection);
+        }
+
+        // Modal triggers
+        let currentModalFormName = "";
+        let currentModalFileName = "";
+
+        function openClaimModal(title, desc, category, fileName, size) {
+            currentModalFormName = title;
+            currentModalFileName = fileName;
+            
+            document.getElementById('modalFormTitle').innerText = title;
+            document.getElementById('previewFormTitle').innerText = title;
+            document.getElementById('modalFormDesc').innerText = desc;
+            document.getElementById('modalCategoryBadge').innerText = category;
+            document.getElementById('modalFileSize').innerText = size;
+            
+            // Reset download progress elements
+            document.getElementById('downloadProgressWrap').style.display = 'none';
+            document.getElementById('downloadProgressBar').style.width = '0%';
+            document.getElementById('downloadPercent').innerText = '0%';
+            
+            const overlay = document.getElementById('claimModalOverlay');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeClaimModal() {
+            const overlay = document.getElementById('claimModalOverlay');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal when clicking outside card
+        document.getElementById('claimModalOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeClaimModal();
+            }
+        });
+
+        // Simulate Download with animated progress bar
+        function simulateDownload() {
+            const progressWrap = document.getElementById('downloadProgressWrap');
+            const progressBar = document.getElementById('downloadProgressBar');
+            const progressPercent = document.getElementById('downloadPercent');
+            
+            progressWrap.style.display = 'flex';
+            let percent = 0;
+            
+            const interval = setInterval(() => {
+                percent += 4;
+                progressBar.style.width = percent + '%';
+                progressPercent.innerText = percent + '%';
+                
+                if (percent >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        // Generate mock text content to trigger actual file download
+                        const content = `TWINSURE PREMIUM INSURANCE ecosystem\nCLAIM FORM: ${currentModalFormName}\nFile Name Reference: ${currentModalFileName}\nGenerated on: ${new Date().toLocaleDateString()}\nStatus: Active (Authorized Template)\n\nTwinsure claim support stays with you throughout the journey. Please present this form to your nearest network branch or submit via client portal.`;
+                        
+                        const blob = new Blob([content], { type: 'text/plain' });
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = currentModalFileName.replace('.pdf', '-template.txt');
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        
+                        alert('Claim form downloaded successfully! Opened in local files.');
+                        progressWrap.style.display = 'none';
+                    }, 500);
+                }
+            }, 50);
+        }
+    </script>
+</body>
+</html>
