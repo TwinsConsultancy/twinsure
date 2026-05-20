@@ -2,6 +2,7 @@
 // database/init.php
 // Run this script from the terminal: php database/init.php
 // It will initialize the MongoDB database and collections based on your .env
+require_once __DIR__ . '/../backend/api/config/database.php';
 
 $envFile = __DIR__ . '/../backend/.env';
 if (file_exists($envFile)) {
@@ -21,42 +22,37 @@ $adminEmail = isset($_ENV['ADMIN_EMAIL']) ? $_ENV['ADMIN_EMAIL'] : "admin@twinsu
 $adminPassword = isset($_ENV['ADMIN_PASSWORD']) ? $_ENV['ADMIN_PASSWORD'] : "admin123";
 
 try {
-    $manager = new MongoDB\Driver\Manager($uri);
+    $database = new Database();
     
     echo "Connected to MongoDB.\n";
     echo "Initializing database: $dbName\n\n";
 
-    $collectionsToCreate = ['users', 'services', 'partners', 'recommendation_questions', 'leads'];
+    $collectionsToCreate = ['users', 'services', 'partners', 'recommendation_questions', 'leads', 'form_help_requests'];
 
     foreach ($collectionsToCreate as $col) {
-        $command = new MongoDB\Driver\Command(["create" => $col]);
         try {
-            $manager->executeCommand($dbName, $command);
-            echo "✅ Collection created: $col\n";
-        } catch (MongoDB\Driver\Exception\CommandException $e) {
-            // Error code 48 means collection already exists
-            if ($e->getCode() == 48) {
-                echo "ℹ️ Collection already exists: $col\n";
+            $created = $database->createCollectionIfNotExists($col);
+            if ($created) {
+                echo "✅ Collection created: $col\n";
             } else {
-                echo "❌ Error creating $col: " . $e->getMessage() . "\n";
+                echo "ℹ️ Collection already exists: $col\n";
             }
+        } catch (Exception $e) {
+            echo "❌ Error creating $col: " . $e->getMessage() . "\n";
         }
     }
 
     // Insert Default Admin
-    $query = new MongoDB\Driver\Query(['email' => $adminEmail]);
-    $cursor = $manager->executeQuery("$dbName.users", $query);
-    if (count($cursor->toArray()) == 0) {
-        $bulk = new MongoDB\Driver\BulkWrite;
-        $bulk->insert([
+    $existingAdmin = $database->findOne('users', ['email' => $adminEmail]);
+    if ($existingAdmin === null) {
+        $database->insertOne('users', [
             'name' => 'Super Admin',
             'email' => $adminEmail,
             'password' => $adminPassword,
             'role' => 'admin',
-            'createdAt' => new MongoDB\BSON\UTCDateTime(),
-            'updatedAt' => new MongoDB\BSON\UTCDateTime()
+            'createdAt' => date('Y-m-d H:i:s'),
+            'updatedAt' => date('Y-m-d H:i:s')
         ]);
-        $manager->executeBulkWrite("$dbName.users", $bulk);
         echo "\n🔑 Default Admin created: $adminEmail\n";
     } else {
         echo "\n🔑 Admin user already exists.\n";

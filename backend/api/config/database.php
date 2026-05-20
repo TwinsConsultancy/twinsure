@@ -46,5 +46,59 @@ class Database {
     public function getDbName() {
         return $this->db_name;
     }
+
+    public function findMany(string $collectionName, array $filter = [], array $options = []): array {
+        $manager = $this->getConnection();
+        $query = new MongoDB\Driver\Query($filter, $options);
+        $cursor = $manager->executeQuery($this->db_name . '.' . $collectionName, $query);
+        $results = [];
+
+        foreach ($cursor as $doc) {
+            $item = (array) $doc;
+            if (isset($item['_id'])) {
+                $item['_id'] = (string) $item['_id'];
+            }
+            $results[] = $item;
+        }
+
+        return $results;
+    }
+
+    public function findOne(string $collectionName, array $filter = [], array $options = []): ?array {
+        $results = $this->findMany($collectionName, $filter, $options);
+        return count($results) > 0 ? $results[0] : null;
+    }
+
+    public function insertOne(string $collectionName, array $document): void {
+        $manager = $this->getConnection();
+        $bulk = new MongoDB\Driver\BulkWrite;
+        $bulk->insert($document);
+        $manager->executeBulkWrite($this->db_name . '.' . $collectionName, $bulk);
+    }
+
+    public function updateOne(string $collectionName, array $filter, array $update): void {
+        $manager = $this->getConnection();
+        $bulk = new MongoDB\Driver\BulkWrite;
+        $bulk->update($filter, $update);
+        $manager->executeBulkWrite($this->db_name . '.' . $collectionName, $bulk);
+    }
+
+    public function deleteOne(string $collectionName, array $filter): void {
+        $manager = $this->getConnection();
+        $bulk = new MongoDB\Driver\BulkWrite;
+        $bulk->delete($filter, ['limit' => 1]);
+        $manager->executeBulkWrite($this->db_name . '.' . $collectionName, $bulk);
+    }
+
+    public function createCollectionIfNotExists(string $collectionName): bool {
+        $manager = $this->getConnection();
+        try {
+            $command = new MongoDB\Driver\Command(["create" => $collectionName]);
+            $manager->executeCommand($this->db_name, $command);
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
 }
 ?>

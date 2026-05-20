@@ -7,6 +7,314 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/admin-leads-premium.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Claims Management Custom Styles */
+        .drag-drop-zone {
+            border: 2px dashed rgba(0, 63, 136, 0.3);
+            border-radius: 12px;
+            background: #fbfcfe;
+            padding: 2rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .drag-drop-zone:hover, .drag-drop-zone.dragover {
+            background: #f0f5fa;
+            border-color: var(--primary-purple);
+        }
+        .drag-drop-zone i {
+            font-size: 2.2rem;
+            color: var(--primary-purple);
+        }
+        .drag-drop-zone .title {
+            font-weight: 700;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        .drag-drop-zone .subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        .file-preview-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #eef4ff;
+            border: 1px solid rgba(0, 63, 136, 0.1);
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+        }
+        .file-preview-info {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 600;
+            color: #333;
+        }
+        .file-preview-info i {
+            color: var(--danger);
+            font-size: 1.2rem;
+        }
+        .btn-remove-file {
+            background: none;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 4px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+        .btn-remove-file:hover {
+            background: #fee2e2;
+        }
+        /* PDF Viewer Modal Styles */
+        .pdf-viewer-container {
+            width: 100%;
+            height: 500px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            background: #f1f5f9;
+        }
+        .pdf-viewer-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        /* Modal styles */
+        .claim-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2100;
+            backdrop-filter: blur(4px);
+        }
+        .claim-modal-overlay.active {
+            display: flex;
+        }
+        .claim-modal-window {
+            background: white;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            border-radius: 20px;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            position: relative;
+            animation: modalFadeIn 0.3s ease;
+        }
+        .claim-modal-window-large {
+            max-width: 900px;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .claim-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .claim-modal-header h3 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #111;
+        }
+        .claim-form-group {
+            margin-bottom: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        .claim-form-group label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .claim-form-control {
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: 0.2s;
+        }
+        .claim-form-control:focus {
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 3px rgba(0, 63, 136, 0.1);
+        }
+        .claim-form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        /* Custom switch styling */
+        .status-toggle-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background-color: #cbd5e1;
+            transition: .3s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: var(--success);
+        }
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+        .requests-section-card {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            border: 1px solid #eef2f7;
+            border-radius: 18px;
+            background: #fff;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.04);
+        }
+        .requests-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.25rem;
+        }
+        .requests-section-header h3 {
+            margin: 0;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #111;
+        }
+        .requests-section-header p {
+            margin: 0.25rem 0 0 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        .request-status-select {
+            width: 100%;
+            min-width: 130px;
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            background: #fff;
+            font-size: 0.8rem;
+            outline: none;
+        }
+        .request-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .request-action-btn {
+            width: 34px;
+            height: 34px;
+            border: 1px solid #e5e7eb;
+            background: #fff;
+            color: #334155;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        .request-action-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+        }
+        .request-action-btn.view {
+            color: var(--primary-purple);
+        }
+        .request-action-btn.delete {
+            color: #dc2626;
+        }
+        .form-request-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.9rem;
+            margin-top: 1rem;
+        }
+        .form-request-detail-item {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 0.85rem 1rem;
+        }
+        .form-request-detail-item .label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 0.35rem;
+        }
+        .form-request-detail-item .value {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: #0f172a;
+            word-break: break-word;
+        }
+        .form-request-detail-note {
+            margin-top: 0.9rem;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 1rem;
+            color: #334155;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+    </style>
 </head>
 <body>
     <nav class="top-nav">
@@ -49,14 +357,18 @@
                         <i class="fas fa-th-large"></i> Dashboard
                     </a></li>
                     <li><a href="recommendation.html">
-                        <i class="fas fa-magic"></i> Recommendation Builder
+                        <i class="fas fa-magic"></i> Ai Engine
                     </a></li>
                     <li><a href="#" onclick="showSection('leads', this)">
                         <i class="fas fa-users"></i> Leads
                         <span style="margin-left: auto; background: rgba(255, 255, 255, 0.2); padding: 2px 6px; border-radius: 12px; font-size: 0.65rem; color: #fff;" id="sbLeadCount">--</span>
                     </a></li>
+                    <li><a href="#" onclick="showSection('claims', this)">
+                        <i class="fas fa-file-invoice"></i> Claims
+                        <span style="margin-left: auto; background: rgba(255, 255, 255, 0.2); padding: 2px 6px; border-radius: 12px; font-size: 0.65rem; color: #fff;" id="sbClaimsCount">0</span>
+                    </a></li>
                     <li><a href="#" onclick="showSection('contacts', this)">
-                        <i class="fas fa-handshake"></i> Contacts
+                        <i class="fas fa-handshake"></i> Contact
                         <span style="margin-left: auto; background: rgba(255, 255, 255, 0.2); padding: 2px 6px; border-radius: 12px; font-size: 0.65rem; color: #fff;" id="sbPartnerCount">--</span>
                     </a></li>
                     <li><a href="#" onclick="showSection('users', this)">
@@ -717,6 +1029,222 @@
                 </div>
             </section>
 
+            <!-- CLAIMS MANAGEMENT SECTION -->
+            <section id="claims" class="content-section" style="display:none; padding-top: 0;">
+                <div style="margin-bottom: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div>
+                            <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); font-weight: 700;">Operations</span>
+                            <h2 style="margin: 5px 0 0 0; font-size: 1.8rem; font-weight: 800; color: #111;">Claims Management</h2>
+                        </div>
+                        <button class="btn btn-primary" onclick="openClaimFormModal()" style="background: var(--primary-purple); border: none; display: flex; align-items: center; gap: 0.5rem; border-radius: 12px; font-weight: 700; padding: 0.8rem 1.5rem; color: white;">
+                            <i class="fas fa-plus"></i> Upload Claim Form
+                        </button>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.25rem; padding: 0.9rem 1rem; border: 1px solid #e8edf5; border-radius: 16px; background: linear-gradient(180deg, #fff, #fbfcff); box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);">
+                    <div>
+                        <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); font-weight: 700; margin-bottom: 0.25rem;">View Mode</div>
+                        <div style="font-size: 0.92rem; font-weight: 700; color: #111;">Switch between requests and form management</div>
+                    </div>
+                    <div style="display: inline-flex; padding: 4px; border-radius: 999px; background: #edf2fb; border: 1px solid #dfe8f7; gap: 4px;">
+                        <button type="button" id="claimsViewToggleRequests" onclick="setClaimsView('requests', this)" style="padding: 0.75rem 1rem; border: none; border-radius: 999px; font-size: 0.82rem; font-weight: 700; cursor: pointer; background: #111827; color: #fff; display: flex; align-items: center; gap: 0.45rem;">
+                            <i class="fas fa-inbox"></i> Request Management
+                        </button>
+                        <button type="button" id="claimsViewToggleForms" onclick="setClaimsView('forms', this)" style="padding: 0.75rem 1rem; border: none; border-radius: 999px; font-size: 0.82rem; font-weight: 700; cursor: pointer; background: transparent; color: #475569; display: flex; align-items: center; gap: 0.45rem;">
+                            <i class="fas fa-file-invoice"></i> Form Management
+                        </button>
+                    </div>
+                </div>
+
+                <div id="claimsRequestsView">
+                    <!-- Form Filling Requests -->
+                    <div class="requests-section-card" style="margin-top: 0;">
+                        <div class="requests-section-header">
+                            <div>
+                                <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); font-weight: 700;">Support</span>
+                                <h3>Form Filling Requests</h3>
+                                <p>Requests submitted from the public claim form popup are collected here for follow-up.</p>
+                            </div>
+                            <button class="btn" onclick="loadFormHelpRequests()" style="padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--border-color); background: white; cursor: pointer; font-size: 0.82rem; font-weight: 600; display: flex; align-items: center; gap: 0.4rem; color: #555;">
+                                <i class="fas fa-sync-alt"></i> Refresh Requests
+                            </button>
+                        </div>
+
+                        <div class="metrics-grid" style="margin-top: 0;">
+                            <div class="metric-card">
+                                <div class="card-head" style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span class="title" style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Total Requests</span>
+                                    <div class="card-icon" style="color: var(--primary-purple); background: #f0edff; width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-hands-helping"></i></div>
+                                </div>
+                                <div class="val" id="valHelpRequestsTotal" style="font-size: 1.8rem; font-weight: 800; margin: 10px 0 5px 0;">0</div>
+                                <div class="trend" style="font-size: 0.75rem; font-weight: 700; color: #555;"><i class="fas fa-inbox"></i> Incoming support requests</div>
+                                <div class="sparkline-container" id="sparkHelpRequestsTotal"></div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="card-head" style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span class="title" style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">New</span>
+                                    <div class="card-icon" style="color: #d97706; background: #fff8e6; width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-bell"></i></div>
+                                </div>
+                                <div class="val" id="valHelpRequestsNew" style="font-size: 1.8rem; font-weight: 800; margin: 10px 0 5px 0;">0</div>
+                                <div class="trend" style="font-size: 0.75rem; font-weight: 700; color: #d97706;"><i class="fas fa-clock"></i> Awaiting response</div>
+                                <div class="sparkline-container" id="sparkHelpRequestsNew"></div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="card-head" style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span class="title" style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Pending</span>
+                                    <div class="card-icon" style="color: #003f88; background: #e6f0fa; width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-spinner"></i></div>
+                                </div>
+                                <div class="val" id="valHelpRequestsProgress" style="font-size: 1.8rem; font-weight: 800; margin: 10px 0 5px 0;">0</div>
+                                <div class="trend" style="font-size: 0.75rem; font-weight: 700; color: #003f88;"><i class="fas fa-user-cog"></i> Being handled</div>
+                                <div class="sparkline-container" id="sparkHelpRequestsProgress"></div>
+                            </div>
+                            <div class="metric-card">
+                                <div class="card-head" style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span class="title" style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Completed</span>
+                                    <div class="card-icon" style="color: var(--success); background: #e6f6ee; width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-check-circle"></i></div>
+                                </div>
+                                <div class="val" id="valHelpRequestsResolved" style="font-size: 1.8rem; font-weight: 800; margin: 10px 0 5px 0;">0</div>
+                                <div class="trend" style="font-size: 0.75rem; font-weight: 700; color: var(--success);"><i class="fas fa-check"></i> Completed requests</div>
+                                <div class="sparkline-container" id="sparkHelpRequestsResolved"></div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; margin: 1.25rem 0 1rem 0;">
+                            <div class="search-box-wrapper" style="position: relative; flex: 1; max-width: 360px;">
+                                <i class="fas fa-search search-icon" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+                                <input type="text" id="requestsTableSearch" placeholder="Search requests instantly..." oninput="filterFormHelpRequests()" style="width: 100%; padding: 0.6rem 1rem 0.6rem 2.5rem; border-radius: 10px; border: 1px solid #eee; background: #fcfcfc; font-size: 0.85rem; outline: none;">
+                            </div>
+                            <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                                <select id="requestsFilterStatus" class="filter-select" onchange="filterFormHelpRequests()" style="padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid #eee; outline: none; cursor: pointer; font-size: 0.82rem; background: white;">
+                                    <option value="all">All Statuses</option>
+                                    <option value="new">New</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="completed">Completed</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="overflow-x: auto;">
+                            <table class="premium-table" style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 40px; padding: 1rem; text-align: left; background: var(--table-header-bg); color: white; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;"><input type="checkbox"></th>
+                                        <th style="padding: 1rem; text-align: left; background: var(--table-header-bg); color: white; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Request ID</th>
+                                        <th style="padding: 1rem; text-align: left; background: var(--table-header-bg); color: white; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Customer</th>
+                                        <th style="padding: 1rem; text-align: left; background: var(--table-header-bg); color: white; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Claim Form</th>
+                                        <th style="padding: 1rem; text-align: left; background: var(--table-header-bg); color: white; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Doubt / Description</th>
+                                        <th style="padding: 1rem; text-align: left; background: var(--table-header-bg); color: white; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Requested At</th>
+                                        <th style="padding: 1rem; text-align: left; background: var(--table-header-bg); color: white; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Status</th>
+                                        <th style="padding: 1rem; text-align: left; background: var(--table-header-bg); color: white; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="premiumHelpRequestsTableBody">
+                                    <!-- Dynamic Rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="claimsFormsView" style="display:none;">
+                    <!-- Claims Analytics Grid -->
+                    <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="card-head" style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="title" style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Total Claim Forms</span>
+                            <div class="card-icon" style="color: var(--primary-purple); background: #f0edff; width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-file-invoice"></i></div>
+                        </div>
+                        <div class="val" id="valTotalClaims" style="font-size: 1.8rem; font-weight: 800; margin: 10px 0 5px 0;">0</div>
+                        <div class="trend text-success" style="font-size: 0.75rem; font-weight: 700; color: var(--success);"><i class="fas fa-check-circle"></i> Live in Portal</div>
+                        <div class="sparkline-container" id="sparkTotalClaims"></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="card-head" style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="title" style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Active Categories</span>
+                            <div class="card-icon" style="color: #003f88; background: #e6f0fa; width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-folder-open"></i></div>
+                        </div>
+                        <div class="val" id="valClaimsCategories" style="font-size: 1.8rem; font-weight: 800; margin: 10px 0 5px 0;">0</div>
+                        <div class="trend" style="font-size: 0.75rem; font-weight: 700; color: #555;"><i class="fas fa-tags"></i> Organised</div>
+                        <div class="sparkline-container" id="sparkClaimsCategories"></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="card-head" style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="title" style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Total Downloads</span>
+                            <div class="card-icon" style="color: var(--success); background: #e6f6ee; width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-download"></i></div>
+                        </div>
+                        <div class="val" id="valClaimsDownloads" style="font-size: 1.8rem; font-weight: 800; margin: 10px 0 5px 0;">0</div>
+                        <div class="trend text-success" style="font-size: 0.75rem; font-weight: 700; color: var(--success);"><i class="fas fa-arrow-up"></i> Incrementing</div>
+                        <div class="sparkline-container" id="sparkClaimsDownloads"></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="card-head" style="display: flex; justify-content: space-between; align-items: center;">
+                            <span class="title" style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">Archived / Drafts</span>
+                            <div class="card-icon" style="color: #d97706; background: #fff8e6; width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-archive"></i></div>
+                        </div>
+                        <div class="val" id="valClaimsDrafts" style="font-size: 1.8rem; font-weight: 800; margin: 10px 0 5px 0;">0</div>
+                        <div class="trend" style="font-size: 0.75rem; font-weight: 700; color: #d97706;"><i class="fas fa-info-circle"></i> Hidden forms</div>
+                        <div class="sparkline-container" id="sparkClaimsDrafts"></div>
+                    </div>
+                </div>
+
+                <!-- Filters & Table Panel -->
+                <div class="premium-table-card" style="margin-top: 1.5rem;">
+                    <div class="table-actions-header" style="display: flex; justify-content: space-between; align-items: center; padding: 1.2rem; border-bottom: 1px solid #f2f2f2; flex-wrap: wrap; gap: 1rem;">
+                        <div class="search-box-wrapper" style="position: relative; flex: 1; max-width: 350px;">
+                            <i class="fas fa-search search-icon" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted);"></i>
+                            <input type="text" id="claimsTableSearch" placeholder="Search forms instantly..." oninput="filterClaims()" style="width: 100%; padding: 0.6rem 1rem 0.6rem 2.5rem; border-radius: 10px; border: 1px solid #eee; background: #fcfcfc; font-size: 0.85rem; outline: none;">
+                        </div>
+                        <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                            <select id="claimsFilterCategory" class="filter-select" onchange="filterClaims()" style="padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid #eee; outline: none; cursor: pointer; font-size: 0.82rem; background: white;">
+                                <option value="all">All Categories</option>
+                                <option value="Health">Health Insurance</option>
+                                <option value="Life">Life Insurance</option>
+                                <option value="Vehicle">Vehicle Insurance</option>
+                                <option value="Travel">Travel Insurance</option>
+                                <option value="Reimbursement">Reimbursement</option>
+                                <option value="Accident Claims">Accident Claims</option>
+                                <option value="Others">Others</option>
+                            </select>
+                            <select id="claimsFilterStatus" class="filter-select" onchange="filterClaims()" style="padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid #eee; outline: none; cursor: pointer; font-size: 0.82rem; background: white;">
+                                <option value="all">All Statuses</option>
+                                <option value="active">Active</option>
+                                <option value="draft">Draft</option>
+                                <option value="archived">Archived</option>
+                            </select>
+                            <button class="btn" onclick="loadClaims()" style="padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--border-color); background: white; cursor: pointer; font-size: 0.82rem; font-weight: 600; display: flex; align-items: center; gap: 0.4rem; color: #555;">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table class="premium-table" style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40px; padding: 1rem; text-align: left; background: var(--table-header-bg); color: white; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;"><input type="checkbox"></th>
+                                    <th style="padding: 1rem; text-align: left; background: var(--table-header-bg); color: white; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Form ID</th>
+                                    <th style="padding: 1rem; text-align: left; background: var(--table-header-bg); color: white; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Form Name</th>
+                                    <th style="padding: 1rem; text-align: left; background: var(--table-header-bg); color: white; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Category</th>
+                                    <th style="padding: 1rem; text-align: left; background: var(--table-header-bg); color: white; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Description</th>
+                                    <th style="padding: 1rem; text-align: left; background: var(--table-header-bg); color: white; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">File Details</th>
+                                    <th style="padding: 1rem; text-align: left; background: var(--table-header-bg); color: white; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Downloads</th>
+                                    <th style="padding: 1rem; text-align: left; background: var(--table-header-bg); color: white; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Uploaded By</th>
+                                    <th style="padding: 1rem; text-align: left; background: var(--table-header-bg); color: white; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Last Updated</th>
+                                    <th style="padding: 1rem; text-align: left; background: var(--table-header-bg); color: white; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Status</th>
+                                    <th style="padding: 1rem; text-align: left; background: var(--table-header-bg); color: white; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="premiumClaimsTableBody">
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                </div>
+            </section>
+
             <!-- LEAD DETAILS MODAL -->
             <div class="lead-modal-overlay" id="leadDetailModal">
                 <div class="lead-detail-window">
@@ -864,6 +1392,149 @@
                     </div>
                 </div>
             </div>
+
+            <!-- UPLOAD/EDIT CLAIM FORM MODAL -->
+            <div class="claim-modal-overlay" id="claimFormModal">
+                <div class="claim-modal-window">
+                    <button class="modal-close-global" onclick="closeClaimFormModal()"><i class="fas fa-times"></i></button>
+                    <div class="claim-modal-header">
+                        <h3 id="claimModalTitle">Upload Claim Form</h3>
+                    </div>
+                    <form id="claimUpsertForm" onsubmit="handleClaimFormSubmit(event)">
+                        <input type="hidden" id="claimFormId">
+                        
+                        <div class="claim-form-group">
+                            <label for="claimFormName">Form Name</label>
+                            <input type="text" id="claimFormName" class="claim-form-control" placeholder="e.g. Travel Delay Claim Form" required>
+                        </div>
+                        
+                        <div class="claim-form-group">
+                            <label for="claimFormCategory">Category</label>
+                            <select id="claimFormCategory" class="claim-form-control" required>
+                                <option value="" disabled selected>Select Category</option>
+                                <option value="Health">Health Insurance</option>
+                                <option value="Life">Life Insurance</option>
+                                <option value="Vehicle">Vehicle Insurance</option>
+                                <option value="Travel">Travel Insurance</option>
+                                <option value="Reimbursement">Reimbursement</option>
+                                <option value="Accident Claims">Accident Claims</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+                        
+                        <div class="claim-form-group">
+                            <label for="claimFormDescription">Description</label>
+                            <textarea id="claimFormDescription" class="claim-form-control" rows="3" placeholder="Provide a brief explanation of what this claim form is for..." style="resize: vertical;"></textarea>
+                        </div>
+
+                        <div class="claim-form-group">
+                            <label>Status</label>
+                            <div class="status-toggle-wrapper">
+                                <label class="switch">
+                                    <input type="checkbox" id="claimFormStatus" checked>
+                                    <span class="slider"></span>
+                                </label>
+                                <span id="claimStatusLabel" style="font-size: 0.85rem; font-weight: 700; color: var(--success);">Active</span>
+                            </div>
+                        </div>
+                        
+                        <div class="claim-form-group">
+                            <label>PDF Document</label>
+                            <div class="drag-drop-zone" id="claimDragDropZone">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span class="title">Drag & drop claim PDF here</span>
+                                <span class="subtitle">or click to browse files (Max 10MB, PDF only)</span>
+                                <input type="file" id="claimFileInput" accept=".pdf" style="display:none;" onchange="handleClaimFileSelect(event)">
+                            </div>
+                            
+                            <div id="claimFilePreviewContainer" style="display:none;">
+                                <div class="file-preview-bar">
+                                    <div class="file-preview-info">
+                                        <i class="fas fa-file-pdf"></i>
+                                        <div>
+                                            <div id="claimPreviewFileName" style="font-weight: 700;">claim-form.pdf</div>
+                                            <div id="claimPreviewFileSize" style="font-size: 0.7rem; color: #888;">0 KB</div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn-remove-file" onclick="removeSelectedClaimFile()"><i class="fas fa-trash-alt"></i></button>
+                                </div>
+                            </div>
+                            <span id="claimFileRequiredWarning" style="font-size: 0.75rem; color: var(--danger); display:none; margin-top: 0.5rem;"><i class="fas fa-exclamation-circle"></i> A PDF document is required.</span>
+                        </div>
+                        
+                        <div class="claim-form-actions">
+                            <button type="button" class="btn btn-outline" onclick="closeClaimFormModal()" style="border: 1px solid var(--border-color); color: #555; background: none; padding: 0.7rem 1.5rem; border-radius: 10px; font-weight: 600; cursor: pointer;">Cancel</button>
+                            <button type="submit" class="btn btn-primary" style="background: var(--primary-purple); color: white; padding: 0.7rem 1.5rem; border-radius: 10px; font-weight: 600; border: none; cursor: pointer;">Publish Form</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- PDF PREVIEW MODAL -->
+            <div class="claim-modal-overlay" id="pdfViewerModal">
+                <div class="claim-modal-window claim-modal-window-large">
+                    <button class="modal-close-global" onclick="closePdfViewerModal()"><i class="fas fa-times"></i></button>
+                    <div class="claim-modal-header">
+                        <h3 id="pdfViewerTitle">Document Preview</h3>
+                    </div>
+                    <div class="pdf-viewer-container">
+                        <iframe id="pdfViewerIframe" class="pdf-viewer-iframe" src=""></iframe>
+                    </div>
+                    <div class="claim-form-actions" style="margin-top: 1.5rem;">
+                        <button class="btn btn-outline" onclick="closePdfViewerModal()" style="border: 1px solid var(--border-color); color: #555; background: none; padding: 0.7rem 1.5rem; border-radius: 10px; font-weight: 600; cursor: pointer;">Close Preview</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="claim-modal-overlay" id="formHelpRequestModal">
+                <div class="claim-modal-window" style="max-width: 760px;">
+                    <button class="modal-close-global" onclick="closeFormHelpRequestModal()"><i class="fas fa-times"></i></button>
+                    <div class="claim-modal-header">
+                        <h3 id="formHelpRequestModalTitle">Form filling request</h3>
+                    </div>
+                    <div class="form-request-detail-grid">
+                        <div class="form-request-detail-item">
+                            <span class="label">Request ID</span>
+                            <span class="value" id="formHelpRequestModalId">—</span>
+                        </div>
+                        <div class="form-request-detail-item">
+                            <span class="label">Status</span>
+                            <span class="value" id="formHelpRequestModalStatus">—</span>
+                        </div>
+                        <div class="form-request-detail-item">
+                            <span class="label">Customer</span>
+                            <span class="value" id="formHelpRequestModalCustomer">—</span>
+                        </div>
+                        <div class="form-request-detail-item">
+                            <span class="label">Phone</span>
+                            <span class="value" id="formHelpRequestModalPhone">—</span>
+                        </div>
+                        <div class="form-request-detail-item">
+                            <span class="label">Claim Form</span>
+                            <span class="value" id="formHelpRequestModalClaim">—</span>
+                        </div>
+                        <div class="form-request-detail-item">
+                            <span class="label">Requested At</span>
+                            <span class="value" id="formHelpRequestModalDate">—</span>
+                        </div>
+                    </div>
+                    <div class="form-request-detail-note" id="formHelpRequestModalNote">—</div>
+                    <div style="display:flex; align-items:center; justify-content:space-between; gap:0.75rem; flex-wrap:wrap; margin-top: 1rem;">
+                        <div style="display:flex; align-items:center; gap:0.6rem;">
+                            <span style="font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color: var(--text-muted);">Update Status</span>
+                            <span id="formHelpRequestStatusHint" style="font-size:0.8rem; font-weight:700; color:#334155;">New</span>
+                        </div>
+                        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                            <button type="button" class="request-action-btn view" onclick="updateOpenFormHelpRequestStatus('new')" title="Mark New">N</button>
+                            <button type="button" class="request-action-btn view" onclick="updateOpenFormHelpRequestStatus('pending')" title="Mark Pending">P</button>
+                            <button type="button" class="request-action-btn delete" onclick="updateOpenFormHelpRequestStatus('completed')" title="Mark Completed">C</button>
+                        </div>
+                    </div>
+                    <div class="claim-form-actions" style="margin-top: 1.5rem; justify-content: flex-end;">
+                        <button class="btn btn-outline" onclick="closeFormHelpRequestModal()" style="border: 1px solid var(--border-color); color: #555; background: none; padding: 0.7rem 1.5rem; border-radius: 10px; font-weight: 600; cursor: pointer;">Close</button>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -904,7 +1575,12 @@
                 loadLeads();
             }
             if(id === 'contacts') {
-                loadContacts();
+                loadContacts().then(markVisiblePartnerRequestsAsSeen);
+            }
+            if(id === 'claims') {
+                loadClaims();
+                loadFormHelpRequests().then(markVisibleFormHelpRequestsAsSeen);
+                setClaimsView('requests');
             }
         }
 
@@ -938,6 +1614,9 @@
                 document.getElementById('valInProgEnq').textContent = inPrC;
                 document.getElementById('valResolvedEnq').textContent = resC;
 
+                const sbPartnerCount = document.getElementById('sbPartnerCount');
+                if(sbPartnerCount) sbPartnerCount.textContent = newC;
+
                 // Real Trend Calculation
                 const getTrend = (filtered) => {
                     const days = {};
@@ -963,6 +1642,26 @@
 
                 renderContacts();
             } catch(e) { console.error('Error loading contacts', e); }
+        }
+
+        async function markVisiblePartnerRequestsAsSeen() {
+            const unreadContacts = allContacts.filter(contact => contact.status === 'new');
+            if (unreadContacts.length === 0) {
+                return;
+            }
+
+            try {
+                await Promise.all(unreadContacts.map(contact =>
+                    api.post('/admin/contacts.php', {
+                        id: contact._id,
+                        status: 'in-progress'
+                    })
+                ));
+
+                await loadContacts();
+            } catch (error) {
+                console.error('Failed to mark partner requests as seen', error);
+            }
         }
 
         function renderContacts() {
@@ -1016,6 +1715,25 @@
         async function updateContactStatus(id, status) {
             try { await api.post('/admin/contacts.php', { id, status }); loadContacts(); }
             catch(e) { console.error(e); }
+        }
+
+        function setClaimsView(view) {
+            const requestsView = document.getElementById('claimsRequestsView');
+            const formsView = document.getElementById('claimsFormsView');
+            const requestsBtn = document.getElementById('claimsViewToggleRequests');
+            const formsBtn = document.getElementById('claimsViewToggleForms');
+
+            if (requestsView) requestsView.style.display = view === 'requests' ? 'block' : 'none';
+            if (formsView) formsView.style.display = view === 'forms' ? 'block' : 'none';
+
+            if (requestsBtn) {
+                requestsBtn.style.background = view === 'requests' ? '#111827' : 'transparent';
+                requestsBtn.style.color = view === 'requests' ? '#fff' : '#475569';
+            }
+            if (formsBtn) {
+                formsBtn.style.background = view === 'forms' ? '#111827' : 'transparent';
+                formsBtn.style.color = view === 'forms' ? '#fff' : '#475569';
+            }
         }
 
         // ── Premium Dashboard Helpers ──
@@ -1450,9 +2168,10 @@
                 const dashContactsEl = document.getElementById('dashTotalContacts');
                 if(dashContactsEl) dashContactsEl.textContent = allContacts.length;
 
-                // Update sidebar badge
+                // Update sidebar badge to show unread/new contacts count
                 const sbPartnerCount = document.getElementById('sbPartnerCount');
-                if(sbPartnerCount) sbPartnerCount.textContent = allContacts.length;
+                const newContactsCount = allContacts.filter(c => c.status === 'new').length;
+                if(sbPartnerCount) sbPartnerCount.textContent = newContactsCount;
 
                 const pendingEnquiries = document.getElementById('dashPendingEnquiries');
                 if(pendingEnquiries) {
@@ -1498,10 +2217,567 @@
             }
         }
 
-        // Initial load
+        // ─── CLAIMS MANAGEMENT CONTROLLER ───
+        let allClaims = [];
+        let selectedClaimFile = null;
+        let allFormHelpRequests = [];
+        let currentFormHelpRequestFilter = 'all';
+        let currentFormHelpRequestSearch = '';
+        let currentOpenFormHelpRequestId = '';
+        let currentOpenFormHelpRequestStatus = 'new';
+
+        // Initialize status switch handler
+        const statusCheckbox = document.getElementById('claimFormStatus');
+        if (statusCheckbox) {
+            statusCheckbox.addEventListener('change', (e) => {
+                const label = document.getElementById('claimStatusLabel');
+                if (e.target.checked) {
+                    label.textContent = 'Active';
+                    label.style.color = 'var(--success)';
+                } else {
+                    label.textContent = 'Draft';
+                    label.style.color = 'var(--text-muted)';
+                }
+            });
+        }
+
+        // Initialize drag & drop zone
+        const dropZone = document.getElementById('claimDragDropZone');
+        if (dropZone) {
+            dropZone.addEventListener('click', () => document.getElementById('claimFileInput').click());
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    dropZone.classList.add('dragover');
+                }, false);
+            });
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    dropZone.classList.remove('dragover');
+                }, false);
+            });
+            dropZone.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                if (files.length) {
+                    document.getElementById('claimFileInput').files = files;
+                    handleClaimFileSelect({ target: { files } });
+                }
+            });
+        }
+
+        function handleClaimFileSelect(e) {
+            const files = e.target.files;
+            if (!files || !files.length) return;
+            const file = files[0];
+            if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) {
+                alert('Only PDF files are allowed.');
+                return;
+            }
+            selectedClaimFile = file;
+            document.getElementById('claimPreviewFileName').textContent = file.name;
+            let sizeText = file.size >= 1048576 
+                ? (file.size / 1048576).toFixed(1) + ' MB'
+                : Math.round(file.size / 1024) + ' KB';
+            document.getElementById('claimPreviewFileSize').textContent = sizeText;
+            document.getElementById('claimFilePreviewContainer').style.display = 'block';
+            document.getElementById('claimDragDropZone').style.display = 'none';
+            document.getElementById('claimFileRequiredWarning').style.display = 'none';
+        }
+
+        function removeSelectedClaimFile() {
+            selectedClaimFile = null;
+            document.getElementById('claimFileInput').value = '';
+            document.getElementById('claimFilePreviewContainer').style.display = 'none';
+            document.getElementById('claimDragDropZone').style.display = 'flex';
+        }
+
+        function openClaimFormModal(claim = null) {
+            const modal = document.getElementById('claimFormModal');
+            const title = document.getElementById('claimModalTitle');
+            const submitBtn = modal.querySelector('button[type="submit"]');
+            
+            // Reset form
+            document.getElementById('claimUpsertForm').reset();
+            document.getElementById('claimFormId').value = '';
+            removeSelectedClaimFile();
+            document.getElementById('claimFileRequiredWarning').style.display = 'none';
+            
+            const label = document.getElementById('claimStatusLabel');
+            document.getElementById('claimFormStatus').checked = true;
+            label.textContent = 'Active';
+            label.style.color = 'var(--success)';
+            
+            if (claim) {
+                title.textContent = 'Edit Claim Form';
+                submitBtn.textContent = 'Save Changes';
+                document.getElementById('claimFormId').value = claim._id;
+                document.getElementById('claimFormName').value = claim.name;
+                document.getElementById('claimFormCategory').value = claim.category;
+                document.getElementById('claimFormDescription').value = claim.description || '';
+                
+                if (claim.status === 'active') {
+                    document.getElementById('claimFormStatus').checked = true;
+                    label.textContent = 'Active';
+                    label.style.color = 'var(--success)';
+                } else {
+                    document.getElementById('claimFormStatus').checked = false;
+                    label.textContent = claim.status === 'draft' ? 'Draft' : 'Archived';
+                    label.style.color = 'var(--text-muted)';
+                }
+                
+                // Display existing file details
+                if (claim.fileName) {
+                    document.getElementById('claimPreviewFileName').textContent = claim.fileName;
+                    document.getElementById('claimPreviewFileSize').textContent = claim.fileSize || '';
+                    document.getElementById('claimFilePreviewContainer').style.display = 'block';
+                    document.getElementById('claimDragDropZone').style.display = 'none';
+                }
+            } else {
+                title.textContent = 'Upload Claim Form';
+                submitBtn.textContent = 'Publish Form';
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeClaimFormModal() {
+            document.getElementById('claimFormModal').classList.remove('active');
+        }
+
+        async function handleClaimFormSubmit(e) {
+            e.preventDefault();
+            
+            const id = document.getElementById('claimFormId').value;
+            const name = document.getElementById('claimFormName').value.trim();
+            const category = document.getElementById('claimFormCategory').value;
+            const description = document.getElementById('claimFormDescription').value.trim();
+            const isActive = document.getElementById('claimFormStatus').checked;
+            const status = isActive ? 'active' : 'draft';
+            
+            // If creating new form, PDF is required
+            if (!id && !selectedClaimFile) {
+                document.getElementById('claimFileRequiredWarning').style.display = 'block';
+                return;
+            }
+            
+            const formData = new FormData();
+            if (id) formData.append('id', id);
+            formData.append('name', name);
+            formData.append('category', category);
+            formData.append('description', description);
+            formData.append('status', status);
+            
+            if (selectedClaimFile) {
+                formData.append('pdf', selectedClaimFile);
+            }
+            
+            try {
+                const response = await api.postMultipart('/admin/claims.php', formData);
+                alert(response.message || 'Form saved successfully.');
+                closeClaimFormModal();
+                loadClaims();
+            } catch (error) {
+                console.error(error);
+                alert('Failed to save claim form.');
+            }
+        }
+
+        async function loadClaims() {
+            try {
+                allClaims = await api.get('/admin/claims.php');
+                
+                // Calculate analytics
+                const totalClaims = allClaims.length;
+                const activeCategories = new Set(allClaims.map(c => c.category)).size;
+                const totalDownloads = allClaims.reduce((sum, c) => sum + (c.downloads || 0), 0);
+                const draftClaims = allClaims.filter(c => c.status !== 'active').length;
+                
+                document.getElementById('valTotalClaims').textContent = totalClaims;
+                document.getElementById('valClaimsCategories').textContent = activeCategories;
+                document.getElementById('valClaimsDownloads').textContent = totalDownloads;
+                document.getElementById('valClaimsDrafts').textContent = draftClaims;
+                
+                // Render sparklines
+                renderClaimsSparklines(allClaims);
+                
+                filterClaims();
+            } catch (error) {
+                console.error('Failed to load claims:', error);
+            }
+        }
+
+        function renderClaimsSparklines(claims) {
+            const getClaimsTrend = (filtered) => {
+                const now = new Date();
+                const days = {};
+                for(let i=6; i>=0; i--) {
+                    const d = new Date(now); d.setDate(d.getDate() - i);
+                    days[d.toISOString().split('T')[0]] = 0;
+                }
+                filtered.forEach(c => {
+                    const timestamp = c.lastUpdated || c.createdAt;
+                    if(!timestamp) return;
+                    const date = timestamp.split(' ')[0];
+                    if(days[date] !== undefined) days[date]++;
+                });
+                return Object.values(days);
+            };
+
+            const activeCategories = new Set(claims.map(c => c.category)).size;
+            const totalDownloads = claims.reduce((sum, c) => sum + (c.downloads || 0), 0);
+
+            drawSparkline('sparkTotalClaims', getClaimsTrend(claims), '#5136a8');
+            drawSparkline('sparkClaimsCategories', [1, Math.min(activeCategories, 2), activeCategories, activeCategories, activeCategories, activeCategories, activeCategories], '#003f88');
+            drawSparkline('sparkClaimsDownloads', [0, Math.round(totalDownloads * 0.2), Math.round(totalDownloads * 0.4), Math.round(totalDownloads * 0.6), Math.round(totalDownloads * 0.8), totalDownloads, totalDownloads], '#38a169');
+            drawSparkline('sparkClaimsDrafts', getClaimsTrend(claims.filter(c => c.status !== 'active')), '#d97706');
+        }
+
+        function filterClaims() {
+            const searchQuery = document.getElementById('claimsTableSearch').value.toLowerCase().trim();
+            const selectedCategory = document.getElementById('claimsFilterCategory').value;
+            const selectedStatus = document.getElementById('claimsFilterStatus').value;
+            
+            const filtered = allClaims.filter(claim => {
+                const matchesSearch = claim.name.toLowerCase().includes(searchQuery) || 
+                                      (claim.description && claim.description.toLowerCase().includes(searchQuery)) ||
+                                      claim._id.toLowerCase().includes(searchQuery);
+                const matchesCategory = selectedCategory === 'all' || claim.category === selectedCategory;
+                const matchesStatus = selectedStatus === 'all' || claim.status === selectedStatus;
+                
+                return matchesSearch && matchesCategory && matchesStatus;
+            });
+            
+            renderClaimsTable(filtered);
+        }
+
+        function renderClaimsTable(claims) {
+            const tbody = document.getElementById('premiumClaimsTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            
+            if (claims.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="11" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                            <i class="fas fa-folder-open" style="font-size: 2.5rem; margin-bottom: 1rem; display: block; opacity: 0.5;"></i>
+                            No claim forms found matching the filters.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            // Map claims globally for event reference
+            window.claimsMap = window.claimsMap || {};
+            
+            const sourceClaims = Array.isArray(window.allClaims) && window.allClaims.length ? window.allClaims : claims;
+
+            claims.forEach((claim, index) => {
+                const sourceIndex = sourceClaims.findIndex(item => item._id === claim._id);
+                const displayFormId = String(sourceIndex >= 0 ? (sourceClaims.length - sourceIndex) : (claims.length - index)).padStart(3, '0');
+                window.claimsMap[claim._id] = { ...claim, displayFormId };
+                const tr = document.createElement('tr');
+                
+                let statusBadgeClass = 'status-badge status-active';
+                if (claim.status === 'draft') statusBadgeClass = 'status-badge status-pending';
+                if (claim.status === 'archived') statusBadgeClass = 'status-badge';
+                
+                tr.innerHTML = `
+                    <td><input type="checkbox" value="${claim._id}"></td>
+                    <td style="font-family: monospace; font-size: 0.75rem; font-weight: 600; color: var(--text-muted);">#${displayFormId}</td>
+                    <td style="font-weight: 700; color: #111;">${claim.name}</td>
+                    <td><span style="background: rgba(0, 63, 136, 0.08); color: var(--primary-purple); font-weight: 700; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem;">${claim.category}</span></td>
+                    <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #666;" title="${claim.description || ''}">${claim.description || '<span style="color:#ccc;">No description</span>'}</td>
+                    <td>
+                        <div style="display:flex; align-items:center; gap:0.4rem;">
+                            <i class="fas fa-file-pdf" style="color:var(--danger);"></i>
+                            <div>
+                                <div style="font-size:0.75rem; font-weight:600;">${claim.fileSize || '--'}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="font-weight: 700; text-align: center;"><i class="fas fa-download" style="color: var(--success); font-size: 0.75rem; margin-right: 4px;"></i> ${claim.downloads || 0}</td>
+                    <td style="font-size: 0.8rem; font-weight: 600;">${claim.uploadedBy || 'Admin'}</td>
+                    <td style="font-size: 0.75rem; color: #555; font-weight: 600;">${claim.lastUpdated || claim.createdAt || '--'}</td>
+                    <td><span class="${statusBadgeClass}">${claim.status}</span></td>
+                    <td>
+                        <div class="action-btns">
+                            <div class="action-icon" title="Preview PDF" onclick="openPdfViewerModal('${claim.filePath}', '${claim.name}')">
+                                <i class="fas fa-eye"></i>
+                            </div>
+                            <div class="action-icon" title="Edit details" onclick="openClaimFormModal(window.claimsMap['${claim._id}'])">
+                                <i class="fas fa-edit"></i>
+                            </div>
+                            <div class="action-icon" title="Delete Form" style="color:var(--danger);" onclick="deleteClaim('${claim._id}')">
+                                <i class="fas fa-trash-alt"></i>
+                            </div>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function openPdfViewerModal(filePath, title) {
+            const modal = document.getElementById('pdfViewerModal');
+            document.getElementById('pdfViewerTitle').textContent = title;
+            const iframe = document.getElementById('pdfViewerIframe');
+            const base = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : '/backend/api';
+            iframe.src = `${base}/${filePath}`;
+            modal.classList.add('active');
+        }
+
+        function closePdfViewerModal() {
+            document.getElementById('pdfViewerModal').classList.remove('active');
+            document.getElementById('pdfViewerIframe').src = '';
+        }
+
+        async function deleteClaim(id) {
+            if (!confirm('Are you sure you want to permanently delete this claim form? This will delete the file from the server.')) {
+                return;
+            }
+            try {
+                const response = await api.delete(`/admin/claims.php?id=${id}`);
+                alert(response.message || 'Claim form deleted successfully.');
+                loadClaims();
+            } catch (error) {
+                console.error(error);
+                alert('Failed to delete claim form.');
+            }
+        }
+
+        function getFormHelpRequestBadge(status) {
+            let color = '#aaa';
+            let bg = '#f5f5f5';
+
+            const normalizedStatus = normalizeFormHelpRequestStatus(status);
+
+            if (normalizedStatus === 'new') { color = '#d97706'; bg = '#fff8e6'; }
+            if (normalizedStatus === 'pending') { color = '#003f88'; bg = '#e6f0fa'; }
+            if (normalizedStatus === 'completed') { color = '#38a169'; bg = '#e6f6ee'; }
+
+            const label = normalizedStatus ? (normalizedStatus.charAt(0).toUpperCase() + normalizedStatus.slice(1)) : 'Unknown';
+            return `<span style="background:${bg}; color:${color}; padding:4px 12px; border-radius:20px; font-size:0.75rem; font-weight:700; white-space:nowrap;">${label}</span>`;
+        }
+
+        function normalizeFormHelpRequestStatus(status) {
+            if (status === 'in-progress') return 'pending';
+            if (status === 'resolved') return 'completed';
+            if (status === 'pending' || status === 'completed' || status === 'new') return status;
+            return 'new';
+        }
+
+        function filterFormHelpRequests() {
+            currentFormHelpRequestSearch = (document.getElementById('requestsTableSearch')?.value || '').toLowerCase().trim();
+            currentFormHelpRequestFilter = document.getElementById('requestsFilterStatus')?.value || 'all';
+            renderFormHelpRequests();
+        }
+
+        async function loadFormHelpRequests() {
+            try {
+                allFormHelpRequests = await api.get('/admin/form_help_requests.php');
+
+                const total = allFormHelpRequests.length;
+                const normalizedRequests = allFormHelpRequests.map(request => ({
+                    ...request,
+                    status: normalizeFormHelpRequestStatus(request.status)
+                }));
+                allFormHelpRequests = normalizedRequests;
+
+                const newCount = normalizedRequests.filter(r => r.status === 'new').length;
+                const inProgressCount = normalizedRequests.filter(r => r.status === 'pending').length;
+                const resolvedCount = normalizedRequests.filter(r => r.status === 'completed').length;
+
+                const totalEl = document.getElementById('valHelpRequestsTotal');
+                const newEl = document.getElementById('valHelpRequestsNew');
+                const progressEl = document.getElementById('valHelpRequestsProgress');
+                const resolvedEl = document.getElementById('valHelpRequestsResolved');
+                if (totalEl) totalEl.textContent = total;
+                if (newEl) newEl.textContent = newCount;
+                if (progressEl) progressEl.textContent = inProgressCount;
+                if (resolvedEl) resolvedEl.textContent = resolvedCount;
+
+                const sbClaimsCount = document.getElementById('sbClaimsCount');
+                if (sbClaimsCount) sbClaimsCount.textContent = newCount;
+
+                drawSparkline('sparkHelpRequestsTotal', [0, total, total, total, total, total, total], '#5136a8');
+                drawSparkline('sparkHelpRequestsNew', [0, newCount, newCount, newCount, newCount, newCount, newCount], '#d97706');
+                drawSparkline('sparkHelpRequestsProgress', [0, inProgressCount, inProgressCount, inProgressCount, inProgressCount, inProgressCount, inProgressCount], '#003f88');
+                drawSparkline('sparkHelpRequestsResolved', [0, resolvedCount, resolvedCount, resolvedCount, resolvedCount, resolvedCount, resolvedCount], '#38a169');
+
+                renderFormHelpRequests();
+            } catch (error) {
+                console.error('Error loading form help requests', error);
+            }
+        }
+
+        async function markVisibleFormHelpRequestsAsSeen() {
+            const unreadRequests = allFormHelpRequests.filter(request => normalizeFormHelpRequestStatus(request.status) === 'new');
+            if (unreadRequests.length === 0) {
+                return;
+            }
+
+            try {
+                await Promise.all(unreadRequests.map(request =>
+                    api.post('/admin/form_help_requests.php', {
+                        id: request.requestId || request._id,
+                        status: 'pending'
+                    })
+                ));
+
+                await loadFormHelpRequests();
+            } catch (error) {
+                console.error('Failed to mark form help requests as seen', error);
+            }
+        }
+
+        function renderFormHelpRequests() {
+            const tbody = document.getElementById('premiumHelpRequestsTableBody');
+            if (!tbody) return;
+
+            let filtered = allFormHelpRequests;
+            if (currentFormHelpRequestFilter !== 'all') {
+                filtered = filtered.filter(r => normalizeFormHelpRequestStatus(r.status) === currentFormHelpRequestFilter);
+            }
+            if (currentFormHelpRequestSearch) {
+                filtered = filtered.filter(r =>
+                    (r.name || '').toLowerCase().includes(currentFormHelpRequestSearch) ||
+                    (r.phone || '').toLowerCase().includes(currentFormHelpRequestSearch) ||
+                    (r.claimName || '').toLowerCase().includes(currentFormHelpRequestSearch) ||
+                    (r.description || '').toLowerCase().includes(currentFormHelpRequestSearch)
+                );
+            }
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" style="padding:3rem;text-align:center;color:#aaa;">No form filling requests found matching the filters.</td></tr>`;
+                return;
+            }
+
+            const sourceRequests = Array.isArray(allFormHelpRequests) && allFormHelpRequests.length ? allFormHelpRequests : filtered;
+
+            tbody.innerHTML = filtered.map((request, index) => {
+                const requestId = request.requestId || request._id || '';
+                const sourceIndex = sourceRequests.findIndex(item => item._id === request._id);
+                const displayRequestId = String(sourceIndex >= 0 ? (sourceRequests.length - sourceIndex) : (filtered.length - index)).padStart(3, '0');
+                const note = request.description || 'No additional description provided.';
+                const claimName = request.claimName || 'Claim Form';
+                const requestStatus = normalizeFormHelpRequestStatus(request.status || 'new');
+                const requestPayload = encodeURIComponent(JSON.stringify({
+                    requestId,
+                    displayRequestId,
+                    name: request.name || 'Anonymous',
+                    phone: request.phone || '—',
+                    description: note,
+                    claimName,
+                    claimCategory: request.claimCategory || 'Claim Support',
+                    submittedAt: request.submittedAt || '—',
+                    status: requestStatus
+                }));
+
+                return `
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td style="font-family: monospace; font-size: 0.75rem; font-weight: 600; color: var(--text-muted);">#${displayRequestId}</td>
+                        <td>
+                            <div style="font-weight: 700; color: #111;">${request.name || 'Anonymous'}</div>
+                            <div style="font-size: 0.78rem; color: #666;">${request.phone || '—'}</div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 600; color: var(--primary-purple);">${claimName}</div>
+                            <div style="font-size: 0.75rem; color: #888;">${request.claimCategory || 'Claim Support'}</div>
+                        </td>
+                        <td style="max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #666;" title="${note}">${note}</td>
+                        <td style="font-size: 0.8rem; color: #888;">${request.submittedAt ? request.submittedAt.split(' ')[0] : '—'}</td>
+                        <td>${getFormHelpRequestBadge(requestStatus)}</td>
+                        <td>
+                            <div class="request-actions">
+                                <button type="button" class="request-action-btn view" title="View" onclick="openFormHelpRequestModalFromEncoded('${requestPayload}')"><i class="fas fa-eye"></i></button>
+                                <button type="button" class="request-action-btn delete" title="Delete" onclick="deleteFormHelpRequest('${requestId}')"><i class="fas fa-trash-alt"></i></button>
+                            </div>
+                        </td>
+                    </tr>`;
+            }).join('');
+        }
+
+        async function openFormHelpRequestModalFromEncoded(encodedRequest) {
+            try {
+                const request = JSON.parse(decodeURIComponent(encodedRequest));
+                const requestStatus = normalizeFormHelpRequestStatus(request.status || 'new');
+                currentOpenFormHelpRequestId = request.requestId || '';
+                currentOpenFormHelpRequestStatus = requestStatus;
+                document.getElementById('formHelpRequestModalId').textContent = request.displayRequestId ? `#${request.displayRequestId}` : '—';
+                document.getElementById('formHelpRequestModalStatus').textContent = requestStatus ? requestStatus.charAt(0).toUpperCase() + requestStatus.slice(1) : '—';
+                document.getElementById('formHelpRequestStatusHint').textContent = requestStatus ? requestStatus.charAt(0).toUpperCase() + requestStatus.slice(1) : 'New';
+                document.getElementById('formHelpRequestModalCustomer').textContent = request.name || 'Anonymous';
+                document.getElementById('formHelpRequestModalPhone').textContent = request.phone || '—';
+                document.getElementById('formHelpRequestModalClaim').textContent = request.claimName || 'Claim Form';
+                document.getElementById('formHelpRequestModalDate').textContent = request.submittedAt || '—';
+                document.getElementById('formHelpRequestModalNote').textContent = request.description || 'No additional description provided.';
+                document.getElementById('formHelpRequestModalTitle').textContent = request.displayRequestId ? `Form filling request #${request.displayRequestId}` : (request.claimName || 'Form filling request');
+                document.getElementById('formHelpRequestModal').classList.add('active');
+
+                if (request.requestId && requestStatus === 'new') {
+                    await updateFormHelpRequestStatus(request.requestId, 'pending');
+                    currentOpenFormHelpRequestStatus = 'pending';
+                    document.getElementById('formHelpRequestModalStatus').textContent = 'Pending';
+                    document.getElementById('formHelpRequestStatusHint').textContent = 'Pending';
+                }
+            } catch (error) {
+                console.error('Failed to open request details', error);
+                alert('Unable to open request details.');
+            }
+        }
+
+        function closeFormHelpRequestModal() {
+            document.getElementById('formHelpRequestModal').classList.remove('active');
+            currentOpenFormHelpRequestId = '';
+            currentOpenFormHelpRequestStatus = 'new';
+        }
+
+        async function updateOpenFormHelpRequestStatus(status) {
+            if (!currentOpenFormHelpRequestId) return;
+            await updateFormHelpRequestStatus(currentOpenFormHelpRequestId, status, { silent: false });
+            currentOpenFormHelpRequestStatus = normalizeFormHelpRequestStatus(status);
+            document.getElementById('formHelpRequestModalStatus').textContent = currentOpenFormHelpRequestStatus.charAt(0).toUpperCase() + currentOpenFormHelpRequestStatus.slice(1);
+            document.getElementById('formHelpRequestStatusHint').textContent = currentOpenFormHelpRequestStatus.charAt(0).toUpperCase() + currentOpenFormHelpRequestStatus.slice(1);
+        }
+
+        async function deleteFormHelpRequest(id) {
+            if (!id || !confirm('Delete this form filling request permanently?')) return;
+            try {
+                await api.delete(`/admin/form_help_requests.php?id=${encodeURIComponent(id)}`);
+                loadFormHelpRequests();
+            } catch (error) {
+                console.error('Failed to delete form help request', error);
+                alert('Failed to delete request');
+            }
+        }
+
+        async function updateFormHelpRequestStatus(id, status, options = {}) {
+            if (!id) return;
+            try {
+                const normalizedStatus = normalizeFormHelpRequestStatus(status);
+                await api.post('/admin/form_help_requests.php', { id, status: normalizedStatus });
+                await loadFormHelpRequests();
+                if (!options.silent && currentOpenFormHelpRequestId === id) {
+                    currentOpenFormHelpRequestStatus = normalizedStatus;
+                    document.getElementById('formHelpRequestModalStatus').textContent = normalizedStatus.charAt(0).toUpperCase() + normalizedStatus.slice(1);
+                    document.getElementById('formHelpRequestStatusHint').textContent = normalizedStatus.charAt(0).toUpperCase() + normalizedStatus.slice(1);
+                }
+            } catch (error) {
+                console.error('Failed to update form help request status', error);
+                alert('Failed to update request status');
+            }
+        }
+
+        // ─── INITIAL LOAD ───
         loadUsers();
         loadLeads(); // Load leads early for dashboard stats
         loadContacts(); // Load contacts for dashboard stats
+        loadClaims(); // Load claims early for dashboard stats and badges
+        loadFormHelpRequests();
 
         // Set Welcome Banner
         const adminName = localStorage.getItem('name') || 'Admin';

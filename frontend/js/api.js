@@ -1,6 +1,29 @@
 // API_BASE_URL should be loaded before this from config.js
 const BASE_URL = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : '/backend/api';
 
+async function parseResponseBody(response) {
+    const contentType = response.headers.get('content-type') || '';
+    const bodyText = await response.text();
+
+    if (contentType.includes('application/json')) {
+        try {
+            return bodyText ? JSON.parse(bodyText) : null;
+        } catch (error) {
+            throw new Error(`Invalid JSON response from server: ${bodyText.slice(0, 160)}`);
+        }
+    }
+
+    if (!bodyText) {
+        return null;
+    }
+
+    try {
+        return JSON.parse(bodyText);
+    } catch (error) {
+        throw new Error(`Expected JSON but received: ${bodyText.slice(0, 160)}`);
+    }
+}
+
 const api = {
     async login(email, password) {
         const response = await fetch(`${BASE_URL}/auth/login.php`, {
@@ -11,7 +34,7 @@ const api = {
             body: JSON.stringify({ email, password })
         });
         
-        const data = await response.json();
+        const data = await parseResponseBody(response);
         if (response.ok) {
             localStorage.setItem('token', data.token);
             localStorage.setItem('role', data.role);
@@ -40,7 +63,7 @@ const api = {
             this.logout();
             throw new Error('Unauthorized');
         }
-        return response.json();
+        return parseResponseBody(response);
     },
 
     async post(endpoint, payload) {
@@ -57,6 +80,37 @@ const api = {
             this.logout();
             throw new Error('Unauthorized');
         }
-        return response.json();
+        return parseResponseBody(response);
+    },
+
+    async postMultipart(endpoint, formData) {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${BASE_URL}${endpoint}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+            body: formData
+        });
+        if (response.status === 401 || response.status === 403) {
+            this.logout();
+            throw new Error('Unauthorized');
+        }
+        return parseResponseBody(response);
+    },
+
+    async delete(endpoint) {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${BASE_URL}${endpoint}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        if (response.status === 401 || response.status === 403) {
+            this.logout();
+            throw new Error('Unauthorized');
+        }
+        return parseResponseBody(response);
     }
 };
