@@ -71,7 +71,9 @@
         /* Hero Section */
         .hero {
             min-height: 100vh;
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-mid) 100%);
+            background: radial-gradient(circle at 80% 20%, rgba(0, 80, 157, 0.4) 0%, transparent 50%),
+                        radial-gradient(circle at 20% 80%, rgba(253, 197, 0, 0.1) 0%, transparent 40%),
+                        #001533;
             padding: 10rem 5% 8rem 5%;
             position: relative;
             overflow: hidden;
@@ -79,12 +81,10 @@
             align-items: center;
         }
         .hero::before {
-            content: ''; position: absolute; inset: 0;
-            background: radial-gradient(circle at 80% 20%, rgba(253, 197, 0, 0.15) 0%, transparent 40%),
-                        radial-gradient(circle at 20% 80%, rgba(0, 80, 157, 0.4) 0%, transparent 40%);
+            content: none;
         }
         .hero-container {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1400px; margin: 0 auto; position: relative; z-index: 2; width: 100%;
+            display: grid; grid-template-columns: minmax(0, 1fr); gap: 4rem; max-width: 1100px; margin: 0 auto; position: relative; z-index: 2; width: 100%;
         }
         .hero-content { color: white; display: flex; flex-direction: column; justify-content: center; }
         .badge { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--glass-bg); padding: 0.5rem 1rem; border-radius: 20px; border: 1px solid var(--glass-border); font-size: 0.85rem; color: var(--accent-gold-light); width: fit-content; margin-bottom: 1.5rem; }
@@ -92,21 +92,6 @@
         .hero p { font-size: 1.1rem; color: var(--text-gray); line-height: 1.6; margin-bottom: 2rem; max-width: 90%; }
         .hero-quote { border-left: 3px solid var(--accent-gold); padding-left: 1rem; font-style: italic; color: rgba(255,255,255,0.8); margin-bottom: 2.5rem; font-size: 1.05rem;}
         .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
-        
-        .hero-visuals { position: relative; display: flex; align-items: center; justify-content: center; }
-        .visual-glass-card {
-            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 24px;
-            padding: 2.5rem; box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            position: relative; animation: float 6s ease-in-out infinite; width: 100%; max-width: 500px;
-        }
-        .visual-glass-card::before {
-            content: ''; position: absolute; inset: -1px; background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent); border-radius: 24px; z-index: -1;
-        }
-        .shield-icon { font-size: 8rem; color: var(--accent-gold); filter: drop-shadow(0 0 30px rgba(253, 197, 0, 0.4)); text-align: center; margin-bottom: 1.5rem; animation: pulseGlow 3s infinite alternate; }
-        
-        @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-20px); } 100% { transform: translateY(0); } }
-        @keyframes pulseGlow { 0% { filter: drop-shadow(0 0 20px rgba(253, 197, 0, 0.3)); } 100% { filter: drop-shadow(0 0 40px rgba(253, 197, 0, 0.6)); } }
         
         /* Stats Section */
         .stats-section { margin-top: -60px; position: relative; z-index: 10; padding: 0 5%; }
@@ -274,25 +259,6 @@
                     <a href="services.html" class="btn btn-gold">Get Insurance</a>
                     <a href="userchat.html" class="btn btn-blue"><i class="fas fa-robot"></i> Insurance Recommender</a>
                     <a href="partner.html" class="btn btn-outline">Become a Partner</a>
-                </div>
-            </div>
-            <div class="hero-visuals">
-                <div class="visual-glass-card">
-                    <div class="shield-icon"><i class="fas fa-shield-virus"></i></div>
-                    <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 1.2rem; margin-bottom: 1rem;">
-                        <div style="display:flex; justify-content:space-between; margin-bottom: 0.8rem;">
-                            <div style="width:60%; height:8px; background:rgba(255,255,255,0.3); border-radius:4px;"></div>
-                            <div style="width:20%; height:8px; background:var(--accent-gold); border-radius:4px;"></div>
-                        </div>
-                        <div style="width:40%; height:8px; background:rgba(255,255,255,0.2); border-radius:4px;"></div>
-                    </div>
-                    <div style="display:flex; gap:1rem;">
-                        <div style="flex:1; height:80px; background:rgba(255,255,255,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center; color:white; font-size:2rem;"><i class="fas fa-chart-line"></i></div>
-                        <div style="flex:1; height:80px; background:rgba(255,255,255,0.1); border-radius:12px; display:flex; align-items:center; justify-content:center; color:white; font-size:2rem;"><i class="fas fa-heartbeat"></i></div>
-                    </div>
-                    <!-- Decorative glowing orbs -->
-                    <div style="position:absolute; top:-20px; right:-20px; width:50px; height:50px; background:var(--accent-gold); border-radius:50%; filter:blur(15px);"></div>
-                    <div style="position:absolute; bottom:-30px; left:-30px; width:70px; height:70px; background:var(--primary-light); border-radius:50%; filter:blur(25px);"></div>
                 </div>
             </div>
         </div>
