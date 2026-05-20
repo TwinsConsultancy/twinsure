@@ -540,11 +540,18 @@
                 left: 0;
                 top: 0;
                 transform: none;
-                width: 100%;
-                height: 220px;
-                margin: 0 0 1rem 0;
+                width: min(220px, 100%);
+                height: 280px;
+                margin: 0 auto 1rem auto;
             }
-            .shield-image { position: relative; inset: 0; height: 100%; background-size: cover !important; }
+            .shield-image {
+                position: absolute;
+                inset: 3px;
+                height: auto;
+                background-size: cover !important;
+                background-repeat: no-repeat !important;
+                background-position: center top !important;
+            }
             .team-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
             .team-card { padding: 1.5rem 1rem; border-radius: 16px; }
             .team-avatar-wrapper { width: 82px; height: 82px; margin-bottom: 1rem; }
