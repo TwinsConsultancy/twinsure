@@ -34,6 +34,7 @@
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-page); color: var(--text-gray); overflow-x: hidden; scroll-behavior: smooth; }
         h1, h2, h3, h4, h5, h6 { font-family: 'Outfit', sans-serif; color: var(--text-dark); }
         a { text-decoration: none; }
@@ -50,10 +51,9 @@
         /* Floating Canvas Particles System */
         #particlesCanvas {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            inset: 0;
+            width: 100%;
+            height: 100%;
             z-index: 0;
             pointer-events: none;
         }
@@ -65,9 +65,9 @@
         
         /* Sticky Navigation Bar */
         .navbar {
-            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 1000;
             padding: 1.5rem 5%; transition: all 0.3s ease;
-            display: flex; justify-content: space-between; align-items: center;
+            display: flex; justify-content: space-between; align-items: center; gap: 1rem;
             background: rgba(10, 28, 54, 0.95);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255,255,255,0.06);
@@ -76,13 +76,26 @@
         .navbar.scrolled {
             padding: 1rem 5%;
         }
-        .logo { font-size: 1.8rem; font-weight: 800; color: #ffffff; font-family: 'Outfit'; display: flex; align-items: center; gap: 0.5rem; }
+        .logo { font-size: 1.8rem; font-weight: 800; color: #ffffff; font-family: 'Outfit'; display: flex; align-items: center; gap: 0.5rem; min-width: 0; }
         .logo i { color: var(--accent-gold); }
         .nav-links { display: flex; gap: 2.5rem; align-items: center; }
         .nav-links a { color: #cbd5e1; font-weight: 500; font-size: 0.95rem; transition: 0.3s; position: relative; }
         .nav-links a:hover, .nav-links a.active { color: var(--accent-gold-light) !important; font-weight: 700 !important; }
         .nav-links a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0; background: var(--accent-gold); transition: 0.3s; }
         .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        .nav-toggle {
+            display: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.05);
+            color: var(--text-white);
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
         
         .btn { padding: 0.8rem 1.8rem; border-radius: 30px; font-weight: 600; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; border: none; font-family: 'Inter', sans-serif; }
         .btn-gold { background: linear-gradient(135deg, var(--accent-gold-light), var(--accent-gold)); color: var(--primary-dark) !important; box-shadow: 0 4px 15px rgba(253, 197, 0, 0.2); }
@@ -117,7 +130,7 @@
         .hero-container {
             display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; max-width: 1400px; margin: 0 auto; width: 100%; position: relative; z-index: 5;
         }
-        .hero-content { display: flex; flex-direction: column; justify-content: center; color: #ffffff; }
+        .hero-content { display: flex; flex-direction: column; justify-content: center; color: #ffffff; min-width: 0; }
         .hero-content h1 { color: #ffffff; font-size: 4rem; line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -1px; font-weight: 800; }
         .hero-content h1 span {
             background: linear-gradient(135deg, var(--accent-gold-light), var(--accent-gold));
@@ -571,6 +584,8 @@
             .intro-grid { grid-template-columns: 1fr; text-align: center; gap: 3rem; }
             .intro-left { display: flex; flex-direction: column; align-items: center; }
             .intro-highlights { align-items: flex-start; }
+            .db-header { flex-wrap: wrap; gap: 1rem; }
+            .db-search { width: min(100%, 280px); }
             .db-main-layout { grid-template-columns: 1fr; }
             .db-sidebar { border-right: none; border-bottom: 1px solid #f1f5f9; padding-bottom: 1rem; padding-right: 0; flex-direction: row; flex-wrap: wrap; }
             .db-content-grid { grid-template-columns: 1fr; }
@@ -580,13 +595,132 @@
             .footer-grid { grid-template-columns: 1fr 1fr; }
         }
         @media (max-width: 768px) {
-            .nav-links { display: none; }
+            .navbar { flex-wrap: nowrap; padding: 0.75rem 1rem; align-items: center; }
+            .nav-toggle { display: inline-flex; }
+            .navbar,
+            .hero-dark-wrap,
+            .works-section-dark,
+            .section,
+            .footer {
+                padding-left: 1rem;
+                padding-right: 1rem;
+                overflow-x: clip;
+            }
+            .logo { font-size: 1.8rem; max-width: calc(100% - 56px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+            .hero-content h1 { font-size: 2.7rem; }
+            .section-header h2 { font-size: 2.2rem; }
+            .hero-container,
+            .intro-grid,
+            .comm-connection-grid,
+            .support-banner-wrap,
+            .final-cta-floating-banner,
+            .dashboard-outer-container,
+            .db-main-layout,
+            .db-content-grid {
+                width: 100%;
+                max-width: 100%;
+            }
+            .hero-container > *,
+            .intro-grid > *,
+            .comm-connection-grid > *,
+            .support-banner-wrap > *,
+            .final-cta-floating-banner > *,
+            .db-main-layout > *,
+            .db-content-grid > * {
+                min-width: 0;
+            }
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: calc(100% + 8px);
+                left: 1rem;
+                right: 1rem;
+                z-index: 999;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.75rem;
+                padding: 0.75rem;
+                border-radius: 12px;
+                background: rgba(0, 21, 51, 0.98);
+                border: 1px solid rgba(255,255,255,0.08);
+                backdrop-filter: blur(12px);
+                max-height: 60vh;
+                overflow: auto;
+            }
+            .navbar.nav-open .nav-links { display: flex; }
+            .nav-links a { padding: 0.75rem 0.9rem; width: 100%; border-radius: 12px; }
+            .nav-links a::after { display: none; }
+            .nav-links .btn { width: 100%; margin-left: 0 !important; }
+            .section-header,
+            .hero-content,
+            .intro-left,
+            .comm-column-left,
+            .emotional-column-right,
+            .support-left-block,
+            .cta-banner-left,
+            .cta-banner-right { max-width: 100%; }
             .join-cards-grid { grid-template-columns: 1fr; }
             .benefits-cards-grid { grid-template-columns: 1fr; }
             .works-cards-row { grid-template-columns: 1fr; }
             .quote-row-item { flex-direction: column; text-align: center; gap: 1rem; }
             .quote-row-item.reverse { flex-direction: column; }
             .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+            .hero-visuals,
+            .hero-visual-assembly,
+            .central-db-card,
+            .float-card,
+            .float-coin,
+            .intro-path-line,
+            .support-right-avatars,
+            .cta-banner-right,
+            .bg-spot { display: none; }
+            .hero-container { grid-template-columns: 1fr; gap: 1.5rem; }
+            .intro-grid { grid-template-columns: 1fr; }
+            .intro-cards-container { grid-template-columns: 1fr; gap: 1rem; }
+            .comm-connection-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .hero-content,
+            .intro-left,
+            .comm-column-left,
+            .emotional-column-right,
+            .support-left-block,
+            .cta-banner-left,
+            .cta-banner-right,
+            .db-left-column,
+            .db-right-column { min-width: 0; }
+            .hero-content h1,
+            .hero-content p,
+            .section-header h2,
+            .section-header p,
+            .quote-text-container,
+            .db-logo,
+            .db-profile-name {
+                overflow-wrap: anywhere;
+                word-break: break-word;
+            }
+            .hero-dark-badge { max-width: 100%; }
+            .dashboard-outer-container { padding: 1.25rem; }
+            .db-logo,
+            .db-header { flex-direction: column; align-items: stretch; gap: 0.75rem; }
+            .db-search { width: 100%; max-width: 100%; }
+            .db-profile { justify-content: space-between; }
+            .db-sidebar {
+                flex-direction: column;
+                flex-wrap: nowrap;
+                border-right: none;
+                border-bottom: 1px solid #f1f5f9;
+                padding-right: 0;
+                padding-bottom: 1rem;
+            }
+            .db-progress-table { display: block; overflow-x: auto; }
+            .final-cta-floating-banner { padding: 2rem 1.25rem; }
+            .cta-banner-btns,
+            .support-btns-row { justify-content: center; }
+
+            body.nav-open { overflow: hidden; }
+            .footer { padding: 3rem 1rem 2rem 1rem; }
+            .footer-grid { grid-template-columns: 1fr; gap: 2rem; text-align: center; }
+            .footer p { max-width: 100%; margin: 0 auto; }
+            .social-links { justify-content: center; }
         }
     </style>
 </head>
@@ -604,7 +738,10 @@
         <a href="index.html" class="logo">
             <i class="fas fa-shield-alt"></i> Twinsure
         </a>
-        <div class="nav-links">
+        <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="nav-links" role="menu" aria-hidden="true">
             <a href="index.html">Home</a>
             <a href="about.html">About</a>
             <a href="services.html">Services</a>
@@ -1424,6 +1561,44 @@
                 navbar.classList.add('scrolled');
             } else {
                 navbar.classList.remove('scrolled');
+            }
+        });
+
+        const navbar = document.getElementById('navbar');
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = navbar.querySelector('.nav-links');
+
+        // Ensure ARIA initial state
+        if (navLinks) navLinks.setAttribute('aria-hidden', 'true');
+
+        navToggle?.addEventListener('click', () => {
+            const isOpen = navbar.classList.toggle('nav-open');
+            document.body.classList.toggle('nav-open', isOpen);
+            navToggle.setAttribute('aria-expanded', String(isOpen));
+            if (navLinks) navLinks.setAttribute('aria-hidden', String(!isOpen));
+            if (isOpen) {
+                const firstLink = navLinks.querySelector('a');
+                firstLink?.focus();
+            }
+        });
+
+        navLinks?.querySelectorAll('a').forEach((link) => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    navbar.classList.remove('nav-open');
+                    document.body.classList.remove('nav-open');
+                    navToggle.setAttribute('aria-expanded', 'false');
+                    if (navLinks) navLinks.setAttribute('aria-hidden', 'true');
+                }
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                navbar.classList.remove('nav-open');
+                document.body.classList.remove('nav-open');
+                navToggle.setAttribute('aria-expanded', 'false');
+                if (navLinks) navLinks.setAttribute('aria-hidden', 'true');
             }
         });
 

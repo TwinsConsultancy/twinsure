@@ -27,6 +27,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--primary-dark);
@@ -593,7 +594,8 @@
         @media (max-width: 992px) {
             .auth-container {
                 grid-template-columns: 1fr;
-                max-width: 500px;
+                max-width: 100%;
+                width: 100%;
             }
             .auth-panel-left {
                 display: none; /* Hide visual panel on tablets/mobile for cleaner authentication */
@@ -607,6 +609,31 @@
                 flex-direction: column;
                 justify-content: center;
                 padding: 3rem 1rem;
+            }
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 2rem 0.75rem;
+                justify-content: flex-start;
+            }
+            .auth-container {
+                border-radius: 22px;
+            }
+            .auth-panel-right {
+                padding: 2rem 1.25rem;
+            }
+            .form-header h2 { font-size: 1.8rem; }
+            .form-options-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+            .top-left-branding {
+                margin-bottom: 1.5rem;
+            }
+            .security-disclaimer-card {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
