@@ -746,6 +746,9 @@
         <!-- Right Side: Secure forms section -->
         <div class="auth-panel-right">
             
+            <div style="margin-bottom:0.8rem;">
+                <button id="goBackBtn" class="text-link" style="background:none;border:none;padding:0;font-size:0.95rem;cursor:pointer;">&larr; Go Back</button>
+            </div>
             <div class="form-slider-container">
                 <div class="form-slider-wrapper" id="formSlider">
                     
@@ -1017,6 +1020,23 @@
             e.preventDefault();
             alert('Registration request successfully recorded. Our verification team will review and approve your partner account.');
         });
+
+        // Go back button: prefer history.back(), fallback to index.html
+        const goBackBtnEl = document.getElementById('goBackBtn');
+        if (goBackBtnEl) {
+            goBackBtnEl.addEventListener('click', (ev) => {
+                ev.preventDefault();
+                try {
+                    if (document.referrer && document.referrer !== window.location.href) {
+                        window.history.back();
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                } catch (err) {
+                    window.location.href = 'index.html';
+                }
+            });
+        }
     </script>
 </body>
 </html>

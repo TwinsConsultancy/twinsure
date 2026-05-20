@@ -90,6 +90,8 @@
             backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
+        .nav-toggle { display: none; }
+        .nav-toggle::before { content: none !important; }
         .logo { font-size: 1.7rem; font-weight: 800; color: var(--text-white); font-family: 'Outfit'; display: flex; align-items: center; gap: 0.5rem; }
         .logo i { color: var(--accent-gold); }
         .nav-links { display: flex; gap: 2.2rem; align-items: center; }
@@ -1211,15 +1213,28 @@
             .calculator-sub-grid { grid-template-columns: 1fr; }
         }
         @media (max-width: 768px) {
-            .navbar { flex-wrap: nowrap; padding: 0.75rem 5%; align-items: center; }
-            .nav-toggle { display: inline-flex; }
+            .navbar { flex-wrap: nowrap; padding: 0.75rem 1rem; align-items: center; }
+            .nav-toggle {
+                display: inline-flex;
+                width: 44px;
+                height: 44px;
+                border-radius: 12px;
+                border: 1px solid rgba(255,255,255,0.15);
+                background: rgba(255,255,255,0.05);
+                color: var(--text-white);
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                flex-shrink: 0;
+            }
             body.nav-open { overflow: hidden; }
+            /* Mobile nav overlay matches home page behavior */
             .nav-links {
                 display: none;
                 position: absolute;
                 top: calc(100% + 8px);
-                left: 5%;
-                right: 5%;
+                left: 1rem;
+                right: 1rem;
                 z-index: 999;
                 flex-direction: column;
                 align-items: stretch;
@@ -1236,6 +1251,165 @@
             .nav-links a { padding: 0.75rem 0.9rem; width: 100%; border-radius: 12px; }
             .nav-links a::after { display: none; }
             .nav-links .btn { width: 100%; margin-left: 0 !important; }
+        }
+        /* === Overrides: simplified layout & removed decorations === */
+        /* Hide heavy decorative/background elements */
+        .bg-decor-wrapper, .bg-orb, .orb-1, .orb-2, .gold-sparkle, .sp-1, .sp-2, .sp-3, .sp-4, .sp-5,
+        .gold-blur-blob, .deco-capsule, .cap-1, .cap-2, .chat-bg-spot, .chat-sparkle, .chat-deco-capsule,
+        .floating-shield-mock, .chat-decor-star, .ai-sparkle-mock { display: none !important; }
+
+        /* Side-by-side split: calculator primary, chatbot compact (desktop) */
+        .page-content-wrapper { width: 100% !important; max-width: none !important; padding: 4.8rem 1rem 2rem 1rem !important; margin: 0 !important; }
+        .grand-split-layout { display: flex !important; flex-direction: row !important; gap: 1rem !important; height: calc(100vh - 5.2rem) !important; width: 100% !important; align-items: stretch !important; }
+        .calculator-panel-left-scroll { flex: 0 0 60%; width: 60%; max-width: none !important; min-width: 0 !important; height: 100% !important; overflow-y: auto !important; margin: 0 !important; }
+        .chatbot-card-wrapper { flex: 0 0 40%; width: 40%; max-width: none !important; min-width: 0 !important; height: 100% !important; min-height: 0 !important; max-height: none !important; overflow-y: auto !important; margin: 0 !important; }
+
+        /* Tone down intense glows and shadows to match simpler pages */
+        .chatbot-container, .calculator-card-inputs, .results-glass-block { box-shadow: none !important; background: rgba(255,255,255,0.02) !important; border-radius: 12px !important; }
+        .chatbot-container::before { display: none !important; }
+        /* Make chatbot container styling match calculator cards for visual parity */
+        .chatbot-container {
+            padding: 1rem !important;
+            background: rgba(255,255,255,0.02) !important;
+            border: 1px solid rgba(255,255,255,0.06) !important;
+            border-radius: 12px !important;
+            box-shadow: none !important;
+        }
+        /* Ensure chat messages area fills available space */
+        .chat-messages-area { flex: 1 1 auto !important; height: auto !important; overflow-y: auto !important; padding: 1rem !important; }
+        .chat-top-header, .chat-bottom-actions { padding-left: 0 !important; padding-right: 0 !important; }
+
+        /* Layout controls styling */
+        .layout-controls {
+            position: fixed; top: 80px; right: 18px; z-index: 1200; background: rgba(2,11,30,0.9);
+            border: 1px solid rgba(255,255,255,0.06); padding: 0.6rem; border-radius: 10px; width: 180px;
+            display: flex; flex-direction: column; gap: 0.5rem; box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+        }
+        /* Splitter styles for draggable divider */
+        .splitter {
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.03));
+            transition: background 0.12s, box-shadow 0.12s;
+            z-index: 1050; position: relative;
+            pointer-events: auto; touch-action: none; user-select: none; -webkit-user-select: none;
+            flex: 0 0 auto;
+        }
+        .splitter.vertical {
+            width: 16px; cursor: col-resize; border-left: 1px solid rgba(255,255,255,0.03); border-right: 1px solid rgba(255,255,255,0.03);
+        }
+        .splitter.active {
+            background: linear-gradient(180deg, rgba(255,160,0,0.95), rgba(255,100,0,0.95));
+            box-shadow: 0 0 14px rgba(255,120,0,0.45);
+        }
+        .splitter-swap-icon {
+            position: absolute;
+            left: 50%; top: 50%; transform: translate(-50%, -50%);
+            width: 18px; height: 18px; border-radius: 50%;
+            background: var(--accent-gold-light); color: #001533;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.62rem; line-height: 1;
+            box-shadow: 0 0 10px rgba(255, 140, 0, 0.65);
+            pointer-events: none;
+            z-index: 2;
+        }
+        /* visible handle inside the splitter for affordance */
+        .splitter::after {
+            content: '';
+            position: absolute;
+            left: 50%; top: 50%; transform: translate(-50%, -50%);
+            width: 4px; height: 48px; background: rgba(255,255,255,0.95); border-radius: 3px;
+            box-shadow: 0 0 12px rgba(255,140,0,0.6);
+            pointer-events: none;
+        }
+
+        /* Calculator spacing tweaks */
+        .calculator-sub-grid { gap: 1.2rem !important; }
+        .calculator-card-inputs { gap: 0.9rem !important; }
+        .calculator-panel-left-scroll { padding-bottom: 1rem !important; }
+
+        /* Responsive fallback: stack vertically on small screens */
+        @media (max-width: 900px) {
+            /* Mobile: top/bottom stack with calculator first, then chat */
+            html, body { overflow-x: hidden !important; width: 100% !important; }
+            * { box-sizing: border-box; }
+            .page-content-wrapper {
+                padding: 4rem 0.6rem 1rem 0.6rem !important;
+                height: auto !important;
+                overflow: visible !important;
+                max-width: 100% !important;
+            }
+            .grand-split-layout {
+                flex-direction: column !important;
+                height: auto !important;
+                gap: 0.7rem !important;
+                width: 100% !important;
+                overflow: visible !important;
+            }
+            .calculator-panel-left-scroll,
+            .chatbot-card-wrapper {
+                max-width: 100% !important;
+                width: 100% !important;
+                flex: 1 1 auto !important;
+                min-width: 0 !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+            .calculator-panel-left-scroll { order: 1 !important; }
+            .chatbot-card-wrapper { order: 2 !important; min-height: 0 !important; }
+            #ucSplitter { display: none !important; }
+            .calculator-sub-grid { grid-template-columns: 1fr !important; gap: 0.8rem !important; }
+            .output-metrics-grid { grid-template-columns: 1fr !important; }
+            .chatbot-container { padding: 0.85rem !important; border-radius: 14px !important; }
+            .chat-top-header {
+                padding: 0.65rem 0.2rem !important;
+                flex-wrap: wrap !important;
+                gap: 0.6rem !important;
+            }
+            .chat-bot-details { min-width: 0 !important; }
+            .chat-messages-area { padding: 0.9rem !important; min-width: 0 !important; }
+            .chat-bottom-actions { padding: 0.85rem 0.2rem !important; }
+            .chat-action-buttons {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 0.65rem !important;
+            }
+            .chat-action-buttons > div {
+                width: 100% !important;
+                flex-wrap: wrap !important;
+            }
+            .chat-action-buttons .progress-bar-track {
+                max-width: none !important;
+                width: 100% !important;
+            }
+            .chat-action-buttons .btn-white-small,
+            .chat-action-buttons .btn.btn-gold {
+                width: 100% !important;
+                justify-content: center !important;
+            }
+            .nav-toggle { display: inline-flex !important; }
+        }
+
+        @media (max-width: 600px) {
+            .navbar { padding-left: 0.6rem !important; padding-right: 0.6rem !important; }
+            .logo { font-size: 1.2rem !important; }
+            .page-content-wrapper { padding-left: 0.45rem !important; padding-right: 0.45rem !important; }
+            .calculator-title-block h2 { font-size: 1.2rem !important; }
+            .calculator-title-block p { font-size: 0.75rem !important; }
+            .calculator-card-inputs, .results-glass-block { padding: 0.8rem !important; border-radius: 14px !important; }
+            .calculator-sub-grid { gap: 0.65rem !important; }
+            .range-slider-wrap { min-width: 0 !important; }
+            .dropdown-segmented-bar { overflow-x: auto !important; max-width: 100% !important; }
+            .dropdown-segmented-items { min-width: 0 !important; }
+            .segmented-risk-group { grid-template-columns: 1fr !important; }
+            .slot-fields-row { flex-direction: column !important; align-items: stretch !important; gap: 0.45rem !important; }
+            .slot-field-label { width: 100% !important; }
+            .slot-or-separator { width: 100% !important; margin-left: 0 !important; }
+            .calendar-and-time-split { gap: 0.65rem !important; }
+            .calendar-mini-graphic-card { right: 0.6rem !important; }
+            .chat-row { max-width: 100% !important; }
+            .user-row { max-width: 92% !important; }
+            .chat-bubble { font-size: 0.84rem !important; }
+            .chatbot-container { padding: 0.7rem !important; }
+            .chat-messages-area { padding: 0.75rem !important; }
         }
     </style>
 </head>
@@ -1277,6 +1451,8 @@
 
     <!-- WIDESCREEN FLEX CONTENT WRAPPER -->
     <div class="page-content-wrapper">
+
+        <!-- Layout controls moved below calculator (inserted later) -->
 
         <!-- GRAND SPLIT SCREEN LAYOUT -->
         <main class="grand-split-layout">
@@ -1564,7 +1740,6 @@
                 </div>
 
             </section>
-
         </main>
 
     </div>
@@ -2076,6 +2251,115 @@
             document.getElementById('chartPathBlueFill').setAttribute('d', dPathBlue + ' L 400,70 L 0,70 Z');
             document.getElementById('chartDotBlue').setAttribute('cy', ptsBlue[5].split(',')[1]);
         }
+
+        // Layout controls logic with draggable splitter and presets
+        (function setupLayoutControls(){
+            const calc = document.querySelector('.calculator-panel-left-scroll');
+            const chat = document.querySelector('.chatbot-card-wrapper');
+            const container = document.querySelector('.grand-split-layout');
+
+            if(!container || !calc || !chat) return;
+
+            // create splitter element if missing
+            let splitter = document.getElementById('ucSplitter');
+            if(!splitter){
+                splitter = document.createElement('div');
+                splitter.id = 'ucSplitter';
+                splitter.className = 'splitter vertical';
+                splitter.setAttribute('title', 'Drag to resize. Double click to swap.');
+                splitter.innerHTML = '<span class="splitter-swap-icon" aria-hidden="true"><i class="fas fa-arrows-left-right"></i></span>';
+                container.insertBefore(splitter, chat);
+            } else {
+                // ensure it's placed between panes
+                if(!splitter.previousElementSibling || !splitter.nextElementSibling){
+                    container.insertBefore(splitter, chat);
+                }
+            }
+
+            function getLeftPane(){
+                return splitter.previousElementSibling && splitter.previousElementSibling !== splitter ? splitter.previousElementSibling : calc;
+            }
+
+            function getRightPane(){
+                return splitter.nextElementSibling && splitter.nextElementSibling !== splitter ? splitter.nextElementSibling : chat;
+            }
+
+            function setRatio(leftPct){
+                leftPct = Math.min(90, Math.max(10, Number(leftPct)));
+                const rightPct = 100 - leftPct;
+                const leftPane = getLeftPane();
+                const rightPane = getRightPane();
+                leftPane.style.flex = `0 0 ${leftPct}%`;
+                leftPane.style.width = `${leftPct}%`;
+                leftPane.style.maxWidth = 'none';
+                rightPane.style.flex = `0 0 ${rightPct}%`;
+                rightPane.style.width = `${rightPct}%`;
+                rightPane.style.maxWidth = 'none';
+                leftPane.style.maxHeight = '';
+                rightPane.style.maxHeight = '';
+                localStorage.setItem('uc_layout_ratio', String(Math.round(leftPct)));
+            }
+
+            function swapPanels(){
+                // swap DOM order and keep splitter between
+                const leftPane = getLeftPane();
+                const rightPane = getRightPane();
+                if(container.firstElementChild === leftPane){
+                    container.insertBefore(rightPane, leftPane);
+                    container.insertBefore(splitter, leftPane);
+                } else {
+                    container.insertBefore(leftPane, rightPane);
+                    container.insertBefore(splitter, rightPane);
+                }
+                localStorage.setItem('uc_layout_swapped', container.firstElementChild === chat ? '1' : '0');
+            }
+
+            // Drag handlers
+            let dragging = false;
+            function onPointerMove(e){
+                if(!dragging) return;
+                const rect = container.getBoundingClientRect();
+                const clientX = e.clientX ?? (e.touches && e.touches[0].clientX);
+                if(typeof clientX !== 'number') return;
+                const usableWidth = Math.max(1, rect.width - splitter.offsetWidth);
+                const leftEdge = clientX - rect.left - (splitter.offsetWidth / 2);
+                const pct = (leftEdge / usableWidth) * 100;
+                setRatio(pct);
+            }
+            function onPointerUp(){
+                if(!dragging) return;
+                dragging = false;
+                splitter.classList.remove('active');
+                document.body.classList.remove('resizing');
+                window.removeEventListener('pointermove', onPointerMove);
+                window.removeEventListener('pointerup', onPointerUp);
+            }
+            splitter.addEventListener('pointerdown', (ev)=>{
+                ev.preventDefault();
+                splitter.setPointerCapture?.(ev.pointerId);
+                dragging = true; splitter.classList.add('active'); document.body.classList.add('resizing');
+                window.addEventListener('pointermove', onPointerMove);
+                window.addEventListener('pointerup', onPointerUp);
+                window.addEventListener('pointercancel', onPointerUp);
+            });
+
+            splitter.addEventListener('dblclick', (ev)=>{
+                ev.preventDefault();
+                swapPanels();
+            });
+
+            // restore
+            const savedRatio = Number(localStorage.getItem('uc_layout_ratio') || 60);
+            const swapped = localStorage.getItem('uc_layout_swapped');
+            if(swapped === '1'){
+                container.insertBefore(chat, calc);
+                container.insertBefore(splitter, calc);
+            } else {
+                container.insertBefore(calc, chat);
+                container.insertBefore(splitter, chat);
+            }
+            setRatio(savedRatio);
+        })();
 
         function downloadEstimate() {
             alert('Your Premium Calculation Estimate is being compiled and downloaded in background.');
