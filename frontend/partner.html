@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Partner Program - Twinsure</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%2300296b' d='M32 6 12 13v17c0 14.5 8.7 25.4 20 28 11.3-2.6 20-13.5 20-28V13L32 6z'/%3E%3C/svg%3E">
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <!-- Icons -->
@@ -565,6 +566,149 @@
         .float-ai { background: linear-gradient(135deg, var(--primary-light), var(--primary-mid)); border: 1.5px solid var(--accent-gold); }
         .float-wa { background: #25D366; border: 1.5px solid rgba(255,255,255,0.1); }
         .float-btn:hover { transform: scale(1.1); color: white; }
+
+        /* Partner form UI */
+        .partner-modal {
+            background: linear-gradient(135deg, rgba(0, 41, 107, 0.95), rgba(0, 21, 51, 0.95));
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 2.2rem 2rem;
+            width: 100%;
+            max-width: 520px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 30px rgba(0, 41, 107, 0.2);
+            color: #ffffff;
+            position: relative;
+        }
+        .partner-form-card {
+            background: transparent;
+            border: none;
+            padding: 0;
+        }
+        .partner-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        .partner-form-label {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.2rem;
+            display: block;
+        }
+        .partner-form-input,
+        .partner-form-select,
+        .partner-form-textarea {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            color: white;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        .partner-form-input[type="file"] {
+            padding: 0.6rem 1rem;
+            cursor: pointer;
+        }
+        .partner-form-input[type="file"]::file-selector-button {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-right: 0.8rem;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .partner-form-input[type="file"]::file-selector-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .partner-form-select option {
+            background: #001533;
+            color: white;
+        }
+        .partner-form-input:focus,
+        .partner-form-select:focus,
+        .partner-form-textarea:focus {
+            border-color: var(--accent-gold);
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 15px rgba(253, 197, 0, 0.15);
+        }
+        .partner-toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            z-index: 1600;
+            background: linear-gradient(135deg, #05264f, #003f88);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 12px;
+            padding: 0.85rem 1rem;
+            min-width: 280px;
+            max-width: 88vw;
+            box-shadow: 0 18px 35px rgba(0, 21, 51, 0.35);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.22s ease, transform 0.22s ease;
+        }
+        .partner-toast.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Success Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 15, 35, 0.75); backdrop-filter: blur(8px);
+            z-index: 3000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: all 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1; pointer-events: auto;
+        }
+        .cf-success-modal {
+            background: linear-gradient(135deg, rgba(0, 41, 107, 0.95), rgba(0, 21, 51, 0.95));
+            border: 2px solid #34d399; border-radius: 24px; padding: 3rem 2.5rem;
+            text-align: center; max-width: 500px; width: 90%;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 30px rgba(52, 211, 153, 0.25);
+            transform: scale(0.8); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+        .modal-overlay.active .cf-success-modal {
+            transform: scale(1);
+        }
+        .cf-success-modal i {
+            font-size: 3.5rem; color: #34d399; margin-bottom: 1.2rem;
+            animation: scaleIn 0.5s ease-out;
+        }
+        .cf-success-modal h3 {
+            font-size: 1.8rem; color: white; margin-bottom: 0.8rem; font-family: 'Outfit';
+        }
+        .cf-success-modal p {
+            color: #94a3b8; font-size: 0.98rem; line-height: 1.6; margin-bottom: 2rem;
+        }
+        .cf-modal-close-btn {
+            background: linear-gradient(135deg, var(--accent-gold-light), var(--accent-gold));
+            color: var(--primary-dark); font-size: 0.95rem; font-weight: 700; padding: 0.75rem 2rem;
+            border: none; border-radius: 30px; cursor: pointer; transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(253, 197, 0, 0.3);
+        }
+        .cf-modal-close-btn:hover {
+            transform: translateY(-2px); box-shadow: 0 6px 20px rgba(253, 197, 0, 0.4);
+        }
+        
+        @keyframes scaleIn {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
         
         /* Responsiveness */
         @media (max-width: 1200px) {
@@ -741,7 +885,7 @@
         <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation" aria-expanded="false">
             <i class="fas fa-bars"></i>
         </button>
-        <div class="nav-links" role="menu" aria-hidden="true">
+        <div class="nav-links" role="menu" aria-hidden="true" inert>
             <a href="index.html">Home</a>
             <a href="about.html">About</a>
             <a href="services.html">Services</a>
@@ -1552,6 +1696,8 @@
         </a>
     </div>
 
+    <div id="partnerToast" class="partner-toast" role="status" aria-live="polite"></div>
+
     <!-- Scripts -->
     <script>
         // Navbar scroll effect
@@ -1568,14 +1714,33 @@
         const navToggle = document.getElementById('navToggle');
         const navLinks = navbar.querySelector('.nav-links');
 
+        function setMobileNavState(isOpen) {
+            if (!navLinks) return;
+            if (window.innerWidth <= 768) {
+                navLinks.setAttribute('aria-hidden', String(!isOpen));
+                if (isOpen) {
+                    navLinks.removeAttribute('inert');
+                } else {
+                    // avoid aria-hidden warning by blurring focused descendants first
+                    if (navLinks.contains(document.activeElement)) {
+                        document.activeElement.blur();
+                    }
+                    navLinks.setAttribute('inert', '');
+                }
+            } else {
+                navLinks.removeAttribute('aria-hidden');
+                navLinks.removeAttribute('inert');
+            }
+        }
+
         // Ensure ARIA initial state
-        if (navLinks) navLinks.setAttribute('aria-hidden', 'true');
+        setMobileNavState(false);
 
         navToggle?.addEventListener('click', () => {
             const isOpen = navbar.classList.toggle('nav-open');
             document.body.classList.toggle('nav-open', isOpen);
             navToggle.setAttribute('aria-expanded', String(isOpen));
-            if (navLinks) navLinks.setAttribute('aria-hidden', String(!isOpen));
+            setMobileNavState(isOpen);
             if (isOpen) {
                 const firstLink = navLinks.querySelector('a');
                 firstLink?.focus();
@@ -1588,7 +1753,7 @@
                     navbar.classList.remove('nav-open');
                     document.body.classList.remove('nav-open');
                     navToggle.setAttribute('aria-expanded', 'false');
-                    if (navLinks) navLinks.setAttribute('aria-hidden', 'true');
+                    setMobileNavState(false);
                 }
             });
         });
@@ -1598,7 +1763,11 @@
                 navbar.classList.remove('nav-open');
                 document.body.classList.remove('nav-open');
                 navToggle.setAttribute('aria-expanded', 'false');
-                if (navLinks) navLinks.setAttribute('aria-hidden', 'true');
+                setMobileNavState(false);
+            } else {
+                if (!navbar.classList.contains('nav-open')) {
+                    setMobileNavState(false);
+                }
             }
         });
 
@@ -1693,6 +1862,199 @@
                 content.style.maxHeight = content.scrollHeight + 'px';
             }
         }
+    </script>
+
+    <!-- Partner Signup Modal -->
+    <div class="partner-modal-overlay" id="partnerModalOverlay" style="display:none; position:fixed; inset:0; background:rgba(0, 15, 35, 0.75); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); align-items:center; justify-content:center; z-index:1200;">
+        <div class="partner-modal" role="dialog" aria-modal="true" aria-labelledby="partnerModalTitle">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                <h3 id="partnerModalTitle" style="margin:0; font-size:1.5rem; color:#ffffff; font-family:'Outfit';">Become a Partner</h3>
+                <button onclick="closePartnerModal()" style="background:none; border:none; font-size:1.5rem; color:rgba(255,255,255,0.6); cursor:pointer; transition:0.2s;" aria-label="Close">&times;</button>
+            </div>
+
+            <form id="partnerForm" enctype="multipart/form-data" novalidate>
+                <div class="partner-form-card" style="display:flex; flex-direction:column; gap:0.9rem;">
+                    <div class="partner-form-group">
+                        <label class="partner-form-label" for="partner_name">Full name *</label>
+                        <input class="partner-form-input" aria-label="Full name" placeholder="e.g. Rahul Kumar" type="text" name="name" id="partner_name" required />
+                    </div>
+
+                    <div class="partner-form-group">
+                        <label class="partner-form-label" for="partner_phone">Mobile *</label>
+                        <input class="partner-form-input" aria-label="Mobile" placeholder="+91 98765 43210" type="tel" name="phone" id="partner_phone" required pattern="[0-9+\-\s]{7,20}" />
+                    </div>
+
+                    <div class="partner-form-group">
+                        <label class="partner-form-label" for="partner_email">Email *</label>
+                        <input class="partner-form-input" aria-label="Email" placeholder="yourname@example.com" type="email" name="email" id="partner_email" required />
+                    </div>
+
+                    <div class="partner-form-group">
+                        <label class="partner-form-label" for="partner_photo">Photo (optional)</label>
+                        <input class="partner-form-input" aria-label="Photo" type="file" name="photo" id="partner_photo" accept="image/*" />
+                    </div>
+
+                    <div class="partner-form-group">
+                        <label class="partner-form-label" for="partner_address">Address</label>
+                        <textarea class="partner-form-textarea" aria-label="Address" name="address" id="partner_address" rows="2" placeholder="City, State, Country"></textarea>
+                    </div>
+
+                    <div class="partner-form-group">
+                        <label class="partner-form-label" for="partner_occupation">Occupation</label>
+                        <select class="partner-form-select" name="occupation" id="partner_occupation" onchange="onOccupationChange()">
+                            <option value="student">Student</option>
+                            <option value="employee">Employee</option>
+                            <option value="freelancer">Freelancer / Self-employed</option>
+                        </select>
+                    </div>
+
+                    <div id="occupationDetails" style="display:flex; flex-direction:column; gap:0.9rem;">
+                        <!-- dynamic fields injected here -->
+                    </div>
+
+                    <div id="partnerFormSuccess" style="color:#34d399; background:rgba(52, 211, 153, 0.1); border:1px solid rgba(52, 211, 153, 0.2); padding:0.75rem 1rem; border-radius:12px; font-weight:600; display:none; margin-top:0.4rem;"></div>
+                    <div id="partnerFormError" style="color:#f87171; background:rgba(248, 113, 113, 0.1); border:1px solid rgba(248, 113, 113, 0.2); padding:0.75rem 1rem; border-radius:12px; font-weight:600; display:none; margin-top:0.4rem;"></div>
+
+                    <div style="display:flex; gap:0.8rem; margin-top:1rem; justify-content:flex-end;">
+                        <button type="button" onclick="closePartnerModal()" class="btn" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.1); color:#ffffff;">Cancel</button>
+                        <button type="submit" class="btn btn-gold">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Partner Success Modal Overlay -->
+    <div class="modal-overlay" id="partnerSuccessModalOverlay">
+        <div class="cf-success-modal">
+            <i class="fas fa-check-circle"></i>
+            <h3>Application Submitted!</h3>
+            <p>Thank you for your interest in becoming a partner with Twinsure. Our team will review your application and contact you soon.</p>
+            <button type="button" class="cf-modal-close-btn" onclick="closePartnerSuccessModal()">Dismiss Message</button>
+        </div>
+    </div>
+
+    <script>
+        // open modal when anchor clicked (href="#partner-details")
+        document.querySelectorAll('a[href="#partner-details"]').forEach(a => {
+            a.addEventListener('click', function(e) {
+                e.preventDefault();
+                openPartnerModal();
+            });
+        });
+
+        function openPartnerModal() {
+            document.getElementById('partnerModalOverlay').style.display = 'flex';
+            document.getElementById('partnerFormSuccess').style.display = 'none';
+            document.getElementById('partnerFormError').style.display = 'none';
+            // set default occupation fields
+            renderOccupationFields('student');
+        }
+        function closePartnerModal() {
+            document.getElementById('partnerModalOverlay').style.display = 'none';
+            document.getElementById('partnerForm').reset();
+            document.getElementById('partnerFormSuccess').style.display = 'none';
+            document.getElementById('partnerFormError').style.display = 'none';
+        }
+
+        function openPartnerSuccessModal() {
+            document.getElementById('partnerSuccessModalOverlay').classList.add('active');
+        }
+        function closePartnerSuccessModal() {
+            document.getElementById('partnerSuccessModalOverlay').classList.remove('active');
+        }
+
+        function onOccupationChange() {
+            const val = document.getElementById('partner_occupation').value;
+            renderOccupationFields(val);
+        }
+
+        function showPartnerToast(message) {
+            const toast = document.getElementById('partnerToast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2600);
+        }
+
+        function renderOccupationFields(occupation) {
+            const container = document.getElementById('occupationDetails');
+            if (occupation === 'student') {
+                container.innerHTML = `
+                    <div class="partner-form-group">
+                        <label class="partner-form-label" for="partner_college">College name *</label>
+                        <input class="partner-form-input" id="partner_college" name="college" type="text" required placeholder="College / University" />
+                    </div>
+                    <div class="partner-form-group">
+                        <label class="partner-form-label" for="partner_course">Course / Year</label>
+                        <input class="partner-form-input" id="partner_course" name="course" type="text" placeholder="e.g. B.Com Year 2" />
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="partner-form-group">
+                        <label class="partner-form-label" for="partner_company">Company *</label>
+                        <input class="partner-form-input" id="partner_company" name="company" type="text" required placeholder="Company name" />
+                    </div>
+                    <div class="partner-form-group">
+                        <label class="partner-form-label" for="partner_designation">Designation *</label>
+                        <input class="partner-form-input" id="partner_designation" name="designation" type="text" required placeholder="e.g. Sales Manager" />
+                    </div>
+                `;
+            }
+        }
+
+        // submit via multipart to public partners endpoint
+        document.getElementById('partnerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const successBox = document.getElementById('partnerFormSuccess');
+            const errorBox = document.getElementById('partnerFormError');
+            successBox.style.display = 'none';
+            errorBox.style.display = 'none';
+
+            // client-side basic validation
+            if (!form.checkValidity()) {
+                errorBox.textContent = 'Please complete the required fields.';
+                errorBox.style.display = 'block';
+                return;
+            }
+
+            const formData = new FormData(form);
+
+            const endpoints = ['http://127.0.0.1:8000/partners.php', 'http://localhost:8000/partners.php'];
+
+            let lastError = null;
+            for (const endpoint of endpoints) {
+                try {
+                    const res = await fetch(endpoint, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const ctype = res.headers.get('content-type') || '';
+                    if (!ctype.includes('application/json')) {
+                        const text = await res.text();
+                        throw new Error('Server returned unexpected response: ' + text.slice(0, 160));
+                    }
+
+                    const data = await res.json();
+                    if (res.ok) {
+                        closePartnerModal();
+                        openPartnerSuccessModal();
+                        showPartnerToast('Partner request submitted successfully.');
+                        return;
+                    }
+
+                    throw new Error(data.message || `Submission failed (${res.status})`);
+                } catch (err) {
+                    lastError = err;
+                }
+            }
+
+            console.error(lastError);
+            errorBox.textContent = 'Submission failed. Start backend using scripts/run-local-backend.sh and retry. ' + (lastError?.message || '');
+            errorBox.style.display = 'block';
+        });
     </script>
 </body>
 </html>

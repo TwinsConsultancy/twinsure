@@ -2,8 +2,19 @@
 // backend/api/middleware/auth.php
 
 function authenticate() {
-    $headers = apache_request_headers();
-    $authHeader = isset($headers['Authorization']) ? $headers['Authorization'] : '';
+    $headers = [];
+    if (function_exists('getallheaders')) {
+        $headers = getallheaders();
+    } elseif (function_exists('apache_request_headers')) {
+        $headers = apache_request_headers();
+    }
+
+    $authHeader = '';
+    if (isset($headers['Authorization'])) {
+        $authHeader = $headers['Authorization'];
+    } elseif (isset($headers['authorization'])) {
+        $authHeader = $headers['authorization'];
+    }
     
     if (!$authHeader) {
         // Fallback for Nginx/other servers

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Twinsure</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%2300296b' d='M32 6 12 13v17c0 14.5 8.7 25.4 20 28 11.3-2.6 20-13.5 20-28V13L32 6z'/%3E%3C/svg%3E">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/admin-leads-premium.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -373,6 +374,9 @@
                     </a></li>
                     <li><a href="#" onclick="showSection('users', this)">
                         <i class="fas fa-user-friends"></i> Team Management
+                    </a></li>
+                    <li><a href="#" onclick="showSection('partners', this)">
+                        <i class="fas fa-handshake"></i> Partners
                     </a></li>
                     <li><a href="#" onclick="showSection('settings', this)">
                         <i class="fas fa-cog"></i> Settings
@@ -1029,6 +1033,95 @@
                 </div>
             </section>
 
+            <!-- PARTNERS MANAGEMENT -->
+            <section id="partners" class="content-section" style="display:none; padding-top: 0;">
+                <div style="margin-bottom: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+                        <div>
+                            <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); font-weight: 700;">Collaboration</span>
+                            <h2 style="margin: 5px 0 0 0; font-size: 1.8rem; font-weight: 800; color: #111;">Partners Management</h2>
+                            <p style="color: var(--text-muted); margin-top: 0.3rem;">Review, approve, and manage registered program partners and applications.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="loadPartners()" style="background: var(--primary-purple); border: none; display: flex; align-items: center; gap: 0.5rem; border-radius: 12px; font-weight: 700; padding: 0.8rem 1.5rem; color: white;">
+                            <i class="fas fa-sync-alt"></i> Refresh Data
+                        </button>
+                    </div>
+                </div>
+
+                <!-- KPI Metrics -->
+                <div class="metrics-grid" style="margin-bottom: 1.5rem;">
+                    <div class="metric-card">
+                        <div class="metric-header"><i class="fas fa-users" style="background: #f0edff; color: var(--primary-purple);"></i> Total Partners</div>
+                        <div class="metric-value-row">
+                            <span class="metric-value" id="valTotalPartners">0</span>
+                        </div>
+                        <div class="mini-analytics-label">Registered Applications</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-header"><i class="fas fa-clock" style="background: #fff8e6; color: var(--warning);"></i> Pending</div>
+                        <div class="metric-value-row">
+                            <span class="metric-value" id="valPendingPartners">0</span>
+                        </div>
+                        <div class="mini-analytics-label">Awaiting Approval</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-header"><i class="fas fa-check-circle" style="background: #e6f6ee; color: var(--success);"></i> Approved</div>
+                        <div class="metric-value-row">
+                            <span class="metric-value" id="valApprovedPartners">0</span>
+                        </div>
+                        <div class="mini-analytics-label">Active Partners</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-header"><i class="fas fa-times-circle" style="background: #fdf2f2; color: var(--danger);"></i> Rejected</div>
+                        <div class="metric-value-row">
+                            <span class="metric-value" id="valRejectedPartners">0</span>
+                        </div>
+                        <div class="mini-analytics-label">Declined Applications</div>
+                    </div>
+                </div>
+
+                <!-- Quick Filter Pills -->
+                <div class="quick-pills" style="margin-bottom: 1.25rem;">
+                    <button class="pill active" data-filter="all" onclick="filterPartnersByStatus('all', this)">All Partners</button>
+                    <button class="pill" data-filter="pending" style="background: #fff8e6; color: var(--warning);" onclick="filterPartnersByStatus('pending', this)">Pending</button>
+                    <button class="pill" data-filter="approved" style="background: #e6f6ee; color: var(--success);" onclick="filterPartnersByStatus('approved', this)">Approved</button>
+                    <button class="pill" data-filter="rejected" style="background: #fdf2f2; color: var(--danger);" onclick="filterPartnersByStatus('rejected', this)">Rejected</button>
+                </div>
+
+                <!-- Premium Table Card -->
+                <div class="premium-table-card">
+                    <div style="padding: 1rem; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: #666;">Application Records</span>
+                        </div>
+                        <div style="display: flex; gap: 1rem;">
+                            <div class="global-search" style="max-width: 280px;">
+                                <i class="fas fa-search" style="font-size: 0.8rem;"></i>
+                                <input type="text" id="partnersSearchInput" placeholder="Search name, phone, email..." oninput="filterPartnersBySearch(this.value)" style="padding: 0.5rem 0.8rem 0.5rem 2.2rem; font-size: 0.85rem;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="overflow-x: auto;">
+                        <table class="premium-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Occupation</th>
+                                    <th>Contact Info</th>
+                                    <th>Status</th>
+                                    <th style="text-align: right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="partnersTableBody">
+                                <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
             <!-- CLAIMS MANAGEMENT SECTION -->
             <section id="claims" class="content-section" style="display:none; padding-top: 0;">
                 <div style="margin-bottom: 1.5rem;">
@@ -1535,6 +1628,96 @@
                     </div>
                 </div>
             </div>
+
+            <!-- PARTNER DETAIL MODAL -->
+            <div class="claim-modal-overlay" id="partnerDetailModal">
+                <div class="claim-modal-window" style="max-width:700px; padding: 1.5rem; border-radius: 20px;">
+                    <button class="modal-close-global" onclick="closePartnerDetailModal()"><i class="fas fa-times"></i></button>
+                    <div class="claim-modal-header" style="margin-bottom: 1.25rem;">
+                        <h3 id="partnerDetailTitle" style="font-size: 1.3rem; font-weight: 800; color: #111;">Edit Partner Profile</h3>
+                    </div>
+                    <form id="editPartnerForm" onsubmit="savePartnerDetails(event)">
+                        <input type="hidden" id="partnerEditId">
+                        <div style="display:flex; gap:1.5rem; flex-wrap:wrap;">
+                            <div style="flex:1; min-width:200px;">
+                                <div style="background:#f8fafc; border-radius:12px; padding:1rem; border: 1px solid #e2e8f0; text-align: center;">
+                                    <div id="partnerDetailPhoto" style="width:100%; height:180px; background:#fff; background-size:cover; background-position:center; border-radius:8px; border:1px solid #e2e8f0; margin-bottom: 0.8rem;"></div>
+                                    <label class="label" style="font-size:0.75rem; text-transform:uppercase; font-weight:700; color:#64748b; display:block; text-align:left; margin-bottom:0.3rem;">Application Status</label>
+                                    <select id="partnerEditStatus" class="filter-select" style="width:100%; padding:0.6rem; border-radius:8px; font-weight:600; background:#fff; border:1px solid #cbd5e1; font-size:0.9rem;">
+                                        <option value="pending">Pending Approval</option>
+                                        <option value="approved">Approved</option>
+                                        <option value="rejected">Rejected</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div style="flex:2; min-width:280px; display:flex; flex-direction:column; gap:0.8rem;">
+                                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8rem;">
+                                    <div style="grid-column: 1 / -1;">
+                                        <label class="label" style="font-size:0.75rem; text-transform:uppercase; font-weight:700; color:#64748b; display:block; margin-bottom:0.25rem;">Full Name</label>
+                                        <input type="text" id="partnerEditName" required style="width:100%; padding:0.6rem 0.8rem; border-radius:8px; border:1px solid #cbd5e1; font-size:0.9rem; font-weight:600;">
+                                    </div>
+                                    <div>
+                                        <label class="label" style="font-size:0.75rem; text-transform:uppercase; font-weight:700; color:#64748b; display:block; margin-bottom:0.25rem;">Phone Number</label>
+                                        <input type="text" id="partnerEditPhone" required style="width:100%; padding:0.6rem 0.8rem; border-radius:8px; border:1px solid #cbd5e1; font-size:0.9rem;">
+                                    </div>
+                                    <div>
+                                        <label class="label" style="font-size:0.75rem; text-transform:uppercase; font-weight:700; color:#64748b; display:block; margin-bottom:0.25rem;">Email Address</label>
+                                        <input type="email" id="partnerEditEmail" required style="width:100%; padding:0.6rem 0.8rem; border-radius:8px; border:1px solid #cbd5e1; font-size:0.9rem;">
+                                    </div>
+                                    <div style="grid-column:1 / -1;">
+                                        <label class="label" style="font-size:0.75rem; text-transform:uppercase; font-weight:700; color:#64748b; display:block; margin-bottom:0.25rem;">Occupation</label>
+                                        <select id="partnerEditOccupation" onchange="renderEditOccupationFields(this.value)" style="width:100%; padding:0.6rem; border-radius:8px; border:1px solid #cbd5e1; font-size:0.9rem; background:#fff; font-weight:600;">
+                                            <option value="employee">Employee</option>
+                                            <option value="student">Student</option>
+                                            <option value="agent">Insurance Agent</option>
+                                            <option value="broker">Broker</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div id="partnerEditDynamicContainer" style="grid-column:1 / -1; display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; margin:0; padding:0;">
+                                        <!-- Dynamic fields rendered on load / switch -->
+                                    </div>
+                                    <div style="grid-column: 1 / -1;">
+                                        <label class="label" style="font-size:0.75rem; text-transform:uppercase; font-weight:700; color:#64748b; display:block; margin-bottom:0.25rem;">Address</label>
+                                        <textarea id="partnerEditAddress" rows="2" style="width:100%; padding:0.6rem 0.8rem; border-radius:8px; border:1px solid #cbd5e1; font-size:0.9rem; resize:vertical; font-family:inherit;"></textarea>
+                                    </div>
+                                </div>
+                                <div style="margin-top:0.8rem; display:flex; gap:0.6rem; justify-content:flex-end; align-items:center;">
+                                    <button type="button" class="btn btn-outline" onclick="closePartnerDetailModal()" style="border: 1px solid #cbd5e1; background:none; color:#475569;">Cancel</button>
+                                    <button type="submit" class="btn btn-primary" style="background:var(--primary-purple); color:white; font-weight:700;">Save Changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- CUSTOM ALERT MODAL -->
+            <div class="claim-modal-overlay" id="customAlertModal">
+                <div class="claim-modal-window" style="max-width: 420px; border-radius: 20px; padding: 2rem; text-align: center; border: 1px solid rgba(0, 0, 0, 0.08); background: #ffffff; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);">
+                    <div style="width: 60px; height: 60px; border-radius: 50%; background: #f0edff; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem auto;">
+                        <i class="fas fa-info-circle" style="font-size: 1.8rem; color: var(--primary-purple);"></i>
+                    </div>
+                    <h3 style="font-size: 1.2rem; font-weight: 800; color: #111; margin-bottom: 0.5rem;" id="customAlertTitle">Notification</h3>
+                    <p style="font-size: 0.9rem; color: #475569; margin-bottom: 1.5rem; line-height: 1.5;" id="customAlertMessage">Something happened.</p>
+                    <button type="button" class="btn btn-primary" onclick="closeCustomAlert()" style="width: 100%; padding: 0.8rem; border-radius: 12px; background: var(--primary-purple); color: white; font-weight: 700; border: none; cursor: pointer;">Dismiss Message</button>
+                </div>
+            </div>
+
+            <!-- CUSTOM CONFIRM MODAL -->
+            <div class="claim-modal-overlay" id="customConfirmModal">
+                <div class="claim-modal-window" style="max-width: 420px; border-radius: 20px; padding: 2rem; text-align: center; border: 1px solid rgba(0, 0, 0, 0.08); background: #ffffff; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);">
+                    <div style="width: 60px; height: 60px; border-radius: 50%; background: #fee2e2; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem auto;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 1.8rem; color: #ef4444;"></i>
+                    </div>
+                    <h3 style="font-size: 1.2rem; font-weight: 800; color: #111; margin-bottom: 0.5rem;" id="customConfirmTitle">Confirm Action</h3>
+                    <p style="font-size: 0.9rem; color: #475569; margin-bottom: 1.5rem; line-height: 1.5;" id="customConfirmMessage">Are you sure you want to proceed?</p>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <button type="button" class="btn btn-outline" onclick="handleCustomConfirm(false)" style="flex: 1; padding: 0.8rem; border-radius: 12px; border: 1px solid #cbd5e1; background: none; color: #475569; font-weight: 700; cursor: pointer;">Cancel</button>
+                        <button type="button" class="btn btn-primary" onclick="handleCustomConfirm(true)" style="flex: 1; padding: 0.8rem; border-radius: 12px; background: #ef4444; color: white; font-weight: 700; border: none; cursor: pointer;">Proceed</button>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -1570,6 +1753,9 @@
 
             if(id === 'users') {
                 loadUsers();
+            }
+            if(id === 'partners') {
+                loadPartners();
             }
             if(id === 'leads') {
                 loadLeads();
@@ -2535,7 +2721,7 @@
         }
 
         async function deleteClaim(id) {
-            if (!confirm('Are you sure you want to permanently delete this claim form? This will delete the file from the server.')) {
+            if (!await confirm('Are you sure you want to permanently delete this claim form? This will delete the file from the server.')) {
                 return;
             }
             try {
@@ -2745,7 +2931,7 @@
         }
 
         async function deleteFormHelpRequest(id) {
-            if (!id || !confirm('Delete this form filling request permanently?')) return;
+            if (!id || !await confirm('Delete this form filling request permanently?')) return;
             try {
                 await api.delete(`/admin/form_help_requests.php?id=${encodeURIComponent(id)}`);
                 loadFormHelpRequests();
@@ -2782,6 +2968,290 @@
         // Set Welcome Banner
         const adminName = localStorage.getItem('name') || 'Admin';
         document.getElementById('welcomeAdminName').textContent = `Welcome back, ${adminName.split(' ')[0]}!`;
+        // Partners management helpers
+        function getPartnersAdminEndpoints(path = '') {
+            const isStatic3000 = window.location.port === '3000';
+            if (isStatic3000) {
+                return [
+                    `http://127.0.0.1:8000/admin/partners.php${path}`,
+                    `http://localhost:8000/admin/partners.php${path}`
+                ];
+            }
+            return [
+                `/backend/api/admin/partners.php${path}`,
+                `http://127.0.0.1:8000/admin/partners.php${path}`,
+                `http://localhost:8000/admin/partners.php${path}`
+            ];
+        }
+
+        async function fetchPartnersApi(path = '', options = {}) {
+            const endpoints = getPartnersAdminEndpoints(path);
+            const token = localStorage.getItem('token');
+            const mergedHeaders = {
+                ...(options.headers || {}),
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            };
+            let lastError = null;
+            for (const endpoint of endpoints) {
+                try {
+                    const res = await fetch(endpoint, {
+                        ...options,
+                        headers: mergedHeaders
+                    });
+                    const ctype = res.headers.get('content-type') || '';
+                    if (!ctype.includes('application/json')) {
+                        const text = await res.text();
+                        throw new Error('Unexpected response: ' + text.slice(0, 120));
+                    }
+                    const data = await res.json();
+                    if (!res.ok) {
+                        throw new Error((data && data.message) || `HTTP ${res.status}`);
+                    }
+                    return data;
+                } catch (err) {
+                    lastError = err;
+                }
+            }
+            throw lastError || new Error('Partner API unavailable');
+        }
+
+        let allPartners = [];
+        let currentPartnerFilter = 'all';
+        let currentPartnerSearch = '';
+
+        async function loadPartners() {
+            const tb = document.getElementById('partnersTableBody');
+            if(!tb) return;
+            tb.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:1.5rem;color:#64748b;">Loading partner applications...</td></tr>';
+            try {
+                const data = await fetchPartnersApi();
+                allPartners = Array.isArray(data) ? data : [];
+                
+                // Calculate metrics
+                const total = allPartners.length;
+                const pending = allPartners.filter(p => (p.status || 'pending').toLowerCase() === 'pending').length;
+                const approved = allPartners.filter(p => {
+                    const st = (p.status || '').toLowerCase();
+                    return st === 'approved' || st === 'active';
+                }).length;
+                const rejected = allPartners.filter(p => (p.status || '').toLowerCase() === 'rejected').length;
+                
+                // Populate metrics if elements exist
+                if(document.getElementById('valTotalPartners')) document.getElementById('valTotalPartners').textContent = total;
+                if(document.getElementById('valPendingPartners')) document.getElementById('valPendingPartners').textContent = pending;
+                if(document.getElementById('valApprovedPartners')) document.getElementById('valApprovedPartners').textContent = approved;
+                if(document.getElementById('valRejectedPartners')) document.getElementById('valRejectedPartners').textContent = rejected;
+                
+                renderPartnersList();
+            } catch (err) {
+                tb.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:1.5rem;color:var(--danger);">Error loading partners database</td></tr>';
+                console.error(err);
+            }
+        }
+
+        function renderPartnersList() {
+            const tb = document.getElementById('partnersTableBody');
+            if(!tb) return;
+            tb.innerHTML = '';
+            
+            const filtered = allPartners.filter(p => {
+                // Status Filter
+                if (currentPartnerFilter !== 'all') {
+                    const st = (p.status || 'pending').toLowerCase();
+                    if (st !== currentPartnerFilter) return false;
+                }
+                // Search Filter
+                if (currentPartnerSearch) {
+                    const name = (p.name || '').toLowerCase();
+                    const phone = (p.phone || '').toLowerCase();
+                    const email = (p.email || '').toLowerCase();
+                    if (!name.includes(currentPartnerSearch) && 
+                        !phone.includes(currentPartnerSearch) && 
+                        !email.includes(currentPartnerSearch)) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+            
+            if (filtered.length === 0) {
+                tb.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:1.5rem;color:#888;">No partners matching criteria</td></tr>';
+                return;
+            }
+            
+            filtered.forEach(p => {
+                const id = (p._id && (p._id.$oid || p._id)) || '';
+                const statusClass = (p.status || 'pending').toLowerCase();
+                const tr = document.createElement('tr');
+                
+                // Build dynamic occupation metadata view
+                let occDetails = '';
+                if (p.occupation === 'student') {
+                    occDetails = `Student (${escapeHtml(p.meta?.college || 'N/A')})`;
+                } else if (p.occupation === 'employee') {
+                    occDetails = `${escapeHtml(p.meta?.designation || 'Employee')} at ${escapeHtml(p.meta?.company || 'N/A')}`;
+                } else {
+                    occDetails = escapeHtml(p.occupation || 'N/A');
+                }
+                
+                tr.innerHTML = `
+                    <td><span style="font-family:monospace; font-size:0.8rem; color:#64748b;">${escapeHtml(id)}</span></td>
+                    <td><strong>${escapeHtml(p.name || '')}</strong></td>
+                    <td><span style="font-size:0.85rem;color:#475569;">${occDetails}</span></td>
+                    <td>
+                        <div style="font-size:0.85rem;color:#334155;font-weight:600;"><i class="fas fa-phone" style="font-size:0.75rem;margin-right:0.3rem;color:#94a3b8;"></i> ${escapeHtml(p.phone || '')}</div>
+                        <div style="font-size:0.75rem;color:#64748b;"><i class="fas fa-envelope" style="font-size:0.75rem;margin-right:0.3rem;color:#94a3b8;"></i> ${escapeHtml(p.email || '')}</div>
+                    </td>
+                    <td><span class="badge-status ${statusClass}">${escapeHtml(p.status || 'pending')}</span></td>
+                    <td style="text-align: right; width:120px;">
+                        <button class="btn btn-outline" style="padding: 0.4rem 0.6rem; min-width: 32px; border-radius: 6px; border: 1px solid #cbd5e1; color: #475569; display:inline-flex; align-items:center; justify-content:center;" title="View & Edit" onclick="viewPartner('${id}')"><i class="fas fa-eye"></i></button>
+                        <button class="btn" style="padding: 0.4rem 0.6rem; min-width: 32px; border-radius: 6px; background: #fee2e2; border: 1px solid #fca5a5; color: #9b1c1c; margin-left: 0.4rem; display:inline-flex; align-items:center; justify-content:center;" title="Delete" onclick="deletePartner('${id}')"><i class="fas fa-trash-alt"></i></button>
+                    </td>
+                `;
+                tb.appendChild(tr);
+            });
+        }
+
+        function filterPartnersByStatus(status, element) {
+            currentPartnerFilter = status.toLowerCase();
+            document.querySelectorAll('#partners .quick-pills .pill').forEach(btn => btn.classList.remove('active'));
+            if(element) element.classList.add('active');
+            renderPartnersList();
+        }
+        
+        function filterPartnersBySearch(query) {
+            currentPartnerSearch = query.toLowerCase();
+            renderPartnersList();
+        }
+
+        function renderEditOccupationFields(occ, vals = {}) {
+            const container = document.getElementById('partnerEditDynamicContainer');
+            if(!container) return;
+            container.innerHTML = '';
+            if (occ === 'student') {
+                container.innerHTML = `
+                    <div>
+                        <label class="label" style="font-size:0.75rem; text-transform:uppercase; font-weight:700; color:#64748b; display:block; margin-bottom:0.25rem;">College Name</label>
+                        <input type="text" id="partnerEditCollege" value="${escapeHtml(vals.college || '')}" style="width:100%; padding:0.6rem 0.8rem; border-radius:8px; border:1px solid #cbd5e1; font-size:0.9rem;">
+                    </div>
+                    <div>
+                        <label class="label" style="font-size:0.75rem; text-transform:uppercase; font-weight:700; color:#64748b; display:block; margin-bottom:0.25rem;">Course / Year</label>
+                        <input type="text" id="partnerEditCourse" value="${escapeHtml(vals.course || '')}" style="width:100%; padding:0.6rem 0.8rem; border-radius:8px; border:1px solid #cbd5e1; font-size:0.9rem;">
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div>
+                        <label class="label" style="font-size:0.75rem; text-transform:uppercase; font-weight:700; color:#64748b; display:block; margin-bottom:0.25rem;">Company Name</label>
+                        <input type="text" id="partnerEditCompany" value="${escapeHtml(vals.company || '')}" style="width:100%; padding:0.6rem 0.8rem; border-radius:8px; border:1px solid #cbd5e1; font-size:0.9rem;">
+                    </div>
+                    <div>
+                        <label class="label" style="font-size:0.75rem; text-transform:uppercase; font-weight:700; color:#64748b; display:block; margin-bottom:0.25rem;">Designation</label>
+                        <input type="text" id="partnerEditDesignation" value="${escapeHtml(vals.designation || '')}" style="width:100%; padding:0.6rem 0.8rem; border-radius:8px; border:1px solid #cbd5e1; font-size:0.9rem;">
+                    </div>
+                `;
+            }
+        }
+
+        function escapeHtml(s){
+            if(!s) return '';
+            return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; });
+        }
+
+        async function viewPartner(id){
+            if(!id) return alert('Missing id');
+            try{
+                const data = await fetchPartnersApi('?id=' + encodeURIComponent(id));
+                const p = Array.isArray(data) ? (data[0] || {}) : data;
+                
+                document.getElementById('partnerEditId').value = (p._id && (p._id.$oid || p._id)) || '';
+                document.getElementById('partnerEditName').value = p.name || '';
+                document.getElementById('partnerEditPhone').value = p.phone || '';
+                document.getElementById('partnerEditEmail').value = p.email || '';
+                document.getElementById('partnerEditOccupation').value = p.occupation || 'employee';
+                document.getElementById('partnerEditAddress').value = p.address || '';
+                document.getElementById('partnerEditStatus').value = p.status || 'pending';
+                
+                // Render dynamic fields with loaded values
+                renderEditOccupationFields(p.occupation || 'employee', p.meta || {});
+                
+                const photoEl = document.getElementById('partnerDetailPhoto');
+                if(photoEl) {
+                    if(p.photo) photoEl.style.backgroundImage = 'url("' + p.photo + '")'; 
+                    else photoEl.style.backgroundImage = 'none';
+                }
+                
+                document.getElementById('partnerDetailModal').classList.add('active');
+                window.__currentPartnerId = (p._id && (p._id.$oid || p._id)) || null;
+            }catch(err){ console.error(err); alert('Failed to load partner details'); }
+        }
+
+        function closePartnerDetailModal(){
+            document.getElementById('partnerDetailModal').classList.remove('active');
+            window.__currentPartnerId = null;
+        }
+
+        async function savePartnerDetails(e) {
+            e.preventDefault();
+            const id = document.getElementById('partnerEditId').value;
+            if(!id) return alert('Partner ID missing');
+            
+            const name = document.getElementById('partnerEditName').value;
+            const phone = document.getElementById('partnerEditPhone').value;
+            const email = document.getElementById('partnerEditEmail').value;
+            const occupation = document.getElementById('partnerEditOccupation').value;
+            const address = document.getElementById('partnerEditAddress').value;
+            const status = document.getElementById('partnerEditStatus').value;
+            
+            const body = {
+                id,
+                name,
+                phone,
+                email,
+                occupation,
+                address,
+                status
+            };
+            
+            if (occupation === 'student') {
+                body.college = document.getElementById('partnerEditCollege')?.value || '';
+                body.course = document.getElementById('partnerEditCourse')?.value || '';
+            } else {
+                body.company = document.getElementById('partnerEditCompany')?.value || '';
+                body.designation = document.getElementById('partnerEditDesignation')?.value || '';
+            }
+            
+            try {
+                await fetchPartnersApi('', {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(body)
+                });
+                alert('Partner details saved successfully!');
+                closePartnerDetailModal();
+                loadPartners();
+            } catch(err) {
+                console.error(err);
+                alert('Failed to save partner updates.');
+            }
+        }
+
+        async function deletePartner(id){
+            if(!id) return;
+            if(!await confirm('Are you sure you want to delete this partner application?')) return;
+            try{
+                await fetchPartnersApi('', {
+                    method: 'DELETE',
+                    headers: {'Content-Type':'application/x-www-form-urlencoded'},
+                    body: new URLSearchParams({ id }).toString()
+                });
+                loadPartners();
+                if(window.__currentPartnerId === id) closePartnerDetailModal();
+            }catch(err){ console.error(err); alert('Delete failed'); }
+        }
+
+        async function deletePartnerConfirmed(){ if(window.__currentPartnerId) await deletePartner(window.__currentPartnerId); }
+
         const now = new Date();
         const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute:'2-digit' };
         document.getElementById('currentDateTime').textContent = now.toLocaleDateString('en-US', options);
@@ -2797,6 +3267,56 @@
                 builder.loadFlow();
             }
         }
+
+        // Custom Alert and Confirm Global Modals Controller
+        let alertQueue = [];
+        window.alert = function(message) {
+            return new Promise((resolve) => {
+                alertQueue.push({ message, resolve });
+                if (alertQueue.length === 1) {
+                    processNextAlert();
+                }
+            });
+        };
+
+        function processNextAlert() {
+            if (alertQueue.length === 0) return;
+            const current = alertQueue[0];
+            document.getElementById('customAlertMessage').textContent = current.message;
+            const modal = document.getElementById('customAlertModal');
+            modal.classList.add('active');
+        }
+
+        window.closeCustomAlert = function() {
+            const modal = document.getElementById('customAlertModal');
+            modal.classList.remove('active');
+            if (alertQueue.length > 0) {
+                const current = alertQueue.shift();
+                if (current.resolve) current.resolve();
+            }
+            if (alertQueue.length > 0) {
+                processNextAlert();
+            }
+        };
+
+        let confirmPromiseResolve = null;
+        window.confirm = function(message) {
+            return new Promise((resolve) => {
+                confirmPromiseResolve = resolve;
+                document.getElementById('customConfirmMessage').textContent = message;
+                const modal = document.getElementById('customConfirmModal');
+                modal.classList.add('active');
+            });
+        };
+
+        window.handleCustomConfirm = function(result) {
+            const modal = document.getElementById('customConfirmModal');
+            modal.classList.remove('active');
+            if (confirmPromiseResolve) {
+                confirmPromiseResolve(result);
+                confirmPromiseResolve = null;
+            }
+        };
     </script>
 </body>
 </html>

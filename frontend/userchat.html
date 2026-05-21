@@ -1328,7 +1328,7 @@
 
         /* Responsive fallback: stack vertically on small screens */
         @media (max-width: 900px) {
-            /* Mobile: top/bottom stack with calculator first, then chat */
+            /* Mobile: top/bottom stack with AI ASSISTANT FIRST, then calculator */
             html, body { overflow-x: hidden !important; width: 100% !important; }
             * { box-sizing: border-box; }
             .page-content-wrapper {
@@ -1353,20 +1353,39 @@
                 height: auto !important;
                 overflow: visible !important;
             }
-            .calculator-panel-left-scroll { order: 1 !important; }
-            .chatbot-card-wrapper { order: 2 !important; min-height: 0 !important; }
+            /* REORDER: AI Assistant on TOP (order: 1), Calculator on BOTTOM (order: 2) */
+            .chatbot-card-wrapper { order: 1 !important; min-height: 0 !important; }
+            .calculator-panel-left-scroll { order: 2 !important; }
             #ucSplitter { display: none !important; }
-            .calculator-sub-grid { grid-template-columns: 1fr !important; gap: 0.8rem !important; }
-            .output-metrics-grid { grid-template-columns: 1fr !important; }
-            .chatbot-container { padding: 0.85rem !important; border-radius: 14px !important; }
+            /* Dynamic calculator layout - stack inputs and outputs vertically on very small screens */
+            .calculator-sub-grid { 
+                grid-template-columns: 1fr !important; 
+                gap: 0.8rem !important; 
+            }
+            .output-metrics-grid { 
+                grid-template-columns: 1fr !important; 
+            }
+            .chatbot-container { 
+                padding: 0.85rem !important; 
+                border-radius: 14px !important; 
+                height: auto !important;
+                min-height: 280px !important;
+            }
             .chat-top-header {
                 padding: 0.65rem 0.2rem !important;
                 flex-wrap: wrap !important;
                 gap: 0.6rem !important;
             }
             .chat-bot-details { min-width: 0 !important; }
-            .chat-messages-area { padding: 0.9rem !important; min-width: 0 !important; }
-            .chat-bottom-actions { padding: 0.85rem 0.2rem !important; }
+            .chat-messages-area { 
+                padding: 0.9rem !important; 
+                min-width: 0 !important; 
+                max-height: 200px !important;
+            }
+            .chat-bottom-actions { 
+                padding: 0.85rem 0.2rem !important; 
+                flex-shrink: 0 !important;
+            }
             .chat-action-buttons {
                 flex-direction: column !important;
                 align-items: stretch !important;
@@ -1394,23 +1413,242 @@
             .page-content-wrapper { padding-left: 0.45rem !important; padding-right: 0.45rem !important; }
             .calculator-title-block h2 { font-size: 1.2rem !important; }
             .calculator-title-block p { font-size: 0.75rem !important; }
-            .calculator-card-inputs, .results-glass-block { padding: 0.8rem !important; border-radius: 14px !important; }
-            .calculator-sub-grid { gap: 0.65rem !important; }
+            .calculator-card-inputs, .results-glass-block { 
+                padding: 0.8rem !important; 
+                border-radius: 14px !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+            /* DYNAMIC CALCULATOR: Full-width responsive */
+            .calculator-sub-grid { 
+                grid-template-columns: 1fr !important; 
+                gap: 0.65rem !important;
+                width: 100% !important;
+            }
+            .calculator-card-inputs, .calculator-card-outputs {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
             .range-slider-wrap { min-width: 0 !important; }
-            .dropdown-segmented-bar { overflow-x: auto !important; max-width: 100% !important; }
+            .dropdown-segmented-bar { 
+                overflow-x: auto !important; 
+                max-width: 100% !important;
+                width: 100% !important;
+            }
             .dropdown-segmented-items { min-width: 0 !important; }
-            .segmented-risk-group { grid-template-columns: 1fr !important; }
-            .slot-fields-row { flex-direction: column !important; align-items: stretch !important; gap: 0.45rem !important; }
-            .slot-field-label { width: 100% !important; }
-            .slot-or-separator { width: 100% !important; margin-left: 0 !important; }
-            .calendar-and-time-split { gap: 0.65rem !important; }
+            .segmented-risk-group { 
+                grid-template-columns: 1fr !important;
+                gap: 0.5rem !important;
+            }
+            /* Lead form optimization for mobile */
+            .slot-fields-row { 
+                flex-direction: column !important; 
+                align-items: stretch !important; 
+                gap: 0.45rem !important;
+                width: 100% !important;
+            }
+            .slot-field-label { 
+                width: 100% !important;
+                text-align: left !important;
+            }
+            .slot-field-inputs {
+                flex-direction: column !important;
+                align-items: stretch !important;
+            }
+            .slot-field-input-wrapper {
+                width: 100% !important;
+            }
+            .slot-field-box {
+                width: 100% !important;
+            }
+            .slot-or-separator { 
+                width: 100% !important; 
+                margin-left: 0 !important;
+                padding: 0.4rem 0 !important;
+            }
+            .calendar-and-time-split { 
+                gap: 0.65rem !important;
+                flex-direction: column !important;
+            }
+            .calendar-widget, .modern-time-widget {
+                width: 100% !important;
+            }
             .calendar-mini-graphic-card { right: 0.6rem !important; }
+            /* Lead form confirmation review - stack grid items on mobile */
+            .confirm-info-grid {
+                grid-template-columns: 1fr !important;
+                gap: 0.6rem !important;
+            }
             .chat-row { max-width: 100% !important; }
             .user-row { max-width: 92% !important; }
             .chat-bubble { font-size: 0.84rem !important; }
-            .chatbot-container { padding: 0.7rem !important; }
-            .chat-messages-area { padding: 0.75rem !important; }
+            .chatbot-container { 
+                padding: 0.7rem !important;
+                min-height: 300px !important;
+            }
+            .chat-messages-area { 
+                padding: 0.75rem !important;
+                max-height: 220px !important;
+            }
         }
+
+        /* Extra small devices (480px and below) */
+        @media (max-width: 480px) {
+            .page-content-wrapper {
+                padding: 3.5rem 0.35rem 0.8rem 0.35rem !important;
+            }
+            .grand-split-layout {
+                gap: 0.5rem !important;
+                padding: 0.2rem 0.3rem 0.4rem 0.3rem !important;
+            }
+            .calculator-title-block h2 {
+                font-size: 1rem !important;
+            }
+            .calculator-card-inputs, .results-glass-block {
+                padding: 0.65rem !important;
+                gap: 0.6rem !important;
+            }
+            .calculator-panel-left-scroll {
+                gap: 0.4rem !important;
+            }
+            .range-slider-label {
+                font-size: 0.72rem !important;
+            }
+            .calc-slider {
+                height: 4px !important;
+                margin: 0.3rem 0 !important;
+            }
+            .segmented-risk-group {
+                gap: 0.4rem !important;
+            }
+            .segmented-risk-btn {
+                padding: 0.5rem 0.3rem !important;
+                font-size: 0.72rem !important;
+            }
+            /* Lead form on ultra-small screens */
+            .lead-modal {
+                border-radius: 20px !important;
+                max-height: 95vh !important;
+            }
+            .modal-left-content {
+                padding: 1rem 1.2rem 1.5rem !important;
+            }
+            .step-headline {
+                font-size: 1.2rem !important;
+            }
+            .lead-field {
+                margin-bottom: 0.9rem !important;
+            }
+            .lead-field label {
+                font-size: 0.75rem !important;
+                margin-bottom: 0.3rem !important;
+            }
+            .glass-input {
+                padding: 0.65rem 0.8rem 0.65rem 2.3rem !important;
+                font-size: 0.82rem !important;
+            }
+            .slot-field-label {
+                font-size: 0.7rem !important;
+            }
+            .slot-field-box {
+                font-size: 0.75rem !important;
+                padding: 0.45rem 0.4rem 0.45rem 1.8rem !important;
+            }
+            .confirm-info-grid {
+                gap: 0.5rem !important;
+            }
+            .confirm-lbl {
+                font-size: 0.65rem !important;
+            }
+            .confirm-val {
+                font-size: 0.78rem !important;
+            }
+            .modal-btn-primary, .modal-btn-secondary {
+                padding: 0.75rem !important;
+                font-size: 0.88rem !important;
+            }
+            .chatbot-container {
+                min-height: 280px !important;
+            }
+            .chat-top-header {
+                padding: 0.5rem 0.1rem !important;
+            }
+            .chat-bot-name {
+                font-size: 0.8rem !important;
+            }
+            .chat-messages-area {
+                max-height: 180px !important;
+                padding: 0.6rem !important;
+            }
+            .chat-bubble {
+                padding: 0.65rem 1rem !important;
+                font-size: 0.8rem !important;
+            }
+            /* Hide decorative floating shields which cause horizontal overflow on very small screens */
+            .floating-shield-mock { display: none !important; }
+            .shield-white-check, .shield-gold-check { display: none !important; }
+
+            /* ensure calculator content cannot overflow horizontally */
+            .calculator-panel-left-scroll { overflow-x: hidden !important; padding-right: 18px !important; }
+            .calculator-sub-grid { gap: 0.45rem !important; }
+        }
+
+        /* Hidden right panel on mobile - full-width form */
+        @media (max-width: 900px) {
+            .modal-right-panel {
+                display: none !important;
+            }
+            .lead-modal {
+                max-width: 95vw !important;
+            }
+            .modal-split-body {
+                flex-direction: column !important;
+            }
+            .modal-left-content {
+                flex: 1 !important;
+                width: 100% !important;
+                max-height: calc(90vh - 200px) !important;
+            }
+        }
+
+        /* Additional mobile fixes to prevent horizontal overflow and improve stacking */
+        @media (max-width: 900px) {
+            /* Ensure modal fits and scrolls properly on small viewports */
+            .lead-modal-overlay.active { align-items: flex-start; padding-top: calc(env(safe-area-inset-top, 0px) + 28px); padding-bottom: 18px; }
+            .lead-modal {
+                width: 100% !important;
+                max-width: 95vw !important;
+                margin: 6px 8px !important;
+                box-sizing: border-box !important;
+                overflow: hidden !important;
+                transform: none !important;
+            }
+            .modal-left-content {
+                padding: 1rem 1rem 1.2rem !important;
+                max-height: calc(90vh - 160px) !important;
+                overflow-y: auto !important;
+                -webkit-overflow-scrolling: touch !important;
+            }
+
+            /* Calculator responsive safety: prevent any children from creating horizontal scroll */
+            .page-content-wrapper, .grand-split-layout { overflow-x: hidden !important; }
+            .calculator-panel-left-scroll, .calculator-sub-grid, .calculator-card-inputs, .calculator-card-outputs {
+                box-sizing: border-box !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                overflow: visible !important;
+                padding-right: 14px !important;
+            }
+            /* Force internal content to wrap instead of overflowing */
+            .calculator-panel-left-scroll * , .chatbot-card-wrapper * { max-width: 100% !important; box-sizing: border-box !important; }
+            .slider-mini-tooltip, .slider-badge-val-large { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100% !important; }
+            .dropdown-segmented-items { -webkit-overflow-scrolling: touch; }
+            /* keep some safe padding on page edges */
+            .page-content-wrapper { padding-right: 12px !important; padding-left: 12px !important; }
+            /* reduce right offset for floating actions so they don't push content */
+            .floating-actions { right: 12px !important; }
+        }
+
     </style>
 </head>
 <body>
