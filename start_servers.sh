@@ -54,7 +54,16 @@ done
 
 echo "Generating frontend config.js..."
 mkdir -p "frontend/js"
-echo "const API_BASE_URL = '$API_BASE_URL';" > "frontend/js/config.js"
+cat << EOF > frontend/js/config.js
+// Twinsure Client Configuration
+var API_BASE_URL = (function() {
+    var isLocal = window.location.port === '$FRONTEND_PORT' || 
+                  window.location.hostname === 'localhost' || 
+                  window.location.hostname === '127.0.0.1';
+    return isLocal ? (window.location.protocol + '//' + window.location.hostname + ':$BACKEND_PORT') : '/backend/api';
+})();
+window.API_BASE_URL = API_BASE_URL;
+EOF
 
 # PHP Runtime Auto-Detection
 LOCAL_PHP="$ROOT_DIR/.local/php-runtime/usr/bin/php"
