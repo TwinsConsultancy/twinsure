@@ -18,7 +18,7 @@ class UserChatEngine {
 
     async loadFlow() {
         try {
-            const response = await fetch(`${BASE_URL}/public/recommendation_flow.php`);
+            const response = await fetch(`${BASE_URL}/api/public/recommendation_flow.php`);
             if (!response.ok) throw new Error('Network error');
             const data = await response.json();
             this.nodes = data.nodes || [];
@@ -231,7 +231,7 @@ class UserChatEngine {
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting…';
 
         try {
-            const res = await fetch(`${BASE_URL}/public/submit_lead.php`, {
+            const res = await fetch(`${BASE_URL}/api/public/submit_lead.php`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, phone, email, answers, callbackSlots })
