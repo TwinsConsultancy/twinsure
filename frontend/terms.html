@@ -26,7 +26,7 @@
         /* ─── RESETS ─── */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
+        html, body { width: 100%; max-width: 100%; overflow-x: clip; }
         body { font-family: 'Inter', sans-serif; background-color: var(--primary-dark); color: var(--text-white); }
         h1, h2, h3, h4, h5, h6 { font-family: 'Outfit', sans-serif; }
         a { text-decoration: none; }
@@ -131,8 +131,12 @@
         /* Sidebar */
         .terms-sidebar {
             position: sticky; top: 120px; background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
-            border: 1px solid var(--glass-border); border-radius: 20px; padding: 1.5rem; overflow: hidden;
+            border: 1px solid var(--glass-border); border-radius: 20px; padding: 1.5rem;
+            max-height: calc(100vh - 140px); overflow-y: auto;
         }
+        .terms-sidebar::-webkit-scrollbar { width: 4px; }
+        .terms-sidebar::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); border-radius: 4px; }
+        .terms-sidebar::-webkit-scrollbar-thumb { background: var(--accent-gold); border-radius: 4px; }
         .terms-sidebar a {
             display: block; padding: 0.65rem 1rem; border-radius: 10px; font-size: 0.82rem; font-weight: 500;
             color: var(--text-gray); transition: all 0.3s; margin-bottom: 0.15rem; border-left: 3px solid transparent;
@@ -245,7 +249,7 @@
             .hero-visuals { margin-top: 3rem; }
             .overview-grid { grid-template-columns: repeat(2, 1fr); }
             .terms-layout { grid-template-columns: 1fr; }
-            .terms-sidebar { position: static; display: flex; flex-wrap: wrap; gap: 0.3rem; padding: 1rem; }
+            .terms-sidebar { position: static; display: flex; flex-wrap: wrap; gap: 0.3rem; padding: 1rem; max-height: none; overflow-y: visible; }
             .terms-sidebar a { flex: 0 0 auto; border-left: none; border-bottom: 2px solid transparent; padding: 0.5rem 0.8rem; font-size: 0.78rem; }
             .terms-sidebar a.active { border-left: none; border-bottom-color: var(--accent-gold); }
             .legal-banner { grid-template-columns: 1fr; text-align: center; padding: 3rem 2rem; }
