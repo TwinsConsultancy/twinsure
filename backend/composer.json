@@ -2,6 +2,9 @@
     "require-dev": {
         "mongodb/mongodb": "^1.16"
     },
+    "autoload": {
+        "files": ["phpstubs/mongodb_driver_stubs.php"]
+    },
     "config": {
         "platform": {
             "ext-mongodb": "1.16.0"
