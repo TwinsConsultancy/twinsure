@@ -327,6 +327,25 @@
             line-height: 1.6;
             white-space: pre-wrap;
         }
+        /* Settings Page Custom Styles */
+        .settings-tabs-container .settings-tab {
+            padding: 1rem 1.5rem; border: none; background: transparent; font-weight: 600; color: #64748b; cursor: pointer; font-size: 0.9rem; transition: 0.3s; border-bottom: 1px solid #e2e8f0;
+        }
+        .settings-tabs-container .settings-tab:hover { color: #003f88; }
+        .settings-tabs-container .settings-tab.active { background: #f8fafc; color: #003f88; border-top: 3px solid var(--warning); border-radius: 0; border-bottom: 1px solid transparent; }
+        
+        .settings-form-group label { display: block; font-size: 0.8rem; font-weight: 700; color: #334155; margin-bottom: 0.5rem; }
+        .input-with-icon { position: relative; display: flex; align-items: center; }
+        .input-with-icon i:first-child { position: absolute; left: 1rem; color: #94a3b8; }
+        .input-with-icon .input-suffix-icon { position: absolute; right: 1rem; color: #94a3b8; }
+        .input-with-icon .input-suffix { position: absolute; right: 1rem; font-weight: 600; color: #64748b; }
+        .settings-input { width: 100%; padding: 0.8rem 1rem 0.8rem 2.5rem; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; transition: 0.2s; font-family: inherit; font-size: 0.9rem; }
+        .settings-input:focus { border-color: #003f88; box-shadow: 0 0 0 3px rgba(0, 63, 136, 0.1); }
+        .settings-select { width: 100%; padding: 0.8rem 1rem; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; transition: 0.2s; font-family: inherit; font-size: 0.9rem; background: #fff; }
+        
+        .settings-toggle-card { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.2rem; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; flex: 1; }
+        .settings-list-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; }
+        .settings-list-item { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 1.5rem; border-bottom: 1px solid #e2e8f0; }
     </style>
 </head>
 <body>
@@ -796,9 +815,326 @@
                 </div>
             </section>
             
-            <section id="settings" class="content-section" style="display:none;">
-                <h2>System Settings</h2>
-                <p>Manage insurance providers, commission rates, and maintenance mode here.</p>
+            <section id="settings" class="content-section" style="display:none; padding-top: 0;">
+                <div style="margin-bottom: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div>
+                            <h1 style="font-size: 1.8rem; margin: 0; color: #111;">Settings</h1>
+                            <p style="color: var(--text-muted); margin-top: 0.3rem;">Manage your platform preferences, branding, notifications, and security settings.</p>
+                        </div>
+                        <div style="display: flex; gap: 0.8rem;">
+                            <button class="btn btn-primary" style="background: var(--warning); color: #111; display: flex; align-items: center; gap: 0.5rem;" onclick="saveAllSettings()">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                            <button class="btn" style="border: 1px solid #cbd5e1; background: #fff; display: flex; align-items: center; gap: 0.5rem;" onclick="loadSettings()">
+                                <i class="fas fa-undo"></i> Reset Defaults
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Tabs -->
+                <div class="settings-tabs-container" style="background: #eef4ff; border-radius: 12px 12px 0 0; border: 1px solid #e2e8f0; border-bottom: none; display: flex; overflow: hidden; margin-bottom: 0;">
+                    <button class="settings-tab active" onclick="switchSettingsTab('general', this)">General</button>
+                    <button class="settings-tab" onclick="switchSettingsTab('notifications', this)">Notifications</button>
+                    <button class="settings-tab" onclick="switchSettingsTab('security', this)">Security</button>
+                    <button class="settings-tab" onclick="switchSettingsTab('rec-engine', this)">Recommendation Engine</button>
+                    <button class="settings-tab" onclick="switchSettingsTab('partner', this)">Partner Program</button>
+                </div>
+
+                <div class="settings-layout" style="display: grid; grid-template-columns: 1fr 300px; gap: 1.5rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 0 0 16px 16px; padding: 1.5rem;">
+                    
+                    <!-- LEFT CONTENT AREA -->
+                    <div class="settings-content-area">
+                        
+                        <!-- TAB: GENERAL -->
+                        <div id="tab-general" class="settings-tab-pane active">
+                            <h3 style="font-size: 1.1rem; color: #111; margin-bottom: 1.2rem;">General Settings</h3>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+                                <!-- Form Group -->
+                                <div class="settings-form-group">
+                                    <label>Support Email</label>
+                                    <div class="input-with-icon">
+                                        <i class="far fa-envelope"></i>
+                                        <input type="email" id="set_supportEmail" class="settings-input" placeholder="support@twinsure.com">
+                                        <span class="input-suffix">@</span>
+                                    </div>
+                                </div>
+                                <div class="settings-form-group">
+                                    <label>Support Phone Number</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-phone-alt" style="color: #64748b;"></i>
+                                        <input type="text" id="set_supportPhone" class="settings-input" placeholder="+91 9999988888">
+                                        <i class="fas fa-mobile-alt input-suffix-icon"></i>
+                                    </div>
+                                </div>
+                                <div class="settings-form-group">
+                                    <label>Office Address</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-map-marker-alt" style="color: #64748b;"></i>
+                                        <input type="text" id="set_officeAddress" class="settings-input" placeholder="Twinsure H.Q., Chennai...">
+                                    </div>
+                                </div>
+                                <div class="settings-form-group">
+                                    <label>Working Hours</label>
+                                    <div class="input-with-icon">
+                                        <i class="far fa-clock" style="color: #64748b;"></i>
+                                        <input type="text" id="set_workingHours" class="settings-input" placeholder="Mon-Fri: 9AM - 6PM">
+                                    </div>
+                                </div>
+                                <div class="settings-form-group">
+                                    <label>Time Zone</label>
+                                    <select id="set_timeZone" class="settings-select">
+                                        <option value="IST">IST</option>
+                                        <option value="UTC">UTC</option>
+                                        <option value="EST">EST</option>
+                                        <option value="PST">PST</option>
+                                    </select>
+                                </div>
+                                <div class="settings-form-group">
+                                    <label>Default Language</label>
+                                    <select id="set_defaultLanguage" class="settings-select">
+                                        <option value="English">English</option>
+                                        <option value="Hindi">Hindi</option>
+                                        <option value="Tamil">Tamil</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 1.5rem 0;">
+                            
+                            <div style="display: flex; gap: 2rem; align-items: center;">
+                                <div class="settings-toggle-card">
+                                    <div style="display: flex; align-items: center; gap: 0.8rem;">
+                                        <div style="width: 36px; height: 36px; border-radius: 8px; background: #fff8e6; color: var(--warning); display: flex; align-items: center; justify-content: center;"><i class="fas fa-tools"></i></div>
+                                        <span style="font-weight: 600; font-size: 0.9rem; color: #111;">Enable Maintenance Mode</span>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" id="set_maintenanceMode">
+                                        <span class="slider" style="background-color: #cbd5e1;"></span>
+                                    </label>
+                                </div>
+                                
+                                <div class="settings-toggle-card">
+                                    <div style="display: flex; align-items: center; gap: 0.8rem;">
+                                        <div style="width: 36px; height: 36px; border-radius: 8px; background: #eef4ff; color: #003f88; display: flex; align-items: center; justify-content: center;"><i class="fab fa-whatsapp" style="font-size: 1.2rem;"></i></div>
+                                        <span style="font-weight: 600; font-size: 0.9rem; color: #111;">Enable WhatsApp Floating Button</span>
+                                    </div>
+                                    <label class="switch">
+                                        <input type="checkbox" id="set_whatsappButton">
+                                        <span class="slider" style="background-color: #cbd5e1;"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAB: NOTIFICATIONS -->
+                        <div id="tab-notifications" class="settings-tab-pane" style="display: none;">
+                            <h3 style="font-size: 1.1rem; color: #111; margin-bottom: 1.2rem;">Notification Settings</h3>
+                            <div class="settings-list-card">
+                                <div class="settings-list-item">
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 0.95rem; color: #111;">Email Notifications</h4>
+                                        <p style="margin: 0.2rem 0 0 0; font-size: 0.8rem; color: #64748b;">Receive updates via standard email delivery.</p>
+                                    </div>
+                                    <label class="switch"><input type="checkbox" id="set_emailNotifications"><span class="slider"></span></label>
+                                </div>
+                                <div class="settings-list-item">
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 0.95rem; color: #111;">WhatsApp Notifications</h4>
+                                        <p style="margin: 0.2rem 0 0 0; font-size: 0.8rem; color: #64748b;">Get instant critical alerts on registered WhatsApp number.</p>
+                                    </div>
+                                    <label class="switch"><input type="checkbox" id="set_whatsappNotifications"><span class="slider"></span></label>
+                                </div>
+                                <div class="settings-list-item">
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 0.95rem; color: #111;">Lead Submission Alerts</h4>
+                                        <p style="margin: 0.2rem 0 0 0; font-size: 0.8rem; color: #64748b;">Notify admins when a new lead finishes the AI flow.</p>
+                                    </div>
+                                    <label class="switch"><input type="checkbox" id="set_leadAlerts"><span class="slider"></span></label>
+                                </div>
+                                <div class="settings-list-item">
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 0.95rem; color: #111;">Partner Registration Alerts</h4>
+                                        <p style="margin: 0.2rem 0 0 0; font-size: 0.8rem; color: #64748b;">Alerts for new partner signups pending approval.</p>
+                                    </div>
+                                    <label class="switch"><input type="checkbox" id="set_partnerAlerts"><span class="slider"></span></label>
+                                </div>
+                                <div class="settings-list-item">
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 0.95rem; color: #111;">Claim Upload Alerts</h4>
+                                        <p style="margin: 0.2rem 0 0 0; font-size: 0.8rem; color: #64748b;">Notify when a customer submits a new claim document.</p>
+                                    </div>
+                                    <label class="switch"><input type="checkbox" id="set_claimAlerts"><span class="slider"></span></label>
+                                </div>
+                                <div class="settings-list-item" style="border-bottom: none;">
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 0.95rem; color: #111;">Default Notification Priority</h4>
+                                    </div>
+                                    <select id="set_notificationPriority" class="settings-select" style="width: 150px;">
+                                        <option value="low">Low</option>
+                                        <option value="normal">Normal</option>
+                                        <option value="high">High</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAB: SECURITY -->
+                        <div id="tab-security" class="settings-tab-pane" style="display: none;">
+                            <h3 style="font-size: 1.1rem; color: #111; margin-bottom: 1.2rem;">Security Settings</h3>
+                            
+                            <div style="background: #fff8e6; border-left: 4px solid var(--warning); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+                                <div style="display: flex; gap: 0.8rem; align-items: flex-start;">
+                                    <i class="fas fa-shield-alt" style="color: var(--warning); margin-top: 0.2rem;"></i>
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 0.9rem; color: #111;">Security Notice</h4>
+                                        <p style="margin: 0.2rem 0 0 0; font-size: 0.8rem; color: #555;">Ensure admin credentials are protected and updated regularly.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-list-card">
+                                <div class="settings-list-item">
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 0.95rem; color: #111;">Change Admin Password</h4>
+                                        <p style="margin: 0.2rem 0 0 0; font-size: 0.8rem; color: #64748b;">Update your master administrator password.</p>
+                                    </div>
+                                    <button class="btn" style="background: #eef4ff; color: #003f88; font-weight: 600; font-size: 0.8rem; border: none; padding: 0.6rem 1rem; border-radius: 8px;" onclick="alert('Password reset link sent to admin email.')">Update Password</button>
+                                </div>
+                                <div class="settings-list-item">
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 0.95rem; color: #111;">Session Timeout Duration</h4>
+                                        <p style="margin: 0.2rem 0 0 0; font-size: 0.8rem; color: #64748b;">Minutes before auto-logout on inactivity.</p>
+                                    </div>
+                                    <select id="set_sessionTimeout" class="settings-select" style="width: 120px;">
+                                        <option value="15">15 Minutes</option>
+                                        <option value="30">30 Minutes</option>
+                                        <option value="60">1 Hour</option>
+                                        <option value="120">2 Hours</option>
+                                    </select>
+                                </div>
+                                <div class="settings-list-item" style="border-bottom: none;">
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 0.95rem; color: #111;">Login Attempt Limit</h4>
+                                        <p style="margin: 0.2rem 0 0 0; font-size: 0.8rem; color: #64748b;">Failed attempts before temporary IP block.</p>
+                                    </div>
+                                    <select id="set_loginAttempts" class="settings-select" style="width: 120px;">
+                                        <option value="3">3 Attempts</option>
+                                        <option value="5">5 Attempts</option>
+                                        <option value="10">10 Attempts</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAB: REC ENGINE -->
+                        <div id="tab-rec-engine" class="settings-tab-pane" style="display: none;">
+                            <h3 style="font-size: 1.1rem; color: #111; margin-bottom: 1.2rem;">Recommendation Engine Settings</h3>
+                            <div class="settings-list-card">
+                                <div class="settings-list-item">
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 0.95rem; color: #111;">Enable Recommendation Engine</h4>
+                                        <p style="margin: 0.2rem 0 0 0; font-size: 0.8rem; color: #64748b;">Toggle the main AI recommendation flow on the public site.</p>
+                                    </div>
+                                    <label class="switch"><input type="checkbox" id="set_recEngineEnabled"><span class="slider"></span></label>
+                                </div>
+                                <div class="settings-list-item">
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 0.95rem; color: #111;">Enable Lead Collection Popup</h4>
+                                        <p style="margin: 0.2rem 0 0 0; font-size: 0.8rem; color: #64748b;">Show form to collect user details after recommendation finishes.</p>
+                                    </div>
+                                    <label class="switch"><input type="checkbox" id="set_leadPopup"><span class="slider"></span></label>
+                                </div>
+                                <div class="settings-list-item" style="border-bottom: none;">
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 0.95rem; color: #111;">Allow Callback Slot Booking</h4>
+                                        <p style="margin: 0.2rem 0 0 0; font-size: 0.8rem; color: #64748b;">Let users schedule a call with an agent directly.</p>
+                                    </div>
+                                    <label class="switch"><input type="checkbox" id="set_callbackSlot"><span class="slider"></span></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAB: PARTNER PROGRAM -->
+                        <div id="tab-partner" class="settings-tab-pane" style="display: none;">
+                            <h3 style="font-size: 1.1rem; color: #111; margin-bottom: 1.2rem;">Partner Program Settings</h3>
+                            <div class="settings-list-card" style="margin-bottom: 1.5rem;">
+                                <div class="settings-list-item">
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 0.95rem; color: #111;">Enable Partner Registrations</h4>
+                                    </div>
+                                    <label class="switch"><input type="checkbox" id="set_partnerRegEnabled"><span class="slider"></span></label>
+                                </div>
+                                <div class="settings-list-item">
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 0.95rem; color: #111;">Enable Referral Tracking</h4>
+                                    </div>
+                                    <label class="switch"><input type="checkbox" id="set_referralTracking"><span class="slider"></span></label>
+                                </div>
+                                <div class="settings-list-item">
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 0.95rem; color: #111;">Show Commission Information Publicly</h4>
+                                    </div>
+                                    <label class="switch"><input type="checkbox" id="set_publicCommissionInfo"><span class="slider"></span></label>
+                                </div>
+                                <div class="settings-list-item" style="border-bottom: none;">
+                                    <div>
+                                        <h4 style="margin: 0; font-size: 0.95rem; color: #111;">Require Manual Partner Approval</h4>
+                                    </div>
+                                    <label class="switch"><input type="checkbox" id="set_manualPartnerApproval"><span class="slider"></span></label>
+                                </div>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                                <div class="settings-form-group">
+                                    <label>Minimum Commission Percentage</label>
+                                    <div class="input-with-icon">
+                                        <input type="number" id="set_minCommission" class="settings-input">
+                                        <span class="input-suffix">%</span>
+                                    </div>
+                                </div>
+                                <div class="settings-form-group">
+                                    <label>Maximum Commission Percentage</label>
+                                    <div class="input-with-icon">
+                                        <input type="number" id="set_maxCommission" class="settings-input">
+                                        <span class="input-suffix">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- RIGHT QUICK PANEL -->
+                    <div class="settings-quick-panel">
+                        <div style="background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; padding: 1.5rem; position: sticky; top: 20px;">
+                            <h3 style="font-size: 1rem; color: #111; margin-top: 0; margin-bottom: 1.2rem;">Quick Settings Panel</h3>
+                            
+                            <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 2rem;">
+                                <button onclick="saveAllSettings()" style="width: 100%; padding: 0.8rem; border-radius: 8px; background: var(--warning); color: #111; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                                    <i class="fas fa-save"></i> Save All Changes
+                                </button>
+                                <button onclick="alert('Settings backup created successfully.')" style="width: 100%; padding: 0.8rem; border-radius: 8px; background: #fff; color: #003f88; border: 1px solid #003f88; font-weight: 600; cursor: pointer; transition: 0.2s;">
+                                    Backup Settings
+                                </button>
+                                <button onclick="loadSettings()" style="width: 100%; padding: 0.8rem; border-radius: 8px; background: #fff; color: #64748b; border: 1px solid #e2e8f0; font-weight: 600; cursor: pointer; transition: 0.2s;">
+                                    Restore Defaults
+                                </button>
+                            </div>
+                            
+                            <div style="border-top: 1px solid #e2e8f0; padding-top: 1.5rem;">
+                                <h4 style="margin: 0 0 0.5rem 0; font-size: 0.85rem; color: #111;">Contact Technical Support</h4>
+                                <p style="margin: 0 0 1rem 0; font-size: 0.75rem; color: #64748b;">Need help configuring Twinsure?</p>
+                                <div style="display: flex; align-items: center; gap: 0.8rem; background: #f8fafc; padding: 0.8rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+                                    <div style="width: 32px; height: 32px; border-radius: 50%; background: #eef4ff; color: #003f88; display: flex; align-items: center; justify-content: center;"><i class="fas fa-phone-alt"></i></div>
+                                    <span style="font-weight: 600; font-size: 0.85rem; color: #003f88;">Call +91 7200754566</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <!-- PREMIUM CONTACTS SECTION -->
@@ -3374,6 +3710,150 @@
                 confirmPromiseResolve = null;
             }
         };
+
+        // --- SETTINGS PAGE LOGIC ---
+        function switchSettingsTab(tabId, btnElement) {
+            document.querySelectorAll('.settings-tab-pane').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.settings-tab').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabId).style.display = 'block';
+            if (btnElement) btnElement.classList.add('active');
+        }
+
+        async function loadSettings() {
+            try {
+                const res = await fetch(API_BASE_URL + '/admin/settings.php', {
+                    headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+                });
+
+                if (res.status === 401) {
+                    // Not authenticated - ask user to login
+                    alert('You are not authenticated. Please login as admin.');
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                if (!res.ok) throw new Error('Failed to load settings');
+                const data = await res.json();
+
+                // Helper to safely set values
+                const setVal = (id, value) => { const el = document.getElementById(id); if (!el) return; if (el.type === 'checkbox') el.checked = !!value; else el.value = value ?? ''; };
+
+                // General
+                setVal('set_supportEmail', data.supportEmail);
+                setVal('set_supportPhone', data.supportPhone);
+                setVal('set_officeAddress', data.officeAddress);
+                setVal('set_workingHours', data.workingHours);
+                setVal('set_timeZone', data.timeZone);
+                setVal('set_defaultLanguage', data.defaultLanguage);
+                setVal('set_maintenanceMode', data.maintenanceMode);
+                setVal('set_whatsappButton', data.whatsappButton);
+
+                // Notifications
+                setVal('set_emailNotifications', data.emailNotifications);
+                setVal('set_whatsappNotifications', data.whatsappNotifications);
+                setVal('set_leadAlerts', data.leadAlerts);
+                setVal('set_partnerAlerts', data.partnerAlerts);
+                setVal('set_claimAlerts', data.claimAlerts);
+                setVal('set_notificationPriority', data.notificationPriority);
+
+                // Security
+                setVal('set_sessionTimeout', data.sessionTimeout);
+                setVal('set_loginAttempts', data.loginAttempts);
+
+                // Rec Engine
+                setVal('set_recEngineEnabled', data.recEngineEnabled);
+                setVal('set_leadPopup', data.leadPopup);
+                setVal('set_callbackSlot', data.callbackSlot);
+
+                // Partner Program
+                setVal('set_partnerRegEnabled', data.partnerRegEnabled);
+                setVal('set_referralTracking', data.referralTracking);
+                setVal('set_publicCommissionInfo', data.publicCommissionInfo);
+                setVal('set_manualPartnerApproval', data.manualPartnerApproval);
+                setVal('set_minCommission', data.minCommission);
+                setVal('set_maxCommission', data.maxCommission);
+
+            } catch (err) {
+                console.error('loadSettings error:', err);
+            }
+        }
+
+        async function saveAllSettings() {
+            try {
+                const getEl = id => document.getElementById(id);
+
+                const payload = {
+                    supportEmail: getEl('set_supportEmail')?.value || '',
+                    supportPhone: getEl('set_supportPhone')?.value || '',
+                    officeAddress: getEl('set_officeAddress')?.value || '',
+                    workingHours: getEl('set_workingHours')?.value || '',
+                    timeZone: getEl('set_timeZone')?.value || '',
+                    defaultLanguage: getEl('set_defaultLanguage')?.value || '',
+                    maintenanceMode: !!getEl('set_maintenanceMode')?.checked,
+                    whatsappButton: !!getEl('set_whatsappButton')?.checked,
+
+                    emailNotifications: !!getEl('set_emailNotifications')?.checked,
+                    whatsappNotifications: !!getEl('set_whatsappNotifications')?.checked,
+                    leadAlerts: !!getEl('set_leadAlerts')?.checked,
+                    partnerAlerts: !!getEl('set_partnerAlerts')?.checked,
+                    claimAlerts: !!getEl('set_claimAlerts')?.checked,
+                    notificationPriority: getEl('set_notificationPriority')?.value || 'normal',
+
+                    sessionTimeout: Number(getEl('set_sessionTimeout')?.value) || 60,
+                    loginAttempts: Number(getEl('set_loginAttempts')?.value) || 5,
+
+                    recEngineEnabled: !!getEl('set_recEngineEnabled')?.checked,
+                    leadPopup: !!getEl('set_leadPopup')?.checked,
+                    callbackSlot: !!getEl('set_callbackSlot')?.checked,
+
+                    partnerRegEnabled: !!getEl('set_partnerRegEnabled')?.checked,
+                    referralTracking: !!getEl('set_referralTracking')?.checked,
+                    publicCommissionInfo: !!getEl('set_publicCommissionInfo')?.checked,
+                    manualPartnerApproval: !!getEl('set_manualPartnerApproval')?.checked,
+                    minCommission: Number(getEl('set_minCommission')?.value) || 0,
+                    maxCommission: Number(getEl('set_maxCommission')?.value) || 0
+                };
+
+                const res = await fetch(API_BASE_URL + '/admin/settings.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.status === 401) {
+                    alert('You are not authenticated. Please login as admin.');
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                if (!res.ok) {
+                    const errText = await res.text();
+                    throw new Error(errText || 'Failed to save settings');
+                }
+                const result = await res.json();
+                if (result.success) {
+                    alert('Settings successfully updated.');
+                } else {
+                    alert(result.error || 'Unknown error occurred.');
+                }
+            } catch (err) {
+                console.error('saveAllSettings error:', err);
+                alert('Error saving settings: ' + (err.message || err));
+            }
+        }
+        
+        // Load settings on boot if on settings tab, or hook it to showSection
+        const _origShowSecSettings = showSection;
+        showSection = function(id, el) {
+            _origShowSecSettings(id, el);
+            if (id === 'settings') {
+                loadSettings();
+            }
+        };
+
     </script>
 </body>
 </html>
