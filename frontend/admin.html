@@ -4,6 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Twinsure</title>
+    <script>
+        // Secure Authentication & Back-Button Guard
+        (function() {
+            function checkAuth() {
+                if (localStorage.getItem('role') !== 'admin') {
+                    window.location.replace('login.html');
+                }
+            }
+            checkAuth();
+            window.addEventListener('pageshow', checkAuth);
+        })();
+    </script>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%2300296b' d='M32 6 12 13v17c0 14.5 8.7 25.4 20 28 11.3-2.6 20-13.5 20-28V13L32 6z'/%3E%3C/svg%3E">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/admin-leads-premium.css">
@@ -354,31 +366,31 @@
                     <i class="fas fa-chart-pie" style="color: var(--warning); font-size: 2rem;"></i>
                 </div>
                 <ul>
-                    <li><a href="#" class="active" onclick="showSection('dashboard', this)">
+                    <li><a href="javascript:void(0)" class="active" onclick="showSection('dashboard', this)">
                         <i class="fas fa-th-large"></i> Dashboard
                     </a></li>
                     <li><a href="recommendation.html">
                         <i class="fas fa-magic"></i> Ai Engine
                     </a></li>
-                    <li><a href="#" onclick="showSection('leads', this)">
+                    <li><a href="javascript:void(0)" onclick="showSection('leads', this)">
                         <i class="fas fa-users"></i> Leads
                         <span style="margin-left: auto; background: rgba(255, 255, 255, 0.2); padding: 2px 6px; border-radius: 12px; font-size: 0.65rem; color: #fff;" id="sbLeadCount">--</span>
                     </a></li>
-                    <li><a href="#" onclick="showSection('claims', this)">
+                    <li><a href="javascript:void(0)" onclick="showSection('claims', this)">
                         <i class="fas fa-file-invoice"></i> Claims
                         <span style="margin-left: auto; background: rgba(255, 255, 255, 0.2); padding: 2px 6px; border-radius: 12px; font-size: 0.65rem; color: #fff;" id="sbClaimsCount">0</span>
                     </a></li>
-                    <li><a href="#" onclick="showSection('contacts', this)">
+                    <li><a href="javascript:void(0)" onclick="showSection('contacts', this)">
                         <i class="fas fa-handshake"></i> Contact
                         <span style="margin-left: auto; background: rgba(255, 255, 255, 0.2); padding: 2px 6px; border-radius: 12px; font-size: 0.65rem; color: #fff;" id="sbPartnerCount">--</span>
                     </a></li>
-                    <li><a href="#" onclick="showSection('users', this)">
+                    <li><a href="javascript:void(0)" onclick="showSection('users', this)">
                         <i class="fas fa-user-friends"></i> Team Management
                     </a></li>
-                    <li><a href="#" onclick="showSection('partners', this)">
+                    <li><a href="javascript:void(0)" onclick="showSection('partners', this)">
                         <i class="fas fa-handshake"></i> Partners
                     </a></li>
-                    <li><a href="#" onclick="showSection('settings', this)">
+                    <li><a href="javascript:void(0)" onclick="showSection('settings', this)">
                         <i class="fas fa-cog"></i> Settings
                     </a></li>
                 </ul>
@@ -1726,10 +1738,22 @@
     <script src="js/builder.js"></script>
     <script>
         // Check Auth
-        if(localStorage.getItem('role') !== 'admin') {
-            window.location.href = 'login.html';
+        function checkAuth() {
+            if(localStorage.getItem('role') !== 'admin') {
+                window.location.replace('login.html');
+            } else {
+                const nameDisplay = document.getElementById('adminNameDisplay');
+                if (nameDisplay) {
+                    nameDisplay.textContent = localStorage.getItem('name') || 'Admin';
+                }
+            }
         }
-        document.getElementById('adminNameDisplay').textContent = localStorage.getItem('name');
+        
+        checkAuth();
+        
+        window.addEventListener('pageshow', () => {
+            checkAuth();
+        });
         
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
@@ -1745,10 +1769,28 @@
         });
 
         function showSection(id, element) {
+            // Update URL hash to persist section on reload/bookmark
+            if (history.replaceState) {
+                history.replaceState(null, null, '#' + id);
+            } else {
+                window.location.hash = id;
+            }
+            
+            sessionStorage.setItem('currentAdminSection', id);
+
             document.querySelectorAll('.content-section').forEach(sec => sec.style.display = 'none');
-            document.getElementById(id).style.display = 'block';
+            const targetSection = document.getElementById(id);
+            if (targetSection) targetSection.style.display = 'block';
             
             document.querySelectorAll('.sidebar ul li a').forEach(a => a.classList.remove('active'));
+            
+            // If element is not passed, find the sidebar link for this id
+            if (!element) {
+                element = Array.from(document.querySelectorAll('.sidebar ul li a')).find(a => {
+                    const onclickAttr = a.getAttribute('onclick') || '';
+                    return onclickAttr.includes(`'${id}'`) || onclickAttr.includes(`"${id}"`);
+                });
+            }
             if (element) element.classList.add('active');
 
             if(id === 'users') {
@@ -2964,6 +3006,21 @@
         loadContacts(); // Load contacts for dashboard stats
         loadClaims(); // Load claims early for dashboard stats and badges
         loadFormHelpRequests();
+
+        // Restore active section from URL hash, sessionStorage, or default to dashboard
+        (function() {
+            const initialHash = window.location.hash.substring(1);
+            const savedSection = sessionStorage.getItem('currentAdminSection');
+            const validSections = ['dashboard', 'leads', 'claims', 'contacts', 'users', 'partners', 'settings'];
+            
+            if (validSections.includes(initialHash)) {
+                showSection(initialHash);
+            } else if (validSections.includes(savedSection)) {
+                showSection(savedSection);
+            } else {
+                showSection('dashboard');
+            }
+        })();
 
         // Set Welcome Banner
         const adminName = localStorage.getItem('name') || 'Admin';

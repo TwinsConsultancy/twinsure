@@ -45,11 +45,11 @@ const api = {
         }
     },
 
-    logout() {
+    logout(redirectUrl = 'index.html') {
         localStorage.removeItem('token');
         localStorage.removeItem('role');
         localStorage.removeItem('name');
-        window.location.href = 'login.html';
+        window.location.replace(redirectUrl);
     },
 
     async get(endpoint) {
@@ -60,7 +60,7 @@ const api = {
             }
         });
         if (response.status === 401 || response.status === 403) {
-            this.logout();
+            this.logout('login.html');
             throw new Error('Unauthorized');
         }
         return parseResponseBody(response);
@@ -77,7 +77,7 @@ const api = {
             body: JSON.stringify(payload)
         });
         if (response.status === 401 || response.status === 403) {
-            this.logout();
+            this.logout('login.html');
             throw new Error('Unauthorized');
         }
         return parseResponseBody(response);
@@ -93,7 +93,7 @@ const api = {
             body: formData
         });
         if (response.status === 401 || response.status === 403) {
-            this.logout();
+            this.logout('login.html');
             throw new Error('Unauthorized');
         }
         return parseResponseBody(response);
@@ -108,7 +108,7 @@ const api = {
             }
         });
         if (response.status === 401 || response.status === 403) {
-            this.logout();
+            this.logout('login.html');
             throw new Error('Unauthorized');
         }
         return parseResponseBody(response);
