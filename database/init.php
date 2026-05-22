@@ -27,7 +27,7 @@ try {
     echo "Connected to MongoDB.\n";
     echo "Initializing database: $dbName\n\n";
 
-    $collectionsToCreate = ['users', 'services', 'partners', 'recommendation_questions', 'leads', 'form_help_requests'];
+    $collectionsToCreate = ['users', 'services', 'partners', 'recommendation_questions', 'leads', 'form_help_requests', 'settings'];
 
     foreach ($collectionsToCreate as $col) {
         try {
@@ -56,6 +56,43 @@ try {
         echo "\n🔑 Default Admin created: $adminEmail\n";
     } else {
         echo "\n🔑 Admin user already exists.\n";
+    }
+
+    // Insert Default Settings
+    $existingSettings = $database->findOne('settings', ['_id' => 'global']);
+    if ($existingSettings === null) {
+        $database->insertOne('settings', [
+            '_id' => 'global',
+            'supportEmail' => 'support@twinsure.com',
+            'supportPhone' => '+91 9999988888',
+            'officeAddress' => 'Twinsure H.Q., Chennai, Tamil Nadu - 600xxx',
+            'workingHours' => 'Mon-Fri: 9AM - 6PM',
+            'timeZone' => 'IST',
+            'defaultLanguage' => 'English',
+            'maintenanceMode' => false,
+            'whatsappButton' => true,
+            'emailNotifications' => true,
+            'whatsappNotifications' => true,
+            'leadAlerts' => true,
+            'partnerAlerts' => true,
+            'claimAlerts' => true,
+            'notificationPriority' => 'high',
+            'sessionTimeout' => '60',
+            'loginAttempts' => '5',
+            'recEngineEnabled' => true,
+            'leadPopup' => true,
+            'callbackSlot' => true,
+            'partnerRegEnabled' => true,
+            'referralTracking' => true,
+            'publicCommissionInfo' => false,
+            'minCommission' => '5',
+            'maxCommission' => '25',
+            'manualPartnerApproval' => true,
+            'updatedAt' => date('Y-m-d H:i:s')
+        ]);
+        echo "\n⚙️ Default Settings initialized.\n";
+    } else {
+        echo "\n⚙️ Settings already exist.\n";
     }
 
     echo "\n🎉 Database initialization complete!\n";
