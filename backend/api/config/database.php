@@ -25,7 +25,7 @@ class Database {
         }
     }
 
-    public function getConnection() {
+    public function getConnection(): \MongoDB\Driver\Manager {
         if ($this->manager === null) {
             try {
                 $uri = isset($_ENV['MONGODB_URI']) ? $_ENV['MONGODB_URI'] : "mongodb://127.0.0.1:27017";
@@ -43,7 +43,7 @@ class Database {
         return $this->manager;
     }
 
-    public function getDbName() {
+    public function getDbName(): string {
         return $this->db_name;
     }
 
