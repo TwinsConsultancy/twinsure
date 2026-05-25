@@ -95,7 +95,6 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
         }
-
         .logo {
             font-size: 1.8rem;
             font-weight: 800;
@@ -130,6 +129,10 @@
             font-weight: 700 !important;
         }
 
+        .nav-links .btn-gold:hover {
+            color: var(--primary-dark) !important;
+        }
+
         .nav-links a::after {
             content: '';
             position: absolute;
@@ -145,7 +148,6 @@
         .nav-links a.active::after {
             width: 100%;
         }
-
         .nav-toggle {
             display: none;
             width: 44px;
@@ -722,7 +724,9 @@
             margin-bottom: 2rem;
             max-width: 90%;
         }
-
+        .mv-card:last-child p {
+            max-width: 58%;
+        }
         /* Navigation arrows on MISSION card */
         .mv-nav-arrows {
             display: flex;
@@ -752,9 +756,9 @@
         /* Interactive floating visual for VISION card */
         .vision-visual {
             position: absolute;
-            right: 5%;
+            right: 3%;
             top: 50%;
-            transform: translateY(-55%);
+            transform: translateY(-50%);
             width: 220px;
             height: 220px;
             pointer-events: none;
@@ -796,31 +800,31 @@
             color: var(--accent-gold);
             font-size: 0.8rem;
             box-shadow: 0 0 10px rgba(253, 197, 0, 0.2);
-            animation: orbit 10s linear infinite;
         }
+        .node-1 { top: -8%; left: -8%; animation: float-node-1 5s ease-in-out infinite; }
+        .node-2 { top: -2%; right: -8%; animation: float-node-2 6s ease-in-out infinite; }
+        .node-3 { bottom: -5%; left: -5%; animation: float-node-3 7s ease-in-out infinite; }
+        .node-4 { bottom: -2%; right: -8%; animation: float-node-4 8s ease-in-out infinite; }
 
-        .node-1 {
-            top: 10%;
-            left: 10%;
-            animation-duration: 6s;
+        @keyframes float-node-1 {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-6px) translateX(3px); }
+            100% { transform: translateY(0) translateX(0); }
         }
-
-        .node-2 {
-            top: 15%;
-            right: 10%;
-            animation-duration: 8s;
+        @keyframes float-node-2 {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(6px) translateX(-4px); }
+            100% { transform: translateY(0) translateX(0); }
         }
-
-        .node-3 {
-            bottom: 15%;
-            left: 15%;
-            animation-duration: 7s;
+        @keyframes float-node-3 {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-4px) translateX(-3px); }
+            100% { transform: translateY(0) translateX(0); }
         }
-
-        .node-4 {
-            bottom: 10%;
-            right: 15%;
-            animation-duration: 9s;
+        @keyframes float-node-4 {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(4px) translateX(4px); }
+            100% { transform: translateY(0) translateX(0); }
         }
 
         @keyframes float-shield {
@@ -2035,12 +2039,9 @@
             <div class="footer-col">
                 <h4>Contact Info</h4>
                 <ul>
-                    <li style="color: #94a3b8;"><i class="fas fa-envelope"
-                            style="margin-right:8px; color:var(--accent-gold);"></i> info@twinsure.com</li>
-                    <li style="color: #94a3b8;"><i class="fas fa-phone-alt"
-                            style="margin-right:8px; color:var(--accent-gold);"></i> +1 (800) 123-4567</li>
-                    <li style="color: #94a3b8;"><i class="fas fa-map-marker-alt"
-                            style="margin-right:8px; color:var(--accent-gold);"></i> 123 Tech Avenue, NY</li>
+                    <li style="color: #94a3b8;"><i class="fas fa-envelope" style="margin-right:8px; color:var(--accent-gold);"></i> support@twinsure.com</li>
+                    <li style="color: #94a3b8;"><i class="fas fa-phone-alt" style="margin-right:8px; color:var(--accent-gold);"></i> +91 98765 43210</li>
+                    <li style="color: #94a3b8;"><i class="fas fa-map-marker-alt" style="margin-right:8px; color:var(--accent-gold);"></i> Twins Consultancy, Karur, TN</li>
                 </ul>
             </div>
         </div>

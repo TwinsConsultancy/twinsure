@@ -63,6 +63,7 @@
         .nav-links { display: flex; gap: 2.5rem; align-items: center; }
         .nav-links a { color: var(--text-gray); font-weight: 500; font-size: 0.95rem; transition: 0.3s; position: relative; }
         .nav-links a:hover, .nav-links a.active { color: var(--accent-gold-light) !important; font-weight: 700 !important; }
+        .nav-links .btn-gold:hover { color: var(--primary-dark) !important; }
         .nav-links a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0; background: var(--accent-gold); transition: 0.3s; }
         .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
         .nav-toggle { display: none; width: 44px; height: 44px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: var(--text-white); align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
@@ -249,6 +250,8 @@
             .hero-visuals { margin-top: 3rem; }
             .overview-grid { grid-template-columns: repeat(2, 1fr); }
             .terms-layout { grid-template-columns: 100%; gap: 1.5rem; width: 100%; max-width: 100%; box-sizing: border-box; overflow: hidden; }
+            .terms-content { width: 100%; max-width: 100%; box-sizing: border-box; }
+            .terms-card { width: 100%; max-width: 100%; box-sizing: border-box; }
             
             /* Sticky Horizontal swipeable navigation sidebar on mobile */
             .terms-sidebar {
@@ -761,9 +764,9 @@
             <div class="footer-col">
                 <h4>Contact Info</h4>
                 <ul>
-                    <li style="color: #94a3b8;"><i class="fas fa-envelope" style="margin-right:8px; color:var(--accent-gold);"></i> info@twinsure.com</li>
-                    <li style="color: #94a3b8;"><i class="fas fa-phone-alt" style="margin-right:8px; color:var(--accent-gold);"></i> +1 (800) 123-4567</li>
-                    <li style="color: #94a3b8;"><i class="fas fa-map-marker-alt" style="margin-right:8px; color:var(--accent-gold);"></i> 123 Tech Avenue, NY</li>
+                    <li style="color: #94a3b8;"><i class="fas fa-envelope" style="margin-right:8px; color:var(--accent-gold);"></i> support@twinsure.com</li>
+                    <li style="color: #94a3b8;"><i class="fas fa-phone-alt" style="margin-right:8px; color:var(--accent-gold);"></i> +91 98765 43210</li>
+                    <li style="color: #94a3b8;"><i class="fas fa-map-marker-alt" style="margin-right:8px; color:var(--accent-gold);"></i> Twins Consultancy, Karur, TN</li>
                 </ul>
             </div>
         </div>
