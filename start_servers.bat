@@ -25,8 +25,8 @@ if "%FRONTEND_PORT%"=="" set FRONTEND_PORT=3000
 if "%API_BASE_URL%"=="" set API_BASE_URL=http://%HOST%:%BACKEND_PORT%
 
 echo Generating frontend config.js...
-if not exist "frontend\js" mkdir "frontend\js"
-echo const API_BASE_URL = '%API_BASE_URL%'; > frontend\js\config.js
+if not exist "public\js" mkdir "public\js"
+echo const API_BASE_URL = '%API_BASE_URL%'; > public\js\config.js
 
 echo.
 echo ========================================================
@@ -37,12 +37,19 @@ echo Database    : %MONGODB_DATABASE%
 echo ========================================================
 echo.
 
-echo Starting Backend Server...
-start "Twinsure Backend (PHP)" cmd /c "title Backend API && cd backend\api && php -S %HOST%:%BACKEND_PORT%"
+where node >nul 2>nul
+if errorlevel 1 (
+    echo Node.js is not installed or not on PATH.
+    pause
+    exit /b 1
+)
 
-echo Starting Frontend Server...
-start "Twinsure Frontend (PHP)" cmd /c "title Frontend UI && cd frontend && php -S %HOST%:%FRONTEND_PORT%"
+echo Starting Backend Server in a new terminal...
+start "Twinsure Backend (Node)" cmd /k "title Backend API && cd /d %~dp0 && node src\server.js"
 
-echo Servers have been launched in new command windows.
-echo Close this window to keep them running, or close the new windows to stop them.
+echo Starting Frontend Server in a new terminal...
+start "Twinsure Frontend (Node)" cmd /k "title Frontend UI && cd /d %~dp0 && npx http-server public -p %FRONTEND_PORT% -c-1"
+
+echo Both servers have been launched in separate command windows.
+echo Close the respective windows to stop the servers.
 pause
