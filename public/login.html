@@ -27,7 +27,11 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
+        html {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: clip;
+        }
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--primary-dark);
@@ -36,8 +40,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow-x: hidden;
             position: relative;
+            margin: 0;
+            padding: 0;
         }
 
         /* Full Screen Background Graphic Design */
