@@ -841,77 +841,61 @@
             }
         }
 
-        /* Why Trust Us styling */
-        .trust-grid {
+        /* High-Level Spacious 2-Column Text Layout */
+        .trust-clean-list {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4.5rem 5rem;
+            list-style: none;
+            padding: 0;
+            margin: 3.5rem 0 0 0;
         }
 
-        .trust-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 20px;
-            padding: 2.2rem 1.8rem;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        .trust-clean-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            transition: transform 0.3s ease;
         }
 
-        .trust-card::before {
-            content: '';
-            position: absolute;
-            bottom: -20px;
-            right: -20px;
-            width: 70px;
-            height: 70px;
-            background: radial-gradient(circle, rgba(253, 197, 0, 0.2) 0%, transparent 70%);
-            border-radius: 50%;
-            transition: all 0.4s ease;
-            pointer-events: none;
+        .trust-clean-item:hover {
+            transform: translateY(-2px);
         }
 
-        .trust-card:hover {
-            transform: translateY(-6px);
-            border-color: rgba(253, 197, 0, 0.35);
-            box-shadow: 0 15px 35px rgba(253, 197, 0, 0.12), 0 15px 35px rgba(0, 0, 0, 0.4);
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
-        }
-
-        .trust-card:hover::before {
-            width: 110px;
-            height: 110px;
-            background: radial-gradient(circle, rgba(253, 197, 0, 0.45) 0%, transparent 70%);
-        }
-
-        .trust-badge-icon {
-            width: 48px;
-            height: 48px;
-            background: rgba(253, 197, 0, 0.1);
-            border: 1px solid rgba(253, 197, 0, 0.3);
-            border-radius: 12px;
+        .trust-clean-item-header {
             display: flex;
             align-items: center;
-            justify-content: center;
-            color: var(--accent-gold);
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 0 10px rgba(253, 197, 0, 0.05);
+            gap: 0.85rem;
         }
 
-        .trust-card h4 {
+        .trust-clean-item-num {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--accent-gold);
+            font-family: 'Outfit', sans-serif;
+            opacity: 0.65;
+            letter-spacing: 0.05em;
+        }
+
+        .trust-clean-item-icon {
+            color: var(--accent-gold);
             font-size: 1.15rem;
+            filter: drop-shadow(0 0 8px rgba(253, 197, 0, 0.2));
+        }
+
+        .trust-clean-item h4 {
+            font-size: 1.35rem;
             font-family: 'Outfit', sans-serif;
             font-weight: 700;
-            margin-bottom: 0.6rem;
             color: var(--text-white);
+            margin: 0;
         }
 
-        .trust-card p {
+        .trust-clean-item p {
             color: var(--text-gray);
-            font-size: 0.85rem;
-            line-height: 1.6;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin: 0;
         }
 
         /* Footer */
@@ -1105,8 +1089,9 @@
                 justify-content: center;
             }
 
-            .trust-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .trust-clean-list {
+                grid-template-columns: 1fr;
+                gap: 3rem;
             }
 
             .mv-grid {
@@ -1181,7 +1166,7 @@
             .hero-container,
             .story-split,
             .mv-grid,
-            .trust-grid {
+            .trust-clean-list {
                 grid-template-columns: 1fr;
                 width: 100%;
             }
@@ -1310,8 +1295,8 @@
                 font-size: 0.8rem;
             }
 
-            .trust-grid {
-                grid-template-columns: 1fr;
+            .trust-clean-list {
+                gap: 2.5rem;
             }
 
             .footer-bottom {
@@ -1554,7 +1539,7 @@
             <a href="services.html">Services</a>
             <a href="downloads.html">Claims</a>
             <a href="contact.html">Contact</a>
-            <a href="partner.html">Partner</a>
+            <!-- <a href="partner.html">Partner</a> -->
             <a href="login.html" class="btn btn-gold" style="padding: 0.5rem 1.5rem; margin-left:1rem;">Login</a>
         </div>
     </nav>
@@ -1877,117 +1862,88 @@
     </section>
 
 
-    <!-- Why Trust Us -->
+    <!-- Why Trust Us - High-Level Spacious 2-Column Text Layout -->
     <section class="section">
         <div class="section-header">
             <h2>Why People <span class="gradient-text">Trust Us</span></h2>
         </div>
-        <div class="trust-grid">
+        <ol class="trust-clean-list">
             <!-- 1 -->
-            <div class="trust-card">
-                <div class="trust-badge-icon">
-                    <i class="fas fa-search"></i>
-                </div>
-                <h4>Transparent Processes</h4>
-                <p>No hidden clauses. We ensure you understand exactly what you are paying for.</p>
-            </div>
+            <li class="trust-clean-item">
+                <header class="trust-clean-item-header">
+                    <span class="trust-clean-item-num">01 //</span>
+                    <i class="fas fa-shoe-prints trust-clean-item-icon"></i>
+                    <h4>Stand in Your Shoes</h4>
+                </header>
+                <p>We understand your problems as if they were our own, putting ourselves in your position to serve you best.</p>
+            </li>
             <!-- 2 -->
-            <div class="trust-card">
-                <div class="trust-badge-icon">
-                    <i class="fas fa-robot"></i>
-                </div>
-                <h4>AI Recommendations</h4>
-                <p>Our algorithms match you with policies that statistically fit your exact profile.</p>
-            </div>
+            <li class="trust-clean-item">
+                <header class="trust-clean-item-header">
+                    <span class="trust-clean-item-num">02 //</span>
+                    <i class="fas fa-user-tie trust-clean-item-icon"></i>
+                    <h4>Professional Recommendations</h4>
+                </header>
+                <p>Get highly specialized, unbiased advice tailored strictly to your financial security and personal health needs.</p>
+            </li>
             <!-- 3 -->
-            <div class="trust-card">
-                <div class="trust-badge-icon">
-                    <i class="fas fa-bolt"></i>
-                </div>
-                <h4>Fast Claims Support</h4>
-                <p>A dedicated team ensuring your claims are processed with absolute priority.</p>
-            </div>
+            <li class="trust-clean-item">
+                <header class="trust-clean-item-header">
+                    <span class="trust-clean-item-num">03 //</span>
+                    <i class="fas fa-bolt trust-clean-item-icon"></i>
+                    <h4>Fast Claim Support</h4>
+                </header>
+                <p>Our dedicated rapid-response team ensures your insurance claims are approved and processed at lightning speed.</p>
+            </li>
             <!-- 4 -->
-            <div class="trust-card">
-                <div class="trust-badge-icon">
-                    <i class="fas fa-user-shield"></i>
-                </div>
-                <h4>Trusted Experts</h4>
-                <p>Licensed professionals ready to provide human guidance when you need it.</p>
-            </div>
+            <li class="trust-clean-item">
+                <header class="trust-clean-item-header">
+                    <span class="trust-clean-item-num">04 //</span>
+                    <i class="fas fa-file-invoice-dollar trust-clean-item-icon"></i>
+                    <h4>Personalized Assistance</h4>
+                </header>
+                <p>Full assistance: we collect all necessary documents, prepare your application files, and handle the entire submission process.</p>
+            </li>
             <!-- 5 -->
-            <div class="trust-card">
-                <div class="trust-badge-icon">
-                    <i class="fas fa-sliders-h"></i>
-                </div>
-                <h4>Personalized Assistance</h4>
-                <p>Coverage that adapts to your life, not the other way around.</p>
-            </div>
+            <li class="trust-clean-item">
+                <header class="trust-clean-item-header">
+                    <span class="trust-clean-item-num">05 //</span>
+                    <i class="fas fa-running trust-clean-item-icon"></i>
+                    <h4>Aggressive Follow-Ups</h4>
+                </header>
+                <p>We relentlessly follow up with insurance providers on your behalf to guarantee zero delays in policy decisions.</p>
+            </li>
             <!-- 6 -->
-            <div class="trust-card">
-                <div class="trust-badge-icon">
-                    <i class="fas fa-handshake"></i>
-                </div>
-                <h4>Reliable Ecosystem</h4>
-                <p>Backed by the world's most financially secure insurance carriers.</p>
-            </div>
+            <li class="trust-clean-item">
+                <header class="trust-clean-item-header">
+                    <span class="trust-clean-item-num">06 //</span>
+                    <i class="fas fa-gavel trust-clean-item-icon"></i>
+                    <h4>Escalation Till the End</h4>
+                </header>
+                <p>We fight for you: 1st approach through insurer grievance channels, 2nd via the Insurance Ombudsman, and 3rd via Consumer Court.</p>
+            </li>
             <!-- 7 -->
-            <div class="trust-card">
-                <div class="trust-badge-icon">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                <h4>Security Protocols</h4>
-                <p>Bank-grade encryption ensuring user and transaction data are always safe.</p>
-            </div>
+            <li class="trust-clean-item">
+                <header class="trust-clean-item-header">
+                    <span class="trust-clean-item-num">07 //</span>
+                    <i class="fas fa-headset trust-clean-item-icon"></i>
+                    <h4>24X7 Service & Support</h4>
+                </header>
+                <p>Our customer support lines are open 24 hours a day, 7 days a week, providing you with emergency claim guidance anytime.</p>
+            </li>
             <!-- 8 -->
-            <div class="trust-card">
-                <div class="trust-badge-icon">
-                    <i class="fas fa-headset"></i>
-                </div>
-                <h4>Absolute Assistance</h4>
-                <p>Providing round-the-clock claim guidance, consults, and priority response.</p>
-            </div>
-        </div>
+            <li class="trust-clean-item">
+                <header class="trust-clean-item-header">
+                    <span class="trust-clean-item-num">08 //</span>
+                    <i class="fas fa-briefcase trust-clean-item-icon"></i>
+                    <h4>Experience & Expertise</h4>
+                </header>
+                <p>Backed by 19+ years of industry-leading insurance expertise to navigate even the most complex coverage scenarios.</p>
+            </li>
+        </ol>
     </section>
 
-    <!-- Culture & Work Environment -->
-    <section class="culture-section">
-        <h2>Culture / <span class="gradient-text">Work Environment</span></h2>
-        <div class="culture-grid">
-            <div class="culture-col">
-                <div class="culture-card tall">
-                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=600"
-                        alt="Work Environment 1">
-                </div>
-            </div>
-            <div class="culture-col">
-                <div class="culture-card short">
-                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=600"
-                        alt="Work Environment 2">
-                </div>
-                <div class="culture-card short">
-                    <img src="https://images.unsplash.com/photo-1531535934200-459a09743b27?auto=format&fit=crop&q=80&w=600"
-                        alt="Work Environment 3">
-                </div>
-            </div>
-            <div class="culture-col">
-                <div class="culture-card tall">
-                    <img src="https://images.unsplash.com/photo-1542744173-8e08562744ad?auto=format&fit=crop&q=80&w=600"
-                        alt="Work Environment 4">
-                </div>
-            </div>
-            <div class="culture-col">
-                <div class="culture-card short">
-                    <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80&w=600"
-                        alt="Work Environment 5">
-                </div>
-                <div class="culture-card short">
-                    <img src="https://images.unsplash.com/photo-1527689368864-3a821dbccc34?auto=format&fit=crop&q=80&w=600"
-                        alt="Work Environment 6">
-                </div>
-            </div>
-        </div>
-    </section>
+
 
     <!-- Testimonial / Message with Glowing Stars -->
     <div class="testimonial-container">
@@ -2023,7 +1979,7 @@
                     <li><a href="services.html">Our Services</a></li>
                     <li><a href="downloads.html">Claims Support</a></li>
                     <li><a href="contact.html">Contact Us</a></li>
-                    <li><a href="partner.html">Partner Portal</a></li>
+                    <!-- <li><a href="partner.html">Partner Portal</a></li> -->
                 </ul>
             </div>
             <div class="footer-col">

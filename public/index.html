@@ -317,7 +317,7 @@
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 1.5rem;
             max-width: 1400px;
             margin: 0 auto;
@@ -840,7 +840,7 @@
             }
 
             .stats-grid {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -1021,7 +1021,7 @@
             <a href="services.html">Services</a>
             <a href="downloads.html">Claims</a>
             <a href="contact.html">Contact</a>
-            <a href="partner.html">Partner</a>
+            <!-- <a href="partner.html">Partner</a> -->
             <a href="login.html" class="btn btn-gold" style="padding: 0.5rem 1.5rem; margin-left:1rem;">Login</a>
         </div>
     </nav>
@@ -1041,7 +1041,7 @@
                 <div class="hero-btns">
                     <a href="services.html" class="btn btn-gold">Get Insurance</a>
                     <a href="userchat.html" class="btn btn-blue"><i class="fas fa-robot"></i> Insurance Recommender</a>
-                    <a href="partner.html" class="btn btn-outline">Become a Partner</a>
+                    <!-- <a href="partner.html" class="btn btn-outline">Become a Partner</a> -->
                 </div>
             </div>
         </div>
@@ -1062,10 +1062,10 @@
                 <h3 class="stat-value" data-target="19" data-suffix="+">0</h3>
                 <p>Years of Experience</p>
             </div>
-            <div class="stat-card">
+            <!-- <div class="stat-card">
                 <h3 class="stat-value" data-target="246" data-suffix="+">0</h3>
                 <p>Trusted Partners</p>
-            </div>
+            </div> -->
             <div class="stat-card">
                 <h3 class="stat-value" data-target="24" data-suffix="/7">0</h3>
                 <p>Customer Support</p>
@@ -1111,12 +1111,12 @@
                 <p>Total transparency in pricing and policy terms. Bank-level encryption ensures your personal data is
                     always protected.</p>
             </div>
-            <div class="feature-card">
+            <!-- <div class="feature-card">
                 <div class="feature-icon"><i class="fas fa-network-wired"></i></div>
                 <h3>Dedicated Partner Network</h3>
                 <p>An extensive network of top-tier insurance providers allowing us to negotiate the best rates on your
                     behalf.</p>
-            </div>
+            </div> -->
         </div>
     </section>
 
@@ -1228,7 +1228,7 @@
         </div>
     </section>
 
-    <!-- Partner Section -->
+    <!-- Partner Section
     <section style="margin: 0 auto;">
         <div class="partner-section">
             <div class="partner-content">
@@ -1264,6 +1264,7 @@
             </div>
         </div>
     </section>
+    -->
 
     <!-- Claims Support Section -->
     <section class="section">
@@ -1313,7 +1314,7 @@
                     <li><a href="services.html">Our Services</a></li>
                     <li><a href="downloads.html">Claims Support</a></li>
                     <li><a href="contact.html">Contact Us</a></li>
-                    <li><a href="partner.html">Partner Portal</a></li>
+                    <!-- <li><a href="partner.html">Partner Portal</a></li> -->
                 </ul>
             </div>
             <div class="footer-col">
@@ -1457,10 +1458,10 @@
 
         // Hero Text Animation
         const heroLines = [
-            "Uncompromising Surety <br><span class='gradient-text'>For What Lies Ahead.</span>",
-            "100% Claim Assurance <br><span class='gradient-text'>When You Need It Most.</span>",
-            "Empowering Benefits <br><span class='gradient-text'>Designed to Protect You.</span>",
-            "Intelligent Solutions <br><span class='gradient-text'>Tailored for Ultimate Care.</span>"
+            "Uncompromising Surety <br><span class='gradient-text'>For What Lies Ahead</span>",
+            "100% Claim Assurance <br><span class='gradient-text'>When You Need It Most</span>",
+            "Empowering Benefits <br><span class='gradient-text'>Designed to Protect You</span>",
+            "Intelligent Solutions <br><span class='gradient-text'>Tailored for Ultimate Care</span>"
         ];
 
         let currentLineIndex = 0;
@@ -1487,7 +1488,7 @@
                     // Step 3: Start enter transition
                     heroHeading.classList.add('visible');
                 }, 400);
-            }, 5500); // 5.5 seconds between rotations
+            }, 4000); // 4 seconds between rotations
         }
     </script>
 </body>
