@@ -21,7 +21,11 @@ while IFS='=' read -r key val || [ -n "$key" ]; do
     if [[ -z "$key" || "$key" =~ ^# ]]; then
         continue
     fi
-    val=$(echo "$val" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e 's/^["'\''']//' -e 's/["'\''']$//')
+    val=$(echo "$val" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+    val="${val#\"}"
+    val="${val%\"}"
+    val="${val#\'}"
+    val="${val%\'}"
     export "$key"="$val"
 done < "$ENV_FILE"
 
