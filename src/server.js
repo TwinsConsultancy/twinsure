@@ -13,9 +13,8 @@ if (require.main === module) {
   connectAndSeed()
     .then(() => {
       const port = process.env.PORT || Number(config.backendPort) || 8000;
-      const host = config.host || '0.0.0.0';
-      app.listen(port, host, () => {
-        console.log(`Twinsure Node server running at http://${host}:${port}`);
+      app.listen(port, () => {
+        console.log(`Twinsure Node server running on port ${port}`);
       });
     })
     .catch((error) => {
