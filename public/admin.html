@@ -3357,7 +3357,7 @@
         document.getElementById('welcomeAdminName').textContent = `Welcome back, ${adminName.split(' ')[0]}!`;
         // Partners management helpers
         function getPartnersAdminEndpoints(path = '') {
-            const base = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://127.0.0.1:8000';
+            const base = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : '/backend/api';
             return [`${base}/admin/partners${path}`];
         }
 

@@ -26,7 +26,8 @@ if "%API_BASE_URL%"=="" set API_BASE_URL=http://%HOST%:%BACKEND_PORT%
 
 echo Generating frontend config.js...
 if not exist "public\js" mkdir "public\js"
-echo const API_BASE_URL = '%API_BASE_URL%'; > public\js\config.js
+echo const isDev = window.location.hostname === '127.0.0.1' ^|^| window.location.hostname === 'localhost'; > public\js\config.js
+echo const API_BASE_URL = isDev ? '%API_BASE_URL%' : '/backend/api'; >> public\js\config.js
 
 echo.
 echo ========================================================

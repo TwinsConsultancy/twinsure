@@ -38,11 +38,11 @@ loadEnvFile(path.join(__dirname, '..', '.env'));
  * Centralized configuration object populated from environment variables.
  */
 const config = {
-  mongodbUri: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017',
+  mongodbUri: process.env.MONGODB_URI,
   mongodbDatabase: process.env.MONGODB_DATABASE || 'twinsdb',
-  host: process.env.HOST || '127.0.0.1',
-  backendPort: process.env.BACKEND_PORT || '8000',
-  frontendPort: process.env.FRONTEND_PORT || '3000',
+  host: process.env.HOST,
+  backendPort: process.env.BACKEND_PORT,
+  frontendPort: process.env.FRONTEND_PORT,
   adminEmail: process.env.ADMIN_EMAIL || 'admin@twinsure.com',
   adminPassword: process.env.ADMIN_PASSWORD || 'admin123'
 };

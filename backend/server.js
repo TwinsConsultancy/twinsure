@@ -906,8 +906,8 @@ app.use((req, res) => {
 if (require.main === module) {
   connectAndSeed()
     .then(() => {
-      const port = Number(config.backendPort) || 8000;
-      const host = config.host || '127.0.0.1';
+      const port = process.env.PORT || Number(config.backendPort) || 8000;
+      const host = config.host || '0.0.0.0';
       app.listen(port, host, () => {
         console.log(`Twinsure Node server running at http://${host}:${port}`);
       });
