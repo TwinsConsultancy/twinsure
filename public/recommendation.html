@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recommendation Question Builder</title>
-    <link rel="stylesheet" href="css/builder-ui.css">
-    <link rel="stylesheet" href="css/preview-ui.css">
+    <link rel="stylesheet" href="css/builder-ui.min.css">
+    <link rel="stylesheet" href="css/preview-ui.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -190,11 +190,11 @@
         </div>
     </div>
     
-    <script src="js/config.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/chat-inputs.js"></script>
-    <script src="js/recommendation-builder.js"></script>
-    <script src="js/preview-engine.js"></script>
+    <script defer src="js/config.js"></script>
+    <script defer src="js/api.js"></script>
+    <script defer src="js/chat-inputs.js"></script>
+    <script defer src="js/recommendation-builder.js"></script>
+    <script defer src="js/preview-engine.js"></script>
     <script>
         if(window.location.search.includes('mode=preview')) {
             document.getElementById('builderApp').style.display = 'none';

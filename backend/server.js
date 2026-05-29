@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const express = require('express');
+const compression = require('compression');
 const fs = require('fs');
 const multer = require('multer');
 const path = require('path');
@@ -18,6 +19,10 @@ const {
 const { requireRole } = require('./lib/auth');
 
 const app = express();
+
+// Enable GZIP compression to reduce network payload size (Lighthouse optimization)
+app.use(compression());
+
 // Simple request logger to aid debugging of routing and methods
 app.use((req, res, next) => {
   try {
